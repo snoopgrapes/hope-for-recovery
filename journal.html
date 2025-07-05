@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Journal – Fruit of Freedom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #4ca1af;
+      color: #fff;
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .journal-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .journal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .journal-date {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 300px;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    .journal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.5rem;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #4ca1af;
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #3d8a99;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: #4ca1af;
+      border: 1px solid #4ca1af;
+    }
+
+    .btn-secondary:hover {
+      background-color: #f0f4f8;
+    }
+
+    .previous-entries {
+      margin-top: 3rem;
+    }
+
+    .entry-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+
+    .entry-date {
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .entry-content {
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 3rem;
+    }
+
+    .sign-out-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #f5f7fa;
+      color: #2c3e50;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .sign-out-btn:hover {
+      background-color: #e1e5eb;
+    }
+
+    @media (max-width: 768px) {
+      .journal-actions {
+        flex-direction: column;
+      }
+      .sign-out-btn {
+        position: static;
+        margin: 10px auto;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button id="signOutButton" class="sign-out-btn">Sign Out</button>
+    <h1>My Journal</h1>
+    <p>Reflect on your journey and God's work in your life</p>
+  </header>
+
+  <div class="journal-container">
+    <div class="journal-header">
+      <h2>Today's Reflection</h2>
+      <div class="journal-date" id="currentDate"></div>
+    </div>
+
+    <textarea id="journalEntry" placeholder="Write your thoughts here... What is God showing you today? What struggles or victories are you experiencing?"></textarea>
+
+    <div class="journal-actions">
+      <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      <button class="btn btn-primary" id="saveBtn">Save Entry</button>
+    </div>
+
+    <div class="previous-entries">
+      <h2>Previous Entries</h2>
+      <div id="entriesList"></div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Fruit of Freedom | All rights reserved.
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      getDoc, 
+      setDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      orderBy,
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.firebasestorage.app",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // DOM elements
+    const signOutButton = document.getElementById('signOutButton');
+    const journalEntry = document.getElementById('journalEntry');
+    const saveBtn = document.getElementById('saveBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const currentDate = document.getElementById('currentDate');
+    const entriesList = document.getElementById('entriesList');
+
+    // Set current date
+    currentDate.textContent = new Date().toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+
+    // Load user's journal entries
+    async function loadEntries(userId) {
+      entriesList.innerHTML = '<p>Loading your entries...</p>';
+      
+      try {
+        const q = query(
+          collection(db, "journals"),
+          where("userId", "==", userId),
+          orderBy("createdAt", "desc")
+        );
+        
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          entriesList.innerHTML = '<p>No entries yet. Start writing above!</p>';
+          return;
+        }
+        
+        entriesList.innerHTML = '';
+        querySnapshot.forEach((doc) => {
+          const entry = doc.data();
+          const entryDate = entry.createdAt.toDate().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          
+          const entryCard = document.createElement('div');
+          entryCard.className = 'entry-card';
+          entryCard.innerHTML = `
+            <div class="entry-date">${entryDate}</div>
+            <div class="entry-content">${entry.content}</div>
+          `;
+          entriesList.appendChild(entryCard);
+        });
+      } catch (error) {
+        console.error("Error loading entries:", error);
+        entriesList.innerHTML = '<p>Error loading entries. Please try again.</p>';
+      }
+    }
+
+    // Save journal entry
+    async function saveEntry(userId, content) {
+      if (!content.trim()) {
+        alert("Please write something before saving.");
+        return;
+      }
+      
+      try {
+        const newEntryRef = doc(collection(db, "journals"));
+        await setDoc(newEntryRef, {
+          userId: userId,
+          content: content,
+          createdAt: serverTimestamp()
+        });
+        
+        alert("Entry saved successfully!");
+        journalEntry.value = '';
+        await loadEntries(userId);
+      } catch (error) {
+        console.error("Error saving entry:", error);
+        alert("Error saving entry. Please try again.");
+      }
+    }
+
+    // Auth state listener
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        if (!user.emailVerified && user.providerData[0].providerId === 'password') {
+          window.location.href = "verify-email.html";
+        } else {
+          // Load user's journal entries
+          await loadEntries(user.uid);
+          
+          // Set up event listeners
+          saveBtn.addEventListener('click', async () => {
+            await saveEntry(user.uid, journalEntry.value);
+          });
+          
+          clearBtn.addEventListener('click', () => {
+            if (journalEntry.value && !confirm("Are you sure you want to clear your current entry?")) {
+              return;
+            }
+            journalEntry.value = '';
+          });
+        }
+      } else {
+        window.location.href = "journey.html";
+      }
+    });
+
+    // Sign out
+    signOutButton.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "journey.html";
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    });
+  </script>
+</body>
+</html>
