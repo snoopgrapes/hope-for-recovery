@@ -84,20 +84,50 @@
         const resendEmailMessage = document.getElementById('resendEmailMessage');
 
         let currentUser = null;
+        let checkVerificationInterval; // To store the interval ID
 
-        // Listen for authentication state changes to get the current user
+        // Function to check verification status and redirect
+        async function checkVerificationStatusAndRedirect() {
+            if (currentUser) {
+                // Force a refresh of the user's ID token to get the latest emailVerified status
+                await currentUser.reload(); 
+                if (currentUser.emailVerified) {
+                    clearInterval(checkVerificationInterval); // Stop checking once verified
+                    window.location.href = "dashboard.html";
+                } else {
+                    console.log("Email not yet verified. Waiting...");
+                }
+            } else {
+                console.log("No user is signed in. Stopping verification check.");
+                clearInterval(checkVerificationInterval);
+                // Optionally redirect to login if no user is found after some time
+                // window.location.href = "journey.html"; 
+            }
+        }
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
-                // If user is already verified, redirect them to dashboard
                 if (user.emailVerified) {
                     window.location.href = "dashboard.html";
+                } else {
+                    // Start periodic check if not verified and user is email/password
+                    if (user.providerData[0].providerId === 'password') {
+                        // Check every 3-5 seconds
+                        checkVerificationInterval = setInterval(checkVerificationStatusAndRedirect, 3000); 
+                    } else {
+                        // Google users are usually verified, redirect them directly
+                        window.location.href = "dashboard.html";
+                    }
                 }
             } else {
-                // If no user is logged in, redirect them back to the login/registration page
-                // or keep them on this page and tell them to sign in.
-                // For now, let's assume they just registered and are waiting.
+                // No user is logged in, clear any existing interval
+                if (checkVerificationInterval) {
+                    clearInterval(checkVerificationInterval);
+                }
                 console.log("No user is signed in on verify-email page.");
+                // Optionally redirect if not logged in
+                // window.location.href = "journey.html";
             }
         });
 
@@ -120,10 +150,12 @@
             }
         });
 
-        // Optional: Implement a periodic check or a 'I have verified' button
-        // For simplicity, this example relies on the onAuthStateChanged listener
-        // which will trigger a redirect when the user's token updates after verification.
-        // Users might need to refresh the page after verifying.
+        // Clear the interval if the user navigates away from the page
+        window.addEventListener('beforeunload', () => {
+            if (checkVerificationInterval) {
+                clearInterval(checkVerificationInterval);
+            }
+        });
     </script>
   </div>
 </body>
