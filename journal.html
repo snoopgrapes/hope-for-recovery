@@ -56,6 +56,12 @@
       margin-bottom: 1rem;
     }
 
+    .ql-editor {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
     .journal-actions {
       display: flex;
       justify-content: flex-end;
@@ -72,42 +78,40 @@
       cursor: pointer;
       text-decoration: none;
       transition: all 0.3s ease;
+      border: none;
     }
 
     .btn-primary {
       background-color: #4ca1af;
       color: white;
-      border: none;
     }
 
     .btn-primary:hover {
       background-color: #3d8a99;
     }
 
-    .btn-edit {
-      background-color: #3498db;
-      color: white;
-      border: none;
-    }
-
-    .btn-edit:hover {
-      background-color: #2980b9;
-    }
-
     .btn-secondary {
       background-color: transparent;
       color: #4ca1af;
-      border: 1px solid #4ca1af;
+      border: 1px solid #4ca1af !important;
     }
 
     .btn-secondary:hover {
       background-color: #f0f4f8;
     }
 
+    .btn-edit {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .btn-edit:hover {
+      background-color: #2980b9;
+    }
+
     .btn-danger {
       background-color: #e74c3c;
       color: white;
-      border: none;
     }
 
     .btn-danger:hover {
@@ -166,20 +170,10 @@
     }
 
     .entry-action-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
-      padding: 0.3rem 0.5rem;
-      border-radius: 3px;
-    }
-
-    .edit-btn {
-      color: #3498db;
-    }
-
-    .delete-btn {
-      color: #e74c3c;
+      padding: 0.5rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
     }
 
     footer {
@@ -224,6 +218,21 @@
         justify-content: flex-end;
       }
     }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -246,7 +255,9 @@
 
     <div class="journal-actions">
       <button class="btn btn-secondary" id="clearBtn">Clear</button>
-      <button class="btn btn-primary" id="saveBtn">Save Entry</button>
+      <button class="btn btn-primary" id="saveBtn">
+        <span id="saveBtnText">Save Entry</span>
+      </button>
     </div>
 
     <div class="search-container">
@@ -263,7 +274,7 @@
     © 2025 Fruit of Freedom | All rights reserved.
   </footer>
 
-  <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -318,6 +329,7 @@
     const signOutButton = document.getElementById('signOutButton');
     const entryTitle = document.getElementById('entryTitle');
     const saveBtn = document.getElementById('saveBtn');
+    const saveBtnText = document.getElementById('saveBtnText');
     const clearBtn = document.getElementById('clearBtn');
     const currentDate = document.getElementById('currentDate');
     const entriesList = document.getElementById('entriesList');
@@ -363,21 +375,19 @@
         entriesList.innerHTML = '';
         querySnapshot.forEach((doc) => {
           const entry = doc.data();
-          const entryDate = entry.createdAt 
-            ? entry.createdAt.toDate().toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })
-            : 'Date not available';
+          const entryDate = entry.createdAt?.toDate()?.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }) || 'Date not available';
           
           const entryCard = document.createElement('div');
           entryCard.className = 'entry-card';
           entryCard.innerHTML = `
             <div class="entry-actions">
-              <button class="entry-action-btn edit-btn" data-id="${doc.id}">Edit</button>
-              <button class="entry-action-btn delete-btn" data-id="${doc.id}">Delete</button>
+              <button class="btn btn-edit entry-action-btn" data-id="${doc.id}">Edit</button>
+              <button class="btn btn-danger entry-action-btn" data-id="${doc.id}">Delete</button>
             </div>
             <div class="entry-title">${entry.title || 'Untitled Entry'}</div>
             <div class="entry-date">${entryDate}</div>
@@ -387,11 +397,11 @@
         });
 
         // Add event listeners to edit and delete buttons
-        document.querySelectorAll('.edit-btn').forEach(btn => {
+        document.querySelectorAll('.btn-edit').forEach(btn => {
           btn.addEventListener('click', (e) => editEntry(e.target.dataset.id));
         });
         
-        document.querySelectorAll('.delete-btn').forEach(btn => {
+        document.querySelectorAll('.btn-danger').forEach(btn => {
           btn.addEventListener('click', (e) => deleteEntry(e.target.dataset.id));
         });
       } catch (error) {
@@ -411,15 +421,16 @@
       }
       
       try {
+        // Show loading state
         saveBtn.disabled = true;
-        saveBtn.textContent = "Saving...";
+        saveBtnText.innerHTML = '<span class="loading"></span> Saving...';
         
         const entryData = {
           userId: userId,
           title: title,
           content: content,
           keywords: generateKeywords(title + ' ' + content),
-          createdAt: serverTimestamp(),
+          createdAt: currentEditingId ? undefined : serverTimestamp(),
           updatedAt: serverTimestamp()
         };
 
@@ -428,7 +439,6 @@
           const entryRef = doc(db, "journals", currentEditingId);
           await updateDoc(entryRef, entryData);
           currentEditingId = null;
-          saveBtn.textContent = "Save Entry";
         } else {
           // Create new entry
           const newEntryRef = doc(collection(db, "journals"));
@@ -448,47 +458,46 @@
         console.error("Error saving entry:", error);
         alert("Error saving entry. Please try again.");
       } finally {
+        // Reset button state
         saveBtn.disabled = false;
-        saveBtn.textContent = "Save Entry";
+        saveBtnText.textContent = "Save Entry";
       }
     }
 
-    // Edit entry function
+    // Fixed editEntry function
     async function editEntry(entryId) {
       try {
         const entryRef = doc(db, "journals", entryId);
         const entryDoc = await getDoc(entryRef);
         
-        if (entryDoc.exists()) {
-          const entry = entryDoc.data();
-          currentEditingId = entryId;
-          entryTitle.value = entry.title || '';
-          
-          // Clear the editor first
-          quill.setContents([]);
-          
-          // Set the content if it exists
-          if (entry.content) {
-            quill.clipboard.dangerouslyPasteHTML(entry.content);
-          }
-          
-          // Scroll to editor
-          document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
-          
-          // Update save button text
-          saveBtn.textContent = "Update Entry";
-        } else {
-          alert("Entry not found. It may have been deleted.");
+        if (!entryDoc.exists()) {
+          throw new Error("Entry not found");
         }
+
+        const entry = entryDoc.data();
+        currentEditingId = entryId;
+        entryTitle.value = entry.title || '';
+        
+        // Clear and set editor content
+        quill.setContents([]);
+        if (entry.content) {
+          quill.clipboard.dangerouslyPasteHTML(0, entry.content);
+        }
+        
+        // Update UI
+        saveBtnText.textContent = "Update Entry";
+        document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
       } catch (error) {
         console.error("Error editing entry:", error);
-        alert("Error loading entry for editing. Please try again.");
+        alert(`Error: ${error.message}`);
+        currentEditingId = null;
+        saveBtnText.textContent = "Save Entry";
       }
     }
 
     // Delete entry function
     async function deleteEntry(entryId) {
-      if (!confirm("Are you sure you want to delete this entry?")) {
+      if (!confirm("Are you sure you want to delete this entry? This cannot be undone.")) {
         return;
       }
       
@@ -530,7 +539,7 @@
             entryTitle.value = '';
             quill.setContents([{ insert: '\n' }]);
             currentEditingId = null;
-            saveBtn.textContent = "Save Entry";
+            saveBtnText.textContent = "Save Entry";
           });
 
           // Search functionality
