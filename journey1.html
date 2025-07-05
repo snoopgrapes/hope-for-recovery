@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Journey with Hope For Recovery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #fff;
+      color: #000;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    nav {
+      margin-top: 1rem;
+    }
+
+    nav a {
+      color: #000;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .logo-container img {
+      max-width: 150px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Poppins', sans-serif;
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-content {
+      margin-bottom: 2rem;
+    }
+
+    .section-content ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .section-content ul li {
+      background: #f9f9f9;
+      margin-bottom: 0.8rem;
+      padding: 1rem;
+      border-left: 5px solid #fdd835;
+      border-radius: 5px;
+    }
+
+    .registration-form {
+      padding: 2rem;
+      background-color: #f5f7fa;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+
+    .registration-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .registration-form input[type="text"],
+    .registration-form input[type="email"],
+    .registration-form input[type="password"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .registration-form button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      display: block;
+      width: 100%;
+    }
+
+    .registration-form button:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      background: #f1f1f1;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.95rem;
+      color: #444;
+      margin-top: 3rem;
+    }
+    
+    /* Updated styles for the Google Sign-In button */
+    .signin-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .or-divider {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .or-divider::before,
+    .or-divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .or-divider::before {
+      margin-right: 1rem;
+    }
+    
+    .or-divider::after {
+      margin-left: 1rem;
+    }
+    
+    .google-signin-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      color: #757575;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .google-signin-btn:hover {
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    
+    .google-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzArrayAdapterOC44IDguOCAwIDAgMCAyLjYtNi41eiIgZmlsbD0iIzQyODVGNCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTkgMThjMi40IDAgNC41LS44IDYtMi4ybC0zLTIuMmE1LjQgNS40IDAgMCAxLTgtMi45SDFWMTJgOSAzNiAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=');
+      background-size: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <a href="index.html">
+        <img src="images/logo.png" alt="Hope For Recovery Logo">
+      </a>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">About</a>
+      <a href="#">Fruit of Freedom</a>
+      <a href="#">Join</a>
+      <a href="#">Partners</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Embark on Your Journey to Freedom</h1>
+
+    <div class="section-content">
+      <h2>About Our Coursework</h2>
+      <p>Our "Fruit of Freedom" course is a transformative 12-week program designed to guide you through a Christ-centered recovery. Rooted deeply in scripture, particularly Galatians 5:22-23, it provides practical tools and spiritual insights to overcome addiction and cultivate lasting change. Each week builds upon the last, helping you understand God's love, identity in Christ, and the power of the Holy Spirit to live free.</p>
+      <ul>
+        <li><strong>Week 1-3: Laying the Foundation:</strong> Understanding God's unconditional love and grace, and acknowledging the roots of addiction.</li>
+        <li><strong>Week 4-6: Renewing Your Mind:</strong> Practical steps for thought transformation and breaking free from destructive patterns.</li>
+        <li><strong>Week 7-9: Cultivating the Fruit of the Spirit:</strong> Exploring love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control.</li>
+        <li><strong>Week 10-12: Living in Freedom:</strong> Building healthy habits, establishing supportive relationships, and walking in your new identity.</li>
+      </ul>
+    </div>
+
+    <div class="section-content">
+      <h2>Group Meetings</h2>
+      <p>Community is vital on the journey to recovery. Our peer-led group meetings provide a safe, confidential, and encouraging environment where you can share your struggles, celebrate victories, and receive support from others who understand. These meetings are a cornerstone of the Hope For Recovery program, fostering accountability and genuine connection.</p>
+      <ul>
+        <li><strong>Weekly Sessions:</strong> Regular online and in-person meetings (where available) for discussion and prayer.</li>
+        <li><strong>Trained Facilitators:</strong> Each group is guided by compassionate leaders who have walked similar paths.</li>
+        <li><strong>Confidentiality Assured:</strong> A safe space where every story is respected and protected.</li>
+      </ul>
+    </div>
+
+    <div class="section-content">
+      <h2>The Journey You Will Embark On</h2>
+      <p>This journey is more than just a course; it's a profound encounter with God that leads to holistic healing. You will embark on a path of self-discovery, spiritual growth, and practical application of biblical principles. You'll learn to identify triggers, develop coping mechanisms, and build a strong foundation for a life free from the grip of addiction, empowered by Christ.</p>
+    </div>
+
+    <div class="section-content">
+      <h2>Outcomes We Hope For You</h2>
+      <p>Our deepest desire is to see you experience true and lasting freedom. Through this program, we aim for you to:</p>
+      <ul>
+        <li><strong>Experience Spiritual Transformation:</strong> A deeper relationship with God and understanding of His purpose for your life.</li>
+        <li><strong>Achieve Sustainable Sobriety:</strong> Practical tools and spiritual strength to overcome addictive behaviors.</li>
+        <li><strong>Restore Relationships:</strong> Healing and reconciliation with loved ones.</li>
+        <li><strong>Discover Your Purpose:</strong> Clarity and direction for a fulfilling life aligned with God's will.</li>
+        <li><strong>Become an Agent of Hope:</strong> Equip you to share your story and help others find freedom.</li>
+      </ul>
+    </div>
+
+    <div class="registration-form">
+      <h2>Become a Member to Access Resources</h2>
+      <p>Join our community to access exclusive course materials, connect with groups, and receive ongoing support.</p>
+      
+      <div class="signin-options">
+        <button class="google-signin-btn" id="googleSignIn">
+          <span class="google-icon"></span>
+          Sign up with Google
+        </button>
+        
+        <div class="or-divider">or</div>
+      </div>
+      
+      <form id="registrationForm">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <p style="font-size: 0.85rem; color: #666; margin-top: -0.5rem;">Password must be at least 6 characters long.</p>
+
+        <button type="submit">Register and Start My Journey</button>
+      </form>
+      <p id="formMessage" style="text-align: center; margin-top: 1rem;"></p>
+    </div>
+  </div>
+
+  <footer>
+    "He brought me out into a spacious place; he rescued me because he delighted in me." – Psalm 18:19<br><br>
+    © 2025 Hope For Recovery | A ministry of healing and hope.
+  </footer>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      sendEmailVerification,
+      GoogleAuthProvider,
+      signInWithPopup
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.firebasestorage.app",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    const registrationForm = document.getElementById('registrationForm');
+    const formMessage = document.getElementById('formMessage');
+    const googleSignIn = document.getElementById('googleSignIn');
+
+    // Google Sign-In Handler
+    googleSignIn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      formMessage.textContent = 'Signing in with Google...';
+      formMessage.style.color = '#333';
+      
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // Check if this is a new user or existing
+        const isNewUser = result._tokenResponse.isNewUser;
+        
+        if (isNewUser) {
+          // Save user data to Firestore for new users
+          await setDoc(doc(db, "users", user.uid), {
+            name: user.displayName || 'New User',
+            email: user.email,
+            createdAt: new Date(),
+            programStatus: "not_started",
+            lastActive: new Date(),
+            provider: "google"
+          });
+          
+          formMessage.textContent = 'Registration successful! Welcome to Hope For Recovery.';
+        } else {
+          formMessage.textContent = 'Welcome back! Redirecting you to your dashboard...';
+        }
+        
+        formMessage.style.color = '#28a745';
+        
+        // Redirect after successful sign-in
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000);
+        
+      } catch (error) {
+        let errorMessage = 'An error occurred during Google sign-in.';
+        if (error.code === 'auth/account-exists-with-different-credential') {
+          errorMessage = 'An account already exists with this email. Please sign in with your existing method.';
+        } else {
+          errorMessage = `Error: ${error.message}`;
+        }
+        formMessage.textContent = errorMessage;
+        formMessage.style.color = '#dc3545';
+        console.error("Error during Google sign-in:", error);
+      }
+    });
+
+    // Previous email/password registration handler remains the same
+    registrationForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = registrationForm['name'].value;
+      const email = registrationForm['email'].value;
+      const password = registrationForm['password'].value;
+
+      formMessage.textContent = 'Registering...';
+      formMessage.style.color = '#333';
+
+      try {
+        // Create user with email and password
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Send email verification
+        await sendEmailVerification(user);
+
+        // Save user data to Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          name: name,
+          email: email,
+          createdAt: new Date(),
+          programStatus: "not_started",
+          lastActive: new Date(),
+          provider: "email"
+        });
+
+        formMessage.textContent = 'Registration successful! Please check your email to verify your account.';
+        formMessage.style.color = '#28a745';
+        registrationForm.reset();
+
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 3000);
+
+      } catch (error) {
+        let errorMessage = 'An error occurred during registration.';
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'The email address is already in use by another account.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'The email address is not valid.';
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = 'The password is too weak. It must be at least 6 characters long.';
+        } else {
+          errorMessage = `Error: ${error.message}`;
+        }
+        formMessage.textContent = errorMessage;
+        formMessage.style.color = '#dc3545';
+        console.error("Error during registration:", error);
+      }
+    });
+  </script>
+</body>
+</html>

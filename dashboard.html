@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard – Fruit of Freedom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #4ca1af;
+      color: #fff;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .dashboard {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .progress-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      background-color: #d9e9f1;
+      height: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-bar-inner {
+      width: 50%;
+      height: 100%;
+      background-color: #4ca1af;
+      text-align: center;
+      color: white;
+      font-size: 0.8rem;
+      line-height: 20px;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .card {
+      flex: 1 1 300px;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+
+    .card h4 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .card p {
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #4ca1af;
+      color: white;
+      padding: 0.5rem 1.2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .inspiration {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem 1rem;
+      font-style: italic;
+      color: #444;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .cards {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome Back, Sarah!</h1>
+    <p>Your journey to freedom continues. Keep going!</p>
+  </header>
+
+  <div class="dashboard">
+
+    <section class="progress-section">
+      <h2>Course Progress</h2>
+      <p>You’ve completed 6 out of 12 weeks</p>
+      <div class="progress-bar">
+        <div class="progress-bar-inner">50%</div>
+      </div>
+    </section>
+
+    <div class="cards">
+      <div class="card">
+        <h4>📖 Current Week: Patience (Week 6)</h4>
+        <p>Explore this week's video, worksheet and guided reflection.</p>
+        <a href="#" class="btn">Go to Week 6</a>
+      </div>
+
+      <div class="card">
+        <h4>🧠 Memory Verse</h4>
+        <p>"Be completely humble and gentle; be patient, bearing with one another in love." <br><em>– Ephesians 4:2</em></p>
+        <a href="#" class="btn">Review & Memorize</a>
+      </div>
+
+      <div class="card">
+        <h4>📝 Your Journal</h4>
+        <p>Record how God is working in your life this week. Reflect on growth or struggles.</p>
+        <a href="#" class="btn">Open Journal</a>
+      </div>
+
+      <div class="card">
+        <h4>📆 View Past Weeks</h4>
+        <p>Revisit previous fruits or complete missed weeks at your pace.</p>
+        <a href="#" class="btn">View Timeline</a>
+      </div>
+    </div>
+
+    <div class="inspiration">
+      “The Spirit of God who raised Jesus from the dead lives in you.” — Romans 8:11
+    </div>
+
+  </div>
+
+  <footer>
+    © 2025 Fruit of Freedom | All rights reserved.
+  </footer>
+
+</body>
+</html>
