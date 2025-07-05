@@ -107,9 +107,33 @@
       color: #777;
     }
 
+    .sign-out-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #f5f7fa;
+      color: #2c3e50;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .sign-out-btn:hover {
+      background-color: #e1e5eb;
+    }
+
     @media (max-width: 768px) {
       .cards {
         flex-direction: column;
+      }
+      .sign-out-btn {
+        position: static;
+        margin: 10px auto;
+        display: block;
       }
     }
   </style>
@@ -117,6 +141,7 @@
 <body>
 
   <header>
+    <button id="signOutButton" class="sign-out-btn">Sign Out</button>
     <h1>Welcome Back, Sarah!</h1>
     <p>Your journey to freedom continues. Keep going!</p>
   </header>
@@ -125,7 +150,7 @@
 
     <section class="progress-section">
       <h2>Course Progress</h2>
-      <p>You’ve completed 6 out of 12 weeks</p>
+      <p>You've completed 6 out of 12 weeks</p>
       <div class="progress-bar">
         <div class="progress-bar-inner">50%</div>
       </div>
@@ -158,7 +183,7 @@
     </div>
 
     <div class="inspiration">
-      “The Spirit of God who raised Jesus from the dead lives in you.” — Romans 8:11
+      "The Spirit of God who raised Jesus from the dead lives in you." — Romans 8:11
     </div>
 
   </div>
@@ -167,5 +192,52 @@
     © 2025 Fruit of Freedom | All rights reserved.
   </footer>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    // Your web app's Firebase configuration (same as journey.html)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.firebasestorage.app",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const signOutButton = document.getElementById('signOutButton');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in.
+        if (!user.emailVerified && user.providerData[0].providerId === 'password') {
+          // If email/password user and not verified, redirect to verification page
+          window.location.href = "verify-email.html";
+        } else {
+          // User is verified or signed in via Google (which is inherently verified)
+          console.log("User is authenticated and email verified (or Google login):", user);
+          // Display dashboard content
+        }
+      } else {
+        // No user is signed in. Redirect to login/registration page.
+        window.location.href = "journey.html";
+      }
+    });
+
+    signOutButton.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        console.log("User signed out.");
+        window.location.href = "journey.html"; // Redirect to login page after sign out
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    });
+  </script>
 </body>
 </html>

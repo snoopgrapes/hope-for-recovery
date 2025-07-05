@@ -364,7 +364,7 @@
       }
     });
 
-    // Previous email/password registration handler remains the same
+    // Email/Password Registration Handler
     registrationForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -393,12 +393,14 @@
           provider: "email"
         });
 
-        formMessage.textContent = 'Registration successful! Please check your email to verify your account.';
+        // Update message to instruct user to verify email
+        formMessage.textContent = 'Registration successful! Please check your email to verify your account. You will be redirected to the verification page.';
         formMessage.style.color = '#28a745';
         registrationForm.reset();
 
+        // Redirect to the email verification instruction page
         setTimeout(() => {
-          window.location.href = "dashboard.html";
+          window.location.href = "verify-email.html";
         }, 3000);
 
       } catch (error) {
