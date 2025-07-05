@@ -15,11 +15,38 @@
     }
 
     header {
-      background-color: #4ca1af;
-      color: #fff;
+      background-color: #fff;
+      color: #000;
       padding: 1.5rem;
       text-align: center;
       position: relative;
+    }
+
+    nav {
+      margin-top: 1rem;
+    }
+
+    nav a {
+      color: #000;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link {
+      color: #4CAF50 !important;
+      font-weight: bold;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+    .logo-container img {
+      max-width: 150px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
     .dashboard {
@@ -127,6 +154,11 @@
       background-color: #e1e5eb;
     }
 
+    .profile-link {
+      color: #4ca1af !important;
+      font-weight: bold;
+    }
+
     @media (max-width: 768px) {
       .cards {
         flex-direction: column;
@@ -142,12 +174,26 @@
 <body>
 
   <header>
-    <button id="signOutButton" class="sign-out-btn">Sign Out</button>
-    <h1>Welcome Back, <span id="userFirstName">Friend</span>!</h1>
-    <p>Your journey to freedom continues. Keep going!</p>
+    <div class="logo-container">
+      <a href="index.html">
+        <img src="images/logo.png" alt="Hope For Recovery Logo">
+      </a>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">About</a>
+      <a href="#">Fruit of Freedom</a>
+      <a href="journey.html">Join</a>
+      <a href="#">Partners</a>
+      <a id="authLink" href="login.html" class="login-link">Login</a>
+    </nav>
   </header>
 
   <div class="dashboard">
+    <button id="signOutButton" class="sign-out-btn">Sign Out</button>
+    <h1>Welcome Back, <span id="userFirstName">Friend</span>!</h1>
+    <p>Your journey to freedom continues. Keep going!</p>
 
     <section class="progress-section">
       <h2>Course Progress</h2>
@@ -186,7 +232,6 @@
     <div class="inspiration">
       "The Spirit of God who raised Jesus from the dead lives in you." — Romans 8:11
     </div>
-
   </div>
 
   <footer>
@@ -198,7 +243,7 @@
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-    // Your web app's Firebase configuration (same as journey.html)
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
       authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
@@ -215,10 +260,24 @@
 
     const signOutButton = document.getElementById('signOutButton');
     const userFirstNameElement = document.getElementById('userFirstName');
+    const authLink = document.getElementById('authLink');
 
     // Function to extract first name from full name
     function getFirstName(fullName) {
       return fullName ? fullName.split(' ')[0] : 'Friend';
+    }
+
+    // Update auth link based on login state
+    function updateAuthLink(user) {
+      if (user) {
+        authLink.textContent = 'My Profile';
+        authLink.href = 'dashboard.html';
+        authLink.className = 'profile-link';
+      } else {
+        authLink.textContent = 'Login';
+        authLink.href = 'login.html';
+        authLink.className = 'login-link';
+      }
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -230,6 +289,9 @@
         } else {
           // User is verified or signed in via Google (which is inherently verified)
           console.log("User is authenticated and email verified (or Google login):", user);
+          
+          // Update auth link
+          updateAuthLink(user);
           
           // Get user data from Firestore
           try {
@@ -259,8 +321,8 @@
           }
         }
       } else {
-        // No user is signed in. Redirect to login/registration page.
-        window.location.href = "journey.html";
+        // No user is signed in. Update auth link
+        updateAuthLink(null);
       }
     });
 
@@ -268,7 +330,7 @@
       try {
         await signOut(auth);
         console.log("User signed out.");
-        window.location.href = "journey.html"; // Redirect to login page after sign out
+        window.location.href = "index.html"; // Redirect to home page after sign out
       } catch (error) {
         console.error("Error signing out:", error);
       }
