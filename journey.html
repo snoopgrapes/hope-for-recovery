@@ -123,6 +123,66 @@
       color: #444;
       margin-top: 3rem;
     }
+    
+    /* Updated styles for the Google Sign-In button */
+    .signin-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .or-divider {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .or-divider::before,
+    .or-divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .or-divider::before {
+      margin-right: 1rem;
+    }
+    
+    .or-divider::after {
+      margin-left: 1rem;
+    }
+    
+    .google-signin-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      color: #757575;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .google-signin-btn:hover {
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    
+    .google-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzArrayAdapterOC44IDguOCAwIDAgMCAyLjYtNi41eiIgZmlsbD0iIzQyODVGNCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTkgMThjMi40IDAgNC41LS44IDYtMi4ybC0zLTIuMmE1LjQgNS40IDAgMCAxLTgtMi45SDFWMTJgOSAzNiAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=');
+      background-size: contain;
+    }
   </style>
 </head>
 <body>
@@ -187,6 +247,16 @@
     <div class="registration-form">
       <h2>Become a Member to Access Resources</h2>
       <p>Join our community to access exclusive course materials, connect with groups, and receive ongoing support.</p>
+      
+      <div class="signin-options">
+        <button class="google-signin-btn" id="googleSignIn">
+          <span class="google-icon"></span>
+          Sign up with Google
+        </button>
+        
+        <div class="or-divider">or</div>
+      </div>
+      
       <form id="registrationForm">
         <label for="name">Full Name:</label>
         <input type="text" id="name" name="name" required>
@@ -213,7 +283,13 @@
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
-    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      sendEmailVerification,
+      GoogleAuthProvider,
+      signInWithPopup
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
     // Your web app's Firebase configuration
@@ -232,10 +308,63 @@
     const analytics = getAnalytics(app);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
 
     const registrationForm = document.getElementById('registrationForm');
     const formMessage = document.getElementById('formMessage');
+    const googleSignIn = document.getElementById('googleSignIn');
 
+    // Google Sign-In Handler
+    googleSignIn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      formMessage.textContent = 'Signing in with Google...';
+      formMessage.style.color = '#333';
+      
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // Check if this is a new user or existing
+        const isNewUser = result._tokenResponse.isNewUser;
+        
+        if (isNewUser) {
+          // Save user data to Firestore for new users
+          await setDoc(doc(db, "users", user.uid), {
+            name: user.displayName || 'New User',
+            email: user.email,
+            createdAt: new Date(),
+            programStatus: "not_started",
+            lastActive: new Date(),
+            provider: "google"
+          });
+          
+          formMessage.textContent = 'Registration successful! Welcome to Hope For Recovery.';
+        } else {
+          formMessage.textContent = 'Welcome back! Redirecting you to your dashboard...';
+        }
+        
+        formMessage.style.color = '#28a745';
+        
+        // Redirect after successful sign-in
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000);
+        
+      } catch (error) {
+        let errorMessage = 'An error occurred during Google sign-in.';
+        if (error.code === 'auth/account-exists-with-different-credential') {
+          errorMessage = 'An account already exists with this email. Please sign in with your existing method.';
+        } else {
+          errorMessage = `Error: ${error.message}`;
+        }
+        formMessage.textContent = errorMessage;
+        formMessage.style.color = '#dc3545';
+        console.error("Error during Google sign-in:", error);
+      }
+    });
+
+    // Previous email/password registration handler remains the same
     registrationForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -260,14 +389,14 @@
           email: email,
           createdAt: new Date(),
           programStatus: "not_started",
-          lastActive: new Date()
+          lastActive: new Date(),
+          provider: "email"
         });
 
         formMessage.textContent = 'Registration successful! Please check your email to verify your account.';
-        formMessage.style.color = '#28a745'; // Green for success
-        registrationForm.reset(); // Clear the form
+        formMessage.style.color = '#28a745';
+        registrationForm.reset();
 
-        // Redirect after successful registration (optional)
         setTimeout(() => {
           window.location.href = "dashboard.html";
         }, 3000);
@@ -284,7 +413,7 @@
           errorMessage = `Error: ${error.message}`;
         }
         formMessage.textContent = errorMessage;
-        formMessage.style.color = '#dc3545'; // Red for error
+        formMessage.style.color = '#dc3545';
         console.error("Error during registration:", error);
       }
     });
