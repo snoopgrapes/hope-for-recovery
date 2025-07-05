@@ -231,7 +231,7 @@
       day: 'numeric' 
     });
 
-    // Load user's journal entries
+    // Enhanced loadEntries function
     async function loadEntries(userId) {
       entriesList.innerHTML = '<p>Loading your entries...</p>';
       
@@ -252,12 +252,15 @@
         entriesList.innerHTML = '';
         querySnapshot.forEach((doc) => {
           const entry = doc.data();
-          const entryDate = entry.createdAt.toDate().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
+          // Add null check for createdAt
+          const entryDate = entry.createdAt 
+            ? entry.createdAt.toDate().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })
+            : 'Date not available';
           
           const entryCard = document.createElement('div');
           entryCard.className = 'entry-card';
@@ -269,11 +272,14 @@
         });
       } catch (error) {
         console.error("Error loading entries:", error);
-        entriesList.innerHTML = '<p>Error loading entries. Please try again.</p>';
+        entriesList.innerHTML = `
+          <p>Error loading entries: ${error.message}</p>
+          <p>Please refresh the page and try again.</p>
+        `;
       }
     }
 
-    // Save journal entry
+    // Enhanced saveEntry function
     async function saveEntry(userId, content) {
       if (!content.trim()) {
         alert("Please write something before saving.");
@@ -281,6 +287,9 @@
       }
       
       try {
+        saveBtn.disabled = true; // Disable button during save
+        saveBtn.textContent = "Saving...";
+        
         const newEntryRef = doc(collection(db, "journals"));
         await setDoc(newEntryRef, {
           userId: userId,
@@ -288,12 +297,18 @@
           createdAt: serverTimestamp()
         });
         
+        // Add slight delay to ensure write is complete
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await loadEntries(userId);
+        
         alert("Entry saved successfully!");
         journalEntry.value = '';
-        await loadEntries(userId);
       } catch (error) {
         console.error("Error saving entry:", error);
         alert("Error saving entry. Please try again.");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Save Entry";
       }
     }
 
