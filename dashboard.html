@@ -19,6 +19,7 @@
       color: #fff;
       padding: 1.5rem;
       text-align: center;
+      position: relative;
     }
 
     .dashboard {
@@ -142,7 +143,7 @@
 
   <header>
     <button id="signOutButton" class="sign-out-btn">Sign Out</button>
-    <h1>Welcome Back, Sarah!</h1>
+    <h1>Welcome Back, <span id="userFirstName">Friend</span>!</h1>
     <p>Your journey to freedom continues. Keep going!</p>
   </header>
 
@@ -195,6 +196,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
     // Your web app's Firebase configuration (same as journey.html)
     const firebaseConfig = {
@@ -209,10 +211,17 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
     const signOutButton = document.getElementById('signOutButton');
+    const userFirstNameElement = document.getElementById('userFirstName');
 
-    onAuthStateChanged(auth, (user) => {
+    // Function to extract first name from full name
+    function getFirstName(fullName) {
+      return fullName ? fullName.split(' ')[0] : 'Friend';
+    }
+
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User is signed in.
         if (!user.emailVerified && user.providerData[0].providerId === 'password') {
@@ -221,7 +230,33 @@
         } else {
           // User is verified or signed in via Google (which is inherently verified)
           console.log("User is authenticated and email verified (or Google login):", user);
-          // Display dashboard content
+          
+          // Get user data from Firestore
+          try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+              const userData = userDoc.data();
+              
+              // Determine the name to display
+              let displayName;
+              if (userData.name) {
+                displayName = getFirstName(userData.name);
+              } else if (user.displayName) {
+                displayName = getFirstName(user.displayName);
+              } else {
+                displayName = 'Friend';
+              }
+              
+              // Update the welcome message
+              userFirstNameElement.textContent = displayName;
+            } else {
+              console.log("No user data found in Firestore");
+              userFirstNameElement.textContent = 'Friend';
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            userFirstNameElement.textContent = 'Friend';
+          }
         }
       } else {
         // No user is signed in. Redirect to login/registration page.
