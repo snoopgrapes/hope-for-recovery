@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bible Memory Verse Quiz</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+      background: #f5f5f5;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    .screen {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+    }
+    .active {
+      display: block;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    button:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+    }
+    input {
+      padding: 10px;
+      font-size: 1em;
+      border: 2px solid #3498db;
+      border-radius: 5px;
+      margin: 10px;
+    }
+    .verse-container {
+      font-size: 1.2em;
+      line-height: 1.6;
+      margin: 20px 0;
+    }
+    .blank {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .feedback {
+      margin: 15px 0;
+      font-weight: bold;
+      min-height: 24px;
+    }
+    .correct {
+      color: #27ae60;
+    }
+    .incorrect {
+      color: #e74c3c;
+    }
+    .score-info {
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+    .reference {
+      font-style: italic;
+      color: #7f8c8d;
+      margin-top: 5px;
+    }
+    .difficulty-btn {
+      display: block;
+      width: 200px;
+      margin: 10px auto;
+    }
+    .difficulty-btn.easy {
+      background: #2ecc71;
+    }
+    .difficulty-btn.intermediate {
+      background: #f39c12;
+    }
+    .difficulty-btn.expert {
+      background: #e74c3c;
+    }
+    .scoreboard {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    .scoreboard th, .scoreboard td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    .scoreboard th {
+      background: #3498db;
+      color: white;
+    }
+    .scoreboard tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+    .progress-bar {
+      width: 100%;
+      background: #ecf0f1;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    .progress {
+      height: 20px;
+      background: #2ecc71;
+      border-radius: 5px;
+      width: 0%;
+      transition: width 0.5s;
+    }
+    .level-info {
+      font-size: 1.2em;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .heart {
+      font-size: 1.5em;
+      color: #e74c3c;
+      margin: 0 5px;
+    }
+    .hearts-container {
+      margin: 15px 0;
+    }
+    .game-over {
+      animation: shake 0.5s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Welcome Screen -->
+  <div id="welcome-screen" class="screen active">
+    <h1>Bible Memory Verse Quiz</h1>
+    <p>Test your knowledge of Scripture with this challenging quiz!</p>
+    <input type="text" id="username" placeholder="Enter your username" required>
+    <button onclick="startGame()">Start Game</button>
+    <button onclick="showScoreboard()">View Scoreboard</button>
+  </div>
+
+  <!-- Difficulty Selection Screen -->
+  <div id="difficulty-screen" class="screen">
+    <h1>Select Difficulty</h1>
+    <p>Choose how challenging you want the quiz to be:</p>
+    <button class="difficulty-btn easy" onclick="setDifficulty('easy')">Easy (1 missing word)</button>
+    <button class="difficulty-btn intermediate" onclick="setDifficulty('intermediate')">Intermediate (3 missing words)</button>
+    <button class="difficulty-btn expert" onclick="setDifficulty('expert')">Expert (5 missing words)</button>
+    <button onclick="returnToMenu()">Back to Menu</button>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <div class="level-info">
+      Level <span id="current-level">1</span> | 
+      Verse <span id="current-verse">1</span> of <span id="total-verses">1</span> | 
+      Difficulty: <span id="current-difficulty">Easy</span>
+    </div>
+    <div class="hearts-container" id="hearts-container">
+      <span class="heart">❤</span>
+      <span class="heart">❤</span>
+      <span class="heart">❤</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress" id="progress-bar"></div>
+    </div>
+    <div class="verse-container" id="verse"></div>
+    <div id="input-container"></div>
+    <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+    <div class="feedback" id="feedback"></div>
+    <div class="score-info">
+      Score: <span id="score">0</span> | 
+      Level Score: <span id="level-score">0</span>
+    </div>
+  </div>
+
+  <!-- Level Complete Screen -->
+  <div id="level-complete-screen" class="screen">
+    <h1>Level <span id="completed-level">1</span> Complete!</h1>
+    <p>You earned <span id="level-points-earned">0</span> points this level.</p>
+    <p>Total Score: <span id="total-score">0</span></p>
+    <button onclick="replayLevel()">Replay Level</button>
+    <button id="next-level-btn" onclick="nextLevel()">Next Level</button>
+    <button onclick="quitToMenu()">Quit to Menu</button>
+  </div>
+
+  <!-- Scoreboard Screen -->
+  <div id="scoreboard-screen" class="screen">
+    <h1>Scoreboard</h1>
+    <table class="scoreboard">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Username</th>
+          <th>Score</th>
+          <th>Level</th>
+          <th>Difficulty</th>
+        </tr>
+      </thead>
+      <tbody id="scoreboard-data">
+        <!-- Scores will be inserted here -->
+      </tbody>
+    </table>
+    <button onclick="returnToMenu()">Return to Menu</button>
+  </div>
+
+  <script>
+    // Game Data - 100 Bible verses
+    const bibleVerses = [
+      { verse: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", reference: "John 3:16" },
+      { verse: "I can do all things through Christ who strengthens me.", reference: "Philippians 4:13" },
+      { verse: "The Lord is my shepherd, I lack nothing.", reference: "Psalm 23:1" },
+      { verse: "Trust in the Lord with all your heart and lean not on your own understanding.", reference: "Proverbs 3:5" },
+      { verse: "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.", reference: "Joshua 1:9" },
+      { verse: "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.", reference: "Philippians 4:6" },
+      { verse: "And we know that in all things God works for the good of those who love him, who have been called according to his purpose.", reference: "Romans 8:28" },
+      { verse: "Jesus answered, 'I am the way and the truth and the life. No one comes to the Father except through me.'", reference: "John 14:6" },
+      { verse: "But the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control.", reference: "Galatians 5:22-23" },
+      { verse: "For the wages of sin is death, but the gift of God is eternal life in Christ Jesus our Lord.", reference: "Romans 6:23" },
+      { verse: "But seek first his kingdom and his righteousness, and all these things will be given to you as well.", reference: "Matthew 6:33" },
+      { verse: "In the beginning God created the heavens and the earth.", reference: "Genesis 1:1" },
+      { verse: "For everyone has sinned; we all fall short of God's glorious standard.", reference: "Romans 3:23" },
+      { verse: "If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness.", reference: "1 John 1:9" },
+      { verse: "The Lord is not slow in keeping his promise, as some understand slowness. Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance.", reference: "2 Peter 3:9" },
+      { verse: "But God demonstrates his own love for us in this: While we were still sinners, Christ died for us.", reference: "Romans 5:8" },
+      { verse: "Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!", reference: "2 Corinthians 5:17" },
+      { verse: "Your word is a lamp for my feet, a light on my path.", reference: "Psalm 119:105" },
+      { verse: "Cast all your anxiety on him because he cares for you.", reference: "1 Peter 5:7" },
+      { verse: "Come to me, all you who are weary and burdened, and I will give you rest.", reference: "Matthew 11:28" }
+    ];
+
+    // Game State Variables
+    let currentUser = "";
+    let difficulty = "easy";
+    let currentLevel = 1;
+    let currentVerseIndex = 0;
+    let score = 0;
+    let levelScore = 0;
+    let currentBlanks = [];
+    let usedVerseIndices = [];
+    let scoreboard = JSON.parse(localStorage.getItem("bibleQuizScoreboard")) || [];
+    let lives = 3;
+    let incorrectStreak = 0;
+
+    // DOM Elements
+    const screens = {
+      welcome: document.getElementById("welcome-screen"),
+      difficulty: document.getElementById("difficulty-screen"),
+      game: document.getElementById("game-screen"),
+      levelComplete: document.getElementById("level-complete-screen"),
+      scoreboard: document.getElementById("scoreboard-screen")
+    };
+
+    // Initialize the game
+    function startGame() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) {
+        alert("Please enter a username");
+        return;
+      }
+      currentUser = username;
+      showScreen("difficulty");
+    }
+
+    function setDifficulty(diff) {
+      difficulty = diff;
+      document.getElementById("current-difficulty").textContent = 
+        diff.charAt(0).toUpperCase() + diff.slice(1);
+      startLevel();
+    }
+
+    function startLevel() {
+      currentVerseIndex = 0;
+      levelScore = 0;
+      usedVerseIndices = [];
+      resetLives();
+      showScreen("game");
+      loadNextVerse();
+    }
+
+    function loadNextVerse() {
+      // Update progress display
+      document.getElementById("current-level").textContent = currentLevel;
+      document.getElementById("current-verse").textContent = currentVerseIndex + 1;
+      document.getElementById("total-verses").textContent = currentLevel;
+      document.getElementById("score").textContent = score;
+      document.getElementById("level-score").textContent = levelScore;
+      
+      // Calculate progress
+      const progress = ((currentVerseIndex) / currentLevel) * 100;
+      document.getElementById("progress-bar").style.width = `${progress}%`;
+
+      // Get a random verse we haven't used yet in this level
+      let randomIndex;
+      do {
+        randomIndex = Math.floor(Math.random() * bibleVerses.length);
+      } while (usedVerseIndices.includes(randomIndex) && usedVerseIndices.length < bibleVerses.length);
+      
+      usedVerseIndices.push(randomIndex);
+      const verse = bibleVerses[randomIndex];
+
+      // Determine how many words to blank based on difficulty
+      let numBlanks;
+      switch(difficulty) {
+        case "easy": numBlanks = 1; break;
+        case "intermediate": numBlanks = 3; break;
+        case "expert": numBlanks = 5; break;
+        default: numBlanks = 1;
+      }
+
+      // Split verse into words and select random words to blank
+      const words = verse.verse.split(" ");
+      currentBlanks = [];
+      const blankIndices = [];
+      
+      // Make sure we don't try to blank more words than exist in the verse
+      numBlanks = Math.min(numBlanks, words.length - 1);
+      
+      // Select unique random indices to blank
+      while (blankIndices.length < numBlanks) {
+        const randomWordIndex = Math.floor(Math.random() * words.length);
+        if (!blankIndices.includes(randomWordIndex)) {
+          blankIndices.push(randomWordIndex);
+        }
+      }
+
+      // Create the display text with blanks
+      let displayText = "";
+      for (let i = 0; i < words.length; i++) {
+        if (blankIndices.includes(i)) {
+          const word = words[i].replace(/[.,;!?]/g, "");
+          currentBlanks.push(word);
+          displayText += `<span class="blank">______</span> `;
+        } else {
+          displayText += words[i] + " ";
+        }
+      }
+
+      // Display the verse
+      document.getElementById("verse").innerHTML = `
+        <p>${displayText}</p>
+        <p class="reference">${verse.reference}</p>
+      `;
+
+      // Create input fields for each blank
+      const inputContainer = document.getElementById("input-container");
+      inputContainer.innerHTML = "";
+      for (let i = 0; i < currentBlanks.length; i++) {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = `Blank #${i+1}`;
+        input.dataset.index = i;
+        inputContainer.appendChild(input);
+        if (i === 0) input.focus();
+      }
+    }
+
+    function checkAnswer() {
+      const inputs = document.querySelectorAll("#input-container input");
+      let allCorrect = true;
+      const feedbackEl = document.getElementById("feedback");
+      feedbackEl.innerHTML = "";
+
+      for (let i = 0; i < inputs.length; i++) {
+        const userAnswer = inputs[i].value.trim();
+        const correctAnswer = currentBlanks[i];
+        
+        if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+          // Correct answer
+          feedbackEl.innerHTML += `<p>Blank #${i+1}: ✅ Correct! (${correctAnswer})</p>`;
+        } else {
+          // Incorrect answer
+          allCorrect = false;
+          feedbackEl.innerHTML += `<p>Blank #${i+1}: ❌ Incorrect. The answer was "${correctAnswer}"</p>`;
+        }
+      }
+
+      if (allCorrect) {
+        // Reset incorrect streak on correct answer
+        incorrectStreak = 0;
+        
+        // Award points (1 per verse + level points)
+        const pointsEarned = 1 + currentLevel;
+        score += pointsEarned;
+        levelScore += pointsEarned;
+        
+        // Move to next verse or complete level
+        currentVerseIndex++;
+        if (currentVerseIndex < currentLevel) {
+          setTimeout(() => {
+            feedbackEl.innerHTML = "";
+            loadNextVerse();
+          }, 3000);
+        } else {
+          completeLevel();
+        }
+      } else {
+        // Increment incorrect streak
+        incorrectStreak++;
+        lives--;
+        
+        // Update hearts display
+        updateHearts();
+        
+        feedbackEl.innerHTML += `<p>Try again! Lives left: ${lives}</p>`;
+        
+        // Check if game over
+        if (lives <= 0) {
+          setTimeout(() => {
+            gameOver();
+          }, 1500);
+        }
+      }
+    }
+
+    function updateHearts() {
+      const heartsContainer = document.getElementById("hearts-container");
+      heartsContainer.innerHTML = "";
+      
+      for (let i = 0; i < 3; i++) {
+        const heart = document.createElement("span");
+        heart.className = "heart";
+        heart.textContent = i < lives ? "❤" : "💔";
+        heartsContainer.appendChild(heart);
+      }
+    }
+
+    function gameOver() {
+      const gameScreen = document.getElementById("game-screen");
+      gameScreen.classList.add("game-over");
+      
+      setTimeout(() => {
+        alert(`Game Over! You got 3 incorrect answers in a row. Your score: ${score}`);
+        quitToMenu();
+      }, 500);
+    }
+
+    function resetLives() {
+      lives = 3;
+      incorrectStreak = 0;
+      updateHearts();
+    }
+
+    function completeLevel() {
+      document.getElementById("completed-level").textContent = currentLevel;
+      document.getElementById("level-points-earned").textContent = levelScore;
+      document.getElementById("total-score").textContent = score;
+      
+      // Disable next level button if at max level
+      if (currentLevel >= 20) {
+        document.getElementById("next-level-btn").disabled = true;
+      } else {
+        document.getElementById("next-level-btn").disabled = false;
+      }
+      
+      showScreen("levelComplete");
+    }
+
+    function replayLevel() {
+      startLevel();
+    }
+
+    function nextLevel() {
+      currentLevel++;
+      startLevel();
+    }
+
+    function quitToMenu() {
+      // Save score to scoreboard
+      scoreboard.push({
+        username: currentUser,
+        score: score,
+        level: currentLevel - 1, // They completed up to this level
+        difficulty: difficulty,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Sort scoreboard by score (descending)
+      scoreboard.sort((a, b) => b.score - a.score);
+      
+      // Keep only top 50 scores
+      if (scoreboard.length > 50) {
+        scoreboard = scoreboard.slice(0, 50);
+      }
+      
+      // Save to localStorage
+      localStorage.setItem("bibleQuizScoreboard", JSON.stringify(scoreboard));
+      
+      // Reset game state
+      currentLevel = 1;
+      score = 0;
+      
+      // Show scoreboard
+      showScoreboard();
+    }
+
+    function showScoreboard() {
+      const scoreboardData = document.getElementById("scoreboard-data");
+      scoreboardData.innerHTML = "";
+      
+      // Add each score to the table
+      scoreboard.forEach((entry, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${entry.username}</td>
+          <td>${entry.score}</td>
+          <td>${entry.level}</td>
+          <td>${entry.difficulty.charAt(0).toUpperCase() + entry.difficulty.slice(1)}</td>
+        `;
+        scoreboardData.appendChild(row);
+      });
+      
+      showScreen("scoreboard");
+    }
+
+    function returnToMenu() {
+      // Reset game state
+      currentLevel = 1;
+      score = 0;
+      resetLives();
+      showScreen("welcome");
+    }
+
+    function showScreen(screenId) {
+      // Hide all screens
+      Object.values(screens).forEach(screen => {
+        screen.classList.remove("active");
+      });
+      
+      // Show the requested screen
+      screens[screenId].classList.add("active");
+    }
+
+    // Handle Enter key in input fields
+    document.addEventListener("keypress", function(e) {
+      if (e.key === "Enter" && screens.game.classList.contains("active")) {
+        checkAnswer();
+      }
+    });
+
+    // Initialize scoreboard if empty
+    if (scoreboard.length === 0) {
+      localStorage.setItem("bibleQuizScoreboard", JSON.stringify([]));
+    }
+  </script>
+</body>
+</html>

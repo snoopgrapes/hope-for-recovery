@@ -6,20 +6,67 @@
   <title>My Dashboard – Fruit of Freedom</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      /* Default theme (light) */
+      --primary-color: #4ca1af;
+      --primary-hover: #3d8b99;
+      --background-color: #f0f4f8;
+      --card-bg: #fff;
+      --text-color: #333;
+      --header-bg: #fff;
+      --header-text: #000;
+      --progress-bg: #d9e9f1;
+      --shadow-color: rgba(0,0,0,0.1);
+      --inspiration-color: #444;
+      --footer-color: #777;
+    }
+
+    /* Dark theme */
+    [data-theme="dark"] {
+      --primary-color: #5cb3c1;
+      --primary-hover: #4ca1af;
+      --background-color: #1a1a1a;
+      --card-bg: #2d2d2d;
+      --text-color: #e0e0e0;
+      --header-bg: #1e1e1e;
+      --header-text: #f0f0f0;
+      --progress-bg: #3a3a3a;
+      --shadow-color: rgba(0,0,0,0.3);
+      --inspiration-color: #aaa;
+      --footer-color: #999;
+    }
+
+    /* High contrast theme */
+    [data-theme="high-contrast"] {
+      --primary-color: #0057b7;
+      --primary-hover: #004494;
+      --background-color: #ffffff;
+      --card-bg: #f0f0f0;
+      --text-color: #000000;
+      --header-bg: #0057b7;
+      --header-text: #ffffff;
+      --progress-bg: #e0e0e0;
+      --shadow-color: rgba(0,0,0,0.5);
+      --inspiration-color: #333;
+      --footer-color: #555;
+    }
+
     body {
       font-family: 'Open Sans', sans-serif;
-      background-color: #f0f4f8;
+      background-color: var(--background-color);
       margin: 0;
       padding: 0;
-      color: #333;
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     header {
-      background-color: #fff;
-      color: #000;
+      background-color: var(--header-bg);
+      color: var(--header-text);
       padding: 1.5rem;
       text-align: center;
       position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     nav {
@@ -27,14 +74,20 @@
     }
 
     nav a {
-      color: #000;
+      color: var(--header-text);
       margin: 0 1rem;
       text-decoration: none;
       font-weight: 600;
+      transition: color 0.3s ease;
     }
 
     .login-link {
       color: #4CAF50 !important;
+      font-weight: bold;
+    }
+
+    .profile-link {
+      color: var(--primary-color) !important;
       font-weight: bold;
     }
 
@@ -58,32 +111,36 @@
     h2 {
       font-size: 1.8rem;
       margin-bottom: 1rem;
+      color: var(--text-color);
     }
 
     .progress-section {
-      background: white;
+      background: var(--card-bg);
       padding: 1.5rem;
       border-radius: 8px;
       margin-bottom: 2rem;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 6px var(--shadow-color);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .progress-bar {
-      background-color: #d9e9f1;
+      background-color: var(--progress-bg);
       height: 20px;
       border-radius: 10px;
       overflow: hidden;
       margin-top: 10px;
+      transition: background-color 0.3s ease;
     }
 
     .progress-bar-inner {
       width: 50%;
       height: 100%;
-      background-color: #4ca1af;
+      background-color: var(--primary-color);
       text-align: center;
       color: white;
       font-size: 0.8rem;
       line-height: 20px;
+      transition: background-color 0.3s ease;
     }
 
     .cards {
@@ -94,30 +151,37 @@
 
     .card {
       flex: 1 1 300px;
-      background: white;
+      background: var(--card-bg);
       padding: 1.5rem;
       border-radius: 8px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 6px var(--shadow-color);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card h4 {
       margin-top: 0;
-      color: #2c3e50;
+      color: var(--text-color);
     }
 
     .card p {
       margin-bottom: 1rem;
+      color: var(--text-color);
     }
 
     .btn {
       display: inline-block;
-      background-color: #4ca1af;
+      background-color: var(--primary-color);
       color: white;
       padding: 0.5rem 1.2rem;
       text-decoration: none;
       border-radius: 5px;
       font-weight: bold;
       font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
     }
 
     .inspiration {
@@ -125,38 +189,76 @@
       margin-top: 3rem;
       padding: 2rem 1rem;
       font-style: italic;
-      color: #444;
+      color: var(--inspiration-color);
+      transition: color 0.3s ease;
     }
 
     footer {
       text-align: center;
       padding: 1rem;
       font-size: 0.9rem;
-      color: #777;
+      color: var(--footer-color);
+      transition: color 0.3s ease;
     }
 
     .sign-out-btn {
       position: absolute;
       top: 20px;
       right: 20px;
-      background-color: #f5f7fa;
-      color: #2c3e50;
+      background-color: var(--progress-bg);
+      color: var(--text-color);
       border: none;
       padding: 8px 16px;
       border-radius: 5px;
       cursor: pointer;
       font-size: 0.9rem;
       font-weight: 600;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .sign-out-btn:hover {
-      background-color: #e1e5eb;
+      background-color: var(--primary-hover);
+      color: white;
     }
 
-    .profile-link {
-      color: #4ca1af !important;
-      font-weight: bold;
+    /* Theme selector styles */
+    .theme-selector {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .theme-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--text-color);
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.3s ease;
+      background-size: cover;
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .theme-btn[data-theme="light"] {
+      background: linear-gradient(135deg, #f0f4f8 50%, #4ca1af 50%);
+    }
+
+    .theme-btn[data-theme="dark"] {
+      background: linear-gradient(135deg, #1a1a1a 50%, #5cb3c1 50%);
+    }
+
+    .theme-btn[data-theme="high-contrast"] {
+      background: linear-gradient(135deg, #ffffff 50%, #0057b7 50%);
+    }
+
+    .theme-btn.active {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px var(--primary-color);
     }
 
     @media (max-width: 768px) {
@@ -168,12 +270,23 @@
         margin: 10px auto;
         display: block;
       }
+      .theme-selector {
+        position: static;
+        justify-content: center;
+        margin: 10px auto;
+      }
     }
   </style>
 </head>
 <body>
 
   <header>
+    <div class="theme-selector">
+      <button class="theme-btn" data-theme="light" title="Light theme"></button>
+      <button class="theme-btn" data-theme="dark" title="Dark theme"></button>
+      <button class="theme-btn" data-theme="high-contrast" title="High contrast theme"></button>
+    </div>
+
     <div class="logo-container">
       <a href="index.html">
         <img src="images/logo.png" alt="Hope For Recovery Logo">
@@ -186,7 +299,7 @@
       <a href="#">Fruit of Freedom</a>
       <a href="journey.html">Join</a>
       <a href="#">Partners</a>
-	  <a href="local-program.html">Recovery Program</a>
+      <a href="local-program.html">Recovery Program</a>
       <a id="authLink" href="login.html" class="login-link">Login</a>
     </nav>
   </header>
@@ -214,7 +327,7 @@
       <div class="card">
         <h4>🧠 Memory Verse</h4>
         <p>"Be completely humble and gentle; be patient, bearing with one another in love." <br><em>– Ephesians 4:2</em></p>
-        <a href="#" class="btn">Review & Memorize</a>
+        <a href="Bible Memory Verse Quiz.html" class="btn">Review & Memorize</a>
       </div>
 
       <div class="card">
@@ -280,6 +393,50 @@
         authLink.className = 'login-link';
       }
     }
+
+    // Function to make all links open in new tab
+    function makeLinksOpenInNewTab() {
+      const links = document.querySelectorAll('a');
+      links.forEach(link => {
+        // Skip links that don't have href or have special classes
+        if (link.href && !link.classList.contains('no-new-tab')) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+      });
+    }
+
+    // Theme switching functionality
+    function setupThemeSwitcher() {
+      const themeButtons = document.querySelectorAll('.theme-btn');
+      const html = document.documentElement;
+      
+      // Load saved theme from localStorage
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      html.setAttribute('data-theme', savedTheme);
+      
+      // Set active button
+      themeButtons.forEach(btn => {
+        if (btn.dataset.theme === savedTheme) {
+          btn.classList.add('active');
+        }
+        
+        btn.addEventListener('click', () => {
+          const theme = btn.dataset.theme;
+          html.setAttribute('data-theme', theme);
+          localStorage.setItem('theme', theme);
+          
+          // Update active button
+          themeButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupThemeSwitcher();
+      makeLinksOpenInNewTab();
+    });
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
