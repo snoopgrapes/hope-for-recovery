@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hope For Recovery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1abc9c;    /* Vibrant teal */
+      --secondary: #16a085;  /* Deep teal */
+      --accent: #e74c3c;     /* Soft red (for contrast) */
+      --light: #e8f8f5;      /* Light teal tint */
+      --dark: #2c3e50;       /* Dark blue-gray */
+      --text: #34495e;       /* Soft dark blue */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* SPLIT SCREEN LAYOUT */
+    .split-screen {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .split-left, .split-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .split-left {
+      background-color: var(--light);
+      color: var(--dark);
+    }
+
+    .split-right {
+      background: url('https://source.unsplash.com/800x1200/?cross,hope') center/cover no-repeat;
+      color: white;
+    }
+
+    .split-right::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(22, 160, 133, 0.7); /* Teal overlay */
+    }
+
+    .split-content {
+      max-width: 500px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 2rem;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container img {
+      height: 50px;
+      transition: transform 0.3s;
+    }
+
+    .logo-container img:hover {
+      transform: scale(1.05);
+    }
+
+    nav a {
+      color: var(--dark);
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .split-right nav a {
+      color: white;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--accent);
+      transition: width 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .login-link {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .split-right .login-link {
+      color: var(--accent);
+    }
+
+    .profile-link {
+      color: var(--secondary);
+      font-weight: bold;
+    }
+
+    /* TYPOGRAPHY */
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(22, 160, 133, 0.4);
+    }
+
+    .btn-secondary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(26, 188, 156, 0.1);
+    }
+
+    .split-right .btn-secondary {
+      border-color: white;
+      color: white;
+    }
+
+    .split-right .btn-secondary:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    /* SCRIPTURE */
+    .scripture {
+      font-style: italic;
+      margin: 2rem 0;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .scripture::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+      top: -10px;
+      font-size: 3rem;
+      color: rgba(26, 188, 156, 0.2);
+      font-family: serif;
+    }
+
+    .split-right .scripture::before {
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title h2 {
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: var(--accent);
+    }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .feature {
+      background: white;
+      padding: 2rem;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+      border-top: 4px solid var(--primary);
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .feature h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 1rem;
+      color: var(--secondary);
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    .testimonial {
+      background: white;
+      padding: 2rem;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '"';
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      font-size: 4rem;
+      color: rgba(26, 188, 156, 0.1);
+      font-family: serif;
+      line-height: 1;
+    }
+
+    .testimonial-content {
+      position: relative;
+      z-index: 1;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      font-weight: bold;
+      color: var(--secondary);
+    }
+
+    /* PARTNER SECTION */
+    .partner-section {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem;
+      border-radius: 5px;
+      margin: 4rem 0;
+    }
+
+    .partner-section h2 {
+      color: white;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .split-screen {
+        flex-direction: column;
+      }
+
+      .split-left, .split-right {
+        min-height: 50vh;
+      }
+
+      header {
+        position: relative;
+        background: white;
+      }
+
+      .split-right nav {
+        display: none;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Split Screen Section -->
+  <div class="split-screen">
+    <div class="split-left">
+      <header>
+        <div class="logo-container">
+          <a href="index.html">
+            <img src="images/logo.png" alt="Hope For Recovery Logo">
+          </a>
+        </div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="local-program.html">Recovery Program</a>
+          <a href="#">Fruit of Freedom</a>
+          <a href="journey.html">Join</a>
+          <a id="authLink" href="login.html" class="login-link">Login</a>
+        </nav>
+      </header>
+
+      <div class="split-content">
+        <h1>Find Freedom Through Christ</h1>
+        <p>Our proven 12-week program combines Biblical truth with practical steps to break addiction's chains and discover your God-given purpose.</p>
+        
+        <div class="scripture">
+          "I can do all things through Christ who strengthens me." — Philippians 4:13
+        </div>
+
+        <a href="journey.html" class="btn btn-primary">Begin Your Journey</a>
+        <a href="#" class="btn btn-secondary">Learn More</a>
+      </div>
+    </div>
+
+    <div class="split-right">
+      <nav>
+      </nav>
+
+      <div class="split-content">
+        <h2>Join Our Community</h2>
+        <p>Connect with others on the same journey through our support groups and mentorship programs.</p>
+        
+        <div class="scripture">
+          "Therefore, if anyone is in Christ, he is a new creation." — 2 Corinthians 5:17
+        </div>
+
+        <a href="#" class="btn btn-primary">Find a Group</a>
+        <a href="#" class="btn btn-secondary">Become a Mentor</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="section-title">
+      <h2>Our Program</h2>
+      <p>The Fruit of Freedom curriculum is designed to produce lasting transformation through Biblical principles and authentic community.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <h3>Biblical Foundation</h3>
+        <p>Each lesson is rooted in Scripture, helping you build your recovery on the solid rock of God's Word.</p>
+      </div>
+      <div class="feature">
+        <h3>Weekly Meetings</h3>
+        <p>Small groups provide accountability and support in a safe, confidential environment.</p>
+      </div>
+      <div class="feature">
+        <h3>Practical Tools</h3>
+        <p>Daily exercises help you apply spiritual principles to real-life challenges and triggers.</p>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <div class="testimonial">
+        <div class="testimonial-content">
+          After 12 years of addiction, I had lost all hope. The Fruit of Freedom program showed me Christ's power to transform even the most broken life.
+        </div>
+        <div class="testimonial-author">— Michael, London</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-content">
+          This isn't just another recovery program. It's a spiritual journey that equips you with weapons for the battle.
+        </div>
+        <div class="testimonial-author">— Sarah, Manchester</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-content">
+          I'm now 18 months clean and leading a recovery group at my church. Only God could do this!
+        </div>
+        <div class="testimonial-author">— David, Birmingham</div>
+      </div>
+    </div>
+
+    <div class="partner-section">
+      <h2>Bring Hope to Your Church</h2>
+      <p>We equip churches to launch recovery ministries with training, curriculum, and ongoing support.</p>
+      <a href="#" class="btn btn-primary">Partner With Us</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>"He brought me out into a spacious place; he rescued me because he delighted in me." — Psalm 18:19</p>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Resources</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>© 2025 Hope For Recovery | A ministry of transformation</p>
+  </footer>
+
+  <script type="module">
+    // Authentication state
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.firebasestorage.app",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const authLink = document.getElementById('authLink');
+
+    function updateAuthLink(user) {
+      if (user) {
+        authLink.textContent = 'My Profile';
+        authLink.href = 'dashboard.html';
+        authLink.className = 'profile-link';
+      } else {
+        authLink.textContent = 'Login';
+        authLink.href = 'login.html';
+        authLink.className = 'login-link';
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      updateAuthLink(user);
+    });
+  </script>
+</body>
+</html>

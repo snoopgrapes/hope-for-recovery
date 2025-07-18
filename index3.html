@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hope For Recovery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #3498db; /* Calming blue */
+      --secondary: #2c3e50; /* Dark blue */
+      --accent: #e74c3c; /* Red for accents */
+      --light: #ecf0f1; /* Light gray */
+      --text: #2c3e50; /* Dark text */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* FULLSCREEN VIDEO BACKGROUND */
+    .video-hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .video-background {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+    }
+
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(44, 62, 80, 0.7);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      padding: 0 2rem;
+    }
+
+    .hero-content h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      animation: fadeInDown 1s ease;
+    }
+
+    .hero-content p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      font-weight: 300;
+      animation: fadeIn 1.5s ease;
+    }
+
+    /* NAVIGATION - UPDATED WITH ALL FEATURES */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 0;
+      z-index: 100;
+      transition: all 0.3s ease;
+      background: rgba(44, 62, 80, 0.8);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid transparent;
+      background-image: linear-gradient(to right, var(--primary), var(--accent));
+      background-origin: border-box;
+      background-repeat: no-repeat;
+      background-size: 100% 2px;
+      background-position: bottom;
+    }
+
+    header.scrolled {
+      background: rgba(44, 62, 80, 0.95);
+      padding: 0.8rem 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 40px;
+      margin-right: 1rem;
+      transition: transform 0.3s;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.3s ease;
+      padding: 0.5rem 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background-color: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 80%;
+    }
+
+    nav a:hover {
+      transform: translateY(-2px);
+      color: var(--accent);
+    }
+
+    nav a.active {
+      color: var(--accent);
+      font-weight: bold;
+      background: rgba(231, 76, 60, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+    }
+
+    .login-link {
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      transition: all 0.3s;
+    }
+
+    .login-link:hover {
+      background: rgba(231, 76, 60, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .profile-link {
+      color: #2ecc71;
+      border: 1px solid #2ecc71;
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      transition: all 0.3s;
+    }
+
+    .profile-link:hover {
+      background: rgba(46, 204, 113, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: white;
+      transition: all 0.3s;
+    }
+
+    /* BUTTONS */
+    .cta-buttons {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      animation: fadeInUp 1s ease;
+    }
+
+    .btn {
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: white;
+      box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+    }
+
+    .btn-primary:hover {
+      background-color: #c0392b;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(231, 76, 60, 0.6);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateY(-3px);
+    }
+
+    /* SCRIPTURE ANIMATION */
+    .scripture-animation {
+      position: absolute;
+      bottom: 50px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-style: italic;
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: opacity 1s ease;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .scripture-animation.show {
+      opacity: 1;
+    }
+
+    /* CONTENT SECTIONS */
+    .content-section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: var(--accent);
+    }
+
+    .section-title p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--text);
+    }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .feature {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .feature:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+
+    .feature h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 1rem;
+      color: var(--secondary);
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      background: url('https://source.unsplash.com/1600x900/?bible,hands') center/cover no-repeat;
+      padding: 6rem 2rem;
+      position: relative;
+      margin: 4rem 0;
+    }
+
+    .testimonials::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(44, 62, 80, 0.8);
+    }
+
+    .testimonials-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      color: white;
+    }
+
+    .testimonial {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
+      padding: 2.5rem;
+      border-radius: 5px;
+      margin-bottom: 2rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .testimonial-content {
+      font-style: italic;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .testimonial-author {
+      font-weight: bold;
+    }
+
+    /* PARTNER SECTION */
+    .partner-section {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+      padding: 5rem 2rem;
+      margin: 4rem 0;
+    }
+
+    .partner-section h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .partner-section p {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--secondary);
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .scripture {
+      font-style: italic;
+      margin-bottom: 2rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-content p {
+        font-size: 1.2rem;
+      }
+
+      .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      nav {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(44, 62, 80, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 0;
+        clip-path: circle(0px at 90% -10%);
+        transition: all 0.5s ease-out;
+        pointer-events: none;
+      }
+
+      nav.show {
+        clip-path: circle(1000px at 90% -10%);
+        pointer-events: all;
+      }
+
+      nav a {
+        margin: 0.5rem 0;
+        padding: 0.8rem 2rem;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .section-title h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Video Hero Section -->
+  <section class="video-hero">
+    <video autoplay muted loop class="video-background">
+      <source src="https://youtu.be/G1hKzCkywM8" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="video-overlay"></div>
+
+    <header id="mainHeader">
+      <div class="header-container">
+        <div class="logo">
+          <img src="images/HFR.png" alt="Hope For Recovery Logo">
+        </div>
+        <nav id="mainNav">
+          <a href="index.html" class="active">Home</a>
+          <a href="#">About</a>
+          <a href="#">Fruit of Freedom</a>
+          <a href="journey.html">Join</a>
+          <a href="#">Partners</a>
+          <a href="local-program.html">Recovery Program</a>
+          <a id="authLink" href="login.html" class="login-link">Login</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </header>
+
+    <div class="hero-content">
+      <h1>Freedom is Possible</h1>
+      <p>Discover Christ-centered recovery through our proven 12-week program that has transformed thousands of lives</p>
+      <div class="cta-buttons">
+        <a href="journey.html" class="btn btn-primary">Begin Your Journey</a>
+        <a href="#" class="btn btn-secondary">Watch Testimonials</a>
+      </div>
+      <div class="scripture-animation"></div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="content-section">
+    <div class="section-title">
+      <h2>Our Mission</h2>
+      <p>Hope For Recovery exists to bring the life-changing power of Jesus Christ to those struggling with addiction through Biblical truth and authentic community.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">✝️</div>
+        <h3>Christ-Centered</h3>
+        <p>Our program is built on the foundation of Scripture and the power of the Holy Spirit to transform lives.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">👥</div>
+        <h3>Community Support</h3>
+        <p>Join a safe, confidential group where you can share openly and find encouragement.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📚</div>
+        <h3>Proven Curriculum</h3>
+        <p>12-week Fruit of Freedom program based on Galatians 5:22-23 with practical application.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <div class="testimonials-container">
+      <h2 style="color: white; text-align: center; margin-bottom: 2rem;">Changed Lives</h2>
+      <div class="testimonial">
+        <div class="testimonial-content">
+          "After 15 years of addiction, I had given up hope. The Fruit of Freedom program introduced me to Jesus in a way I'd never known. Today I'm 3 years sober and leading a recovery group at my church."
+        </div>
+        <div class="testimonial-author">— Michael, London</div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-content">
+          "This program saved my marriage and restored my relationship with my children. The Biblical principles gave me strength when nothing else worked."
+        </div>
+        <div class="testimonial-author">— Sarah, Manchester</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner Section -->
+  <section class="partner-section">
+    <h2>Bring Hope to Your Community</h2>
+    <p>We partner with churches to launch recovery ministries with training, curriculum, and ongoing support.</p>
+    <a href="#" class="btn btn-primary">Become a Partner Church</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p class="scripture">"He brought me out into a spacious place; he rescued me because he delighted in me." — Psalm 18:19</p>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Resources</a>
+      <a href="#">Contact</a>
+      <a href="#">Donate</a>
+    </div>
+    <p>© 2025 Hope For Recovery | A ministry of transformation and hope</p>
+  </footer>
+
+  <script type="module">
+    // Scripture animation
+    document.addEventListener('DOMContentLoaded', function() {
+      const scriptureElement = document.querySelector('.scripture-animation');
+      const scriptures = [
+        "I can do all things through Christ who strengthens me. — Philippians 4:13",
+        "For I know the plans I have for you, declares the LORD... — Jeremiah 29:11",
+        "Therefore, if anyone is in Christ, he is a new creation. — 2 Corinthians 5:17",
+        "No condemnation for those in Christ Jesus. — Romans 8:1",
+        "The LORD is close to the brokenhearted. — Psalm 34:18",
+        "For freedom Christ has set us free! — Galatians 5:1",
+        "So if the Son sets you free, you will be free indeed. — John 8:36"
+      ];
+
+      let currentIndex = 0;
+
+      function showNextScripture() {
+        scriptureElement.style.opacity = 0;
+        
+        setTimeout(() => {
+          scriptureElement.textContent = scriptures[currentIndex];
+          scriptureElement.style.opacity = 1;
+          currentIndex = (currentIndex + 1) % scriptures.length;
+        }, 500);
+      }
+
+      scriptureElement.textContent = scriptures[0];
+      scriptureElement.style.opacity = 1;
+      setInterval(showNextScripture, 5000);
+
+      // Header scroll effect
+      const header = document.getElementById('mainHeader');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Mobile menu toggle
+      const hamburger = document.getElementById('hamburger');
+      const nav = document.getElementById('mainNav');
+      
+      hamburger.addEventListener('click', function() {
+        this.classList.toggle('active');
+        nav.classList.toggle('show');
+      });
+
+      // Set active link based on current page
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      const navLinks = document.querySelectorAll('nav a');
+      
+      navLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (currentPage === linkPage) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+
+    // Authentication state
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.firebasestorage.app",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const authLink = document.getElementById('authLink');
+
+    function updateAuthLink(user) {
+      if (user) {
+        authLink.textContent = 'My Profile';
+        authLink.href = 'dashboard.html';
+        authLink.className = 'profile-link';
+      } else {
+        authLink.textContent = 'Login';
+        authLink.href = 'login.html';
+        authLink.className = 'login-link';
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      updateAuthLink(user);
+    });
+  </script>
+</body>
+</html>

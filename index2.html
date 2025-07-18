@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hope For Recovery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4CAF50; /* Calm green */
+      --secondary: #2E7D32; /* Darker green */
+      --accent: #FFC107; /* Warm yellow */
+      --light: #F5F5F5; /* Light gray */
+      --dark: #212121; /* Dark gray */
+      --text: #424242; /* Gray text */
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* HEADER STYLES */
+    header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo-container img {
+      height: 60px;
+      transition: transform 0.3s;
+    }
+
+    .logo-container img:hover {
+      transform: scale(1.05);
+    }
+
+    nav a {
+      color: var(--dark);
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary);
+      transition: width 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .login-link {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .profile-link {
+      color: var(--secondary);
+      font-weight: bold;
+    }
+
+    /* HERO SECTION - CARD STYLE */
+    .hero-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 1000px;
+      margin: 3rem auto;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 400px;
+    }
+
+    .hero-content {
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-image {
+      background: url('https://source.unsplash.com/800x600/?hope,recovery') center/cover no-repeat;
+    }
+
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: var(--text);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(76, 175, 80, 0.1);
+    }
+
+    /* MAIN CONTENT GRID */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.2rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+
+    .section-title p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--text);
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-top: 4px solid var(--primary);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    /* TESTIMONIAL CARDS */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    .testimonial-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      font-size: 4rem;
+      color: rgba(76, 175, 80, 0.1);
+      font-family: serif;
+      line-height: 1;
+    }
+
+    .testimonial-content {
+      position: relative;
+      z-index: 1;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      font-weight: bold;
+      color: var(--secondary);
+    }
+
+    /* PARTNER CARD */
+    .partner-card {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      padding: 3rem 2rem;
+      text-align: center;
+      color: white;
+      margin: 4rem 0;
+      box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+    }
+
+    .partner-card h2 {
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 1rem;
+    }
+
+    .partner-card p {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .scripture {
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      nav {
+        margin-top: 1rem;
+      }
+
+      .hero-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        padding: 2rem;
+        order: 2;
+      }
+
+      .hero-image {
+        min-height: 300px;
+        order: 1;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="logo-container">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Hope For Recovery Logo">
+        </a>
+      </div>
+
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="#">About</a>
+        <a href="#">Fruit of Freedom</a>
+        <a href="journey.html">Join</a>
+        <a href="#">Partners</a>
+        <a href="local-program.html">Recovery Program</a>
+        <a id="authLink" href="login.html" class="login-link">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <div class="hero-content">
+        <h1>Find Freedom Through Christ-Centered Recovery</h1>
+        <p>Our 12-week Fruit of Freedom program combines Biblical truth with practical steps to break addiction's chains and discover your God-given purpose.</p>
+        <div class="cta-buttons">
+          <a href="journey.html" class="btn btn-primary">Start Your Journey</a>
+          <a href="#" class="btn btn-secondary">Learn More</a>
+        </div>
+      </div>
+      <div class="hero-image"></div>
+    </section>
+
+    <!-- Mission Section -->
+    <div class="section-title">
+      <h2>Our Mission</h2>
+      <p>Hope For Recovery provides a structured path to freedom through small groups, mentorship, and our proven Fruit of Freedom curriculum based on Galatians 5:22-23.</p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h3>Biblical Foundation</h3>
+        <p>Each lesson is rooted in Scripture, helping you build your recovery on the solid rock of God's Word.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤝</div>
+        <h3>Supportive Community</h3>
+        <p>Join a safe, confidential group where you can share openly and find encouragement.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌱</div>
+        <h3>Practical Tools</h3>
+        <p>Weekly exercises help you apply spiritual principles to daily challenges and triggers.</p>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="section-title">
+      <h2>Changed Lives</h2>
+      <p>Hear from those who have found freedom through our program</p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          After 12 years of addiction, I had lost all hope. The Fruit of Freedom program showed me Christ's power to transform even the most broken life.
+        </div>
+        <div class="testimonial-author">— Michael, London</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          This isn't just another recovery program. It's a spiritual bootcamp that equips you with weapons for the battle.
+        </div>
+        <div class="testimonial-author">— Sarah, Manchester</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          I'm now 18 months clean and leading a recovery group at my church. Only God could do this!
+        </div>
+        <div class="testimonial-author">— David, Birmingham</div>
+      </div>
+    </div>
+
+    <!-- Partner Card -->
+    <div class="partner-card">
+      <h2>Bring Hope to Your Community</h2>
+      <p>We equip churches to launch recovery ministries with training, materials, and ongoing support.</p>
+      <a href="#" class="btn btn-primary" style="background-color: white; color: var(--secondary);">Partner With Us</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <p class="scripture">"He brought me out into a spacious place; he rescued me because he delighted in me." — Psalm 18:19</p>
+      <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">Resources</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+      <p>© 2025 Hope For Recovery | A ministry of transformation</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Authentication state
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.firebasestorage.app",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const authLink = document.getElementById('authLink');
+
+    function updateAuthLink(user) {
+      if (user) {
+        authLink.textContent = 'My Profile';
+        authLink.href = 'dashboard.html';
+        authLink.className = 'profile-link';
+      } else {
+        authLink.textContent = 'Login';
+        authLink.href = 'login.html';
+        authLink.className = 'login-link';
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      updateAuthLink(user);
+    });
+  </script>
+</body>
+</html>
