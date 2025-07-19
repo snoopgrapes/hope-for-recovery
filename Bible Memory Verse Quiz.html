@@ -195,6 +195,12 @@
       border-top-color: #3498db;
       animation: spin 1s ease-in-out infinite;
     }
+    .countdown {
+      font-size: 1.2em;
+      margin: 20px 0;
+      font-weight: bold;
+      color: #3498db;
+    }
     @keyframes shake {
       0% { transform: translateX(0); }
       25% { transform: translateX(-10px); }
@@ -243,6 +249,13 @@
     <button class="difficulty-btn intermediate" id="intermediate-btn">Intermediate (3 missing words)</button>
     <button class="difficulty-btn expert" id="expert-btn">Expert (5 missing words)</button>
     <button id="back-to-menu-btn">Back to Menu</button>
+  </div>
+
+  <!-- Verse Display Screen -->
+  <div id="verse-display-screen" class="screen">
+    <h1>Memorize This Verse</h1>
+    <div class="verse-container" id="full-verse"></div>
+    <div class="countdown">You have <span id="countdown">5</span> seconds to read the verse</div>
   </div>
 
   <!-- Game Screen -->
@@ -365,6 +378,7 @@
     const screens = {
       welcome: document.getElementById("welcome-screen"),
       difficulty: document.getElementById("difficulty-screen"),
+      verseDisplay: document.getElementById("verse-display-screen"),
       game: document.getElementById("game-screen"),
       levelComplete: document.getElementById("level-complete-screen"),
       scoreboard: document.getElementById("scoreboard-screen")
@@ -373,6 +387,30 @@
     // Helper function to normalize words by removing punctuation
     function normalizeWord(word) {
       return word.toLowerCase().replace(/[.,;!?'"]/g, '');
+    }
+
+    // Show full verse with countdown
+    function showFullVerse(verse) {
+      document.getElementById("full-verse").innerHTML = `
+        <p>${verse.verse}</p>
+        <p class="reference">${verse.reference}</p>
+      `;
+      
+      let seconds = 5;
+      const countdownEl = document.getElementById("countdown");
+      countdownEl.textContent = seconds;
+      
+      showScreen("verseDisplay");
+      
+      const timer = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+        
+        if (seconds <= 0) {
+          clearInterval(timer);
+          loadCurrentVerse();
+        }
+      }, 1000);
     }
 
     // Update auth UI based on login state
@@ -477,7 +515,6 @@
       levelScore = 0;
       usedVerseIndices = [];
       resetLives();
-      showScreen("game");
       loadNextVerse();
     }
 
@@ -510,67 +547,8 @@
       usedVerseIndices.push(randomIndex);
       const verse = bibleVerses[randomIndex];
 
-      // Determine how many words to blank based on difficulty
-      let numBlanks;
-      switch(difficulty) {
-        case "easy": numBlanks = 1; break;
-        case "intermediate": numBlanks = 3; break;
-        case "expert": numBlanks = 5; break;
-        default: numBlanks = 1;
-      }
-      
-      // Ensure we don't exceed available words
-      const words = verse.verse.split(" ");
-      numBlanks = Math.min(numBlanks, words.length - 1);
-
-      // Select random words to blank
-      currentBlanks = [];
-      const blankIndices = [];
-      
-      // Select unique random indices to blank
-      while (blankIndices.length < numBlanks) {
-        const randomWordIndex = Math.floor(Math.random() * words.length);
-        if (!blankIndices.includes(randomWordIndex)) {
-          blankIndices.push(randomWordIndex);
-        }
-      }
-
-      // Create the display text with blanks
-      let displayText = "";
-      for (let i = 0; i < words.length; i++) {
-        if (blankIndices.includes(i)) {
-          // Store the original word for comparison
-          currentBlanks.push(words[i]);
-          displayText += `<span class="blank">______</span> `;
-        } else {
-          displayText += words[i] + " ";
-        }
-      }
-
-      // Display the verse
-      document.getElementById("verse").innerHTML = `
-        <p>${displayText}</p>
-        <p class="reference">${verse.reference}</p>
-      `;
-
-      // Create input fields for each blank
-      const inputContainer = document.getElementById("input-container");
-      inputContainer.innerHTML = "";
-      for (let i = 0; i < currentBlanks.length; i++) {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = `Blank #${i+1}`;
-        input.dataset.index = i;
-        inputContainer.appendChild(input);
-        if (i === 0) input.focus();
-      }
-
-      // Reset submit button
-      const submitBtn = document.getElementById("submit-btn");
-      submitBtn.textContent = "Submit";
-      submitBtn.onclick = checkAnswer;
-      
-      console.log(`Loading verse with ${numBlanks} blanks (difficulty: ${difficulty})`);
+      // Show the full verse first
+      showFullVerse(verse);
     }
 
     function loadCurrentVerse() {
@@ -640,6 +618,9 @@
       const submitBtn = document.getElementById("submit-btn");
       submitBtn.textContent = "Submit";
       submitBtn.onclick = checkAnswer;
+      
+      // Show the game screen
+      showScreen("game");
       
       console.log(`Reloading verse with ${numBlanks} blanks (difficulty: ${difficulty})`);
     }
