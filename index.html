@@ -23,7 +23,7 @@
     }
 
     header {
-      background-color: var(--light);
+      background-color: #FFFFFF; /* Changed from var(--light) to pure white */
       padding: 1.5rem;
       position: fixed;
       width: 100%;
@@ -262,23 +262,35 @@
       color: transparent;
     }
 
-    /* TESTIMONIALS */
+    /* TESTIMONIALS - UPDATED VERSION */
     .testimonials-container {
-      display: flex;
-      gap: 2rem;
-      overflow-x: auto;
-      padding: 2rem 0;
-      scroll-snap-type: x mandatory;
+      position: relative;
+      height: 300px; /* Fixed height for smooth transitions */
+      margin: 2rem auto;
+      max-width: 800px;
+      overflow: hidden;
+	  padding: 20px;
+      box-sizing: border-box; /* Ensures padding is included in height calculation */
     }
 
     .testimonial {
-      min-width: 80%;
+      position: absolute;
+      width: 100%;
       background: white;
       padding: 2.5rem;
       border-radius: 20px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      scroll-snap-align: start;
-      position: relative;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      top: 0;
+      left: 0;
+	  height: 100%;
+      overflow-y: auto; /* Adds scroll if content is too tall */
+      box-sizing: border-box; /* Includes padding in height */
+    }
+
+    .testimonial.active {
+      opacity: 1;
     }
 
     .testimonial::before {
@@ -299,6 +311,7 @@
       font-style: italic;
       position: relative;
       z-index: 1;
+	  padding-right: 10px; /* Gives some breathing room */
     }
 
     .testimonial-author {
@@ -412,6 +425,15 @@
       .feature {
         flex: 1 1 100%;
       }
+
+      .testimonials-container {
+        height: 450px; /* Increased height for mobile */
+      }
+  
+     .testimonial {
+       padding: 1.5rem; /* Reduce padding on mobile */
+      }
+}
     }
   </style>
 </head>
@@ -482,7 +504,7 @@
   <section class="section">
     <h2>Victory Stories</h2>
     <div class="testimonials-container">
-      <div class="testimonial">
+      <div class="testimonial active">
         <div class="testimonial-content">
           "This was my D-Day. After 15 years of addiction, I met Christ through this program. Now I lead others to freedom!"
         </div>
@@ -548,6 +570,29 @@
 
       scriptureElement.textContent = scriptures[0];
       setInterval(showNextScripture, 5000);
+    });
+
+    // Testimonial carousel functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const testimonials = document.querySelectorAll('.testimonial');
+      let currentTestimonial = 0;
+      
+      // Show first testimonial
+      testimonials[currentTestimonial].classList.add('active');
+      
+      // Cycle through testimonials every 10 seconds
+      setInterval(() => {
+        // Fade out current testimonial
+        testimonials[currentTestimonial].classList.remove('active');
+        
+        // Move to next testimonial (loop back to 0 if at end)
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+        
+        // Fade in next testimonial
+        setTimeout(() => {
+          testimonials[currentTestimonial].classList.add('active');
+        }, 1000); // Wait for fade out to complete
+      }, 10000); // Change every 10 seconds
     });
 
     // Authentication state
