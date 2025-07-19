@@ -186,12 +186,31 @@
     .game-over {
       animation: shake 0.5s;
     }
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #3498db;
+      animation: spin 1s ease-in-out infinite;
+    }
     @keyframes shake {
       0% { transform: translateX(0); }
       25% { transform: translateX(-10px); }
       50% { transform: translateX(10px); }
       75% { transform: translateX(-10px); }
       100% { transform: translateX(0); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .difficulty-indicator {
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .blank-count {
+      color: #3498db;
     }
   </style>
 </head>
@@ -233,6 +252,9 @@
       Verse <span id="current-verse">1</span> of <span id="total-verses">1</span> | 
       Difficulty: <span id="current-difficulty">Easy</span>
     </div>
+    <div class="difficulty-indicator">
+      Fill in <span class="blank-count" id="blank-count">1</span> missing word(s)
+    </div>
     <div class="hearts-container" id="hearts-container">
       <span class="heart">❤</span>
       <span class="heart">❤</span>
@@ -264,6 +286,7 @@
   <!-- Scoreboard Screen -->
   <div id="scoreboard-screen" class="screen">
     <h1>Scoreboard</h1>
+    <div id="loading-scores" class="loading" style="display: none;"></div>
     <table class="scoreboard">
       <thead>
         <tr>
@@ -283,16 +306,16 @@
 
   <script type="module">
     // Import Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
     import { 
       getAuth, 
       onAuthStateChanged, 
       GoogleAuthProvider, 
       signInWithPopup,
       signOut as firebaseSignOut 
-    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     // Firebase configuration
     const firebaseConfig = {
@@ -430,6 +453,17 @@
       difficulty = diff;
       document.getElementById("current-difficulty").textContent = 
         diff.charAt(0).toUpperCase() + diff.slice(1);
+      
+      // Update blank count indicator
+      let blankCount;
+      switch(diff) {
+        case "easy": blankCount = 1; break;
+        case "intermediate": blankCount = 3; break;
+        case "expert": blankCount = 5; break;
+        default: blankCount = 1;
+      }
+      document.getElementById("blank-count").textContent = blankCount;
+      
       startLevel();
     }
 
@@ -442,21 +476,26 @@
       loadNextVerse();
     }
 
-  function loadNextVerse() {
-    // Clear previous feedback
-    document.getElementById("feedback").innerHTML = "";
-    
-    // Update progress display
-    document.getElementById("current-level").textContent = currentLevel;
-    document.getElementById("current-verse").textContent = currentVerseIndex + 1;
-    document.getElementById("total-verses").textContent = currentLevel;
-    document.getElementById("score").textContent = score;
-    document.getElementById("level-score").textContent = levelScore;
-    
-    // Calculate progress
-    const progress = ((currentVerseIndex) / currentLevel) * 100;
-    document.getElementById("progress-bar").style.width = `${progress}%`;
-	
+    function loadNextVerse() {
+      // Clear previous feedback
+      document.getElementById("feedback").innerHTML = "";
+      
+      // Update progress display
+      document.getElementById("current-level").textContent = currentLevel;
+      document.getElementById("current-verse").textContent = currentVerseIndex + 1;
+      document.getElementById("total-verses").textContent = currentLevel;
+      document.getElementById("score").textContent = score;
+      document.getElementById("level-score").textContent = levelScore;
+      
+      // Calculate progress
+      const progress = ((currentVerseIndex + 1) / currentLevel) * 100;
+      document.getElementById("progress-bar").style.width = `${progress}%`;
+      
+      // Reset if we've used all verses
+      if (usedVerseIndices.length >= bibleVerses.length) {
+        usedVerseIndices = [];
+      }
+      
       // Get a random verse we haven't used yet in this level
       let randomIndex;
       do {
@@ -474,14 +513,14 @@
         case "expert": numBlanks = 5; break;
         default: numBlanks = 1;
       }
-
-      // Split verse into words and select random words to blank
+      
+      // Ensure we don't exceed available words
       const words = verse.verse.split(" ");
+      numBlanks = Math.min(numBlanks, words.length - 1);
+
+      // Select random words to blank
       currentBlanks = [];
       const blankIndices = [];
-      
-      // Make sure we don't try to blank more words than exist in the verse
-      numBlanks = Math.min(numBlanks, words.length - 1);
       
       // Select unique random indices to blank
       while (blankIndices.length < numBlanks) {
@@ -521,41 +560,69 @@
         if (i === 0) input.focus();
       }
 
-      // Ensure submit button is in correct state
+      // Reset submit button
       const submitBtn = document.getElementById("submit-btn");
       submitBtn.textContent = "Submit";
-      submitBtn.removeEventListener('click', retryVerse);
-      submitBtn.addEventListener('click', checkAnswer);
+      submitBtn.onclick = checkAnswer;
+      
+      console.log(`Loading verse with ${numBlanks} blanks (difficulty: ${difficulty})`);
     }
 
-    // Helper function to reload current verse
     function loadCurrentVerse() {
-      const currentVerse = usedVerseIndices[currentVerseIndex];
-      const verse = bibleVerses[currentVerse];
+      // Clear previous feedback
+      document.getElementById("feedback").innerHTML = "";
       
-      let displayText = "";
+      // Reset currentBlanks based on difficulty
+      const verseIndex = usedVerseIndices[currentVerseIndex];
+      const verse = bibleVerses[verseIndex];
       const words = verse.verse.split(" ");
-      let blankCount = 0;
       
+      // Determine correct number of blanks based on difficulty
+      let numBlanks;
+      switch(difficulty) {
+        case "easy": numBlanks = 1; break;
+        case "intermediate": numBlanks = 3; break;
+        case "expert": numBlanks = 5; break;
+        default: numBlanks = 1;
+      }
+      
+      // Ensure we don't exceed available words
+      numBlanks = Math.min(numBlanks, words.length - 1);
+      
+      // Reset currentBlanks array
+      currentBlanks = [];
+      const blankIndices = [];
+      
+      // Select new random blanks
+      while (blankIndices.length < numBlanks) {
+        const randomWordIndex = Math.floor(Math.random() * words.length);
+        if (!blankIndices.includes(randomWordIndex)) {
+          blankIndices.push(randomWordIndex);
+        }
+      }
+      
+      // Create display text with blanks
+      let displayText = "";
       for (let i = 0; i < words.length; i++) {
-        const cleanWord = words[i].replace(/[.,;!?]/g, "");
-        if (currentBlanks.includes(cleanWord)) {
+        if (blankIndices.includes(i)) {
+          const word = words[i].replace(/[.,;!?]/g, "");
+          currentBlanks.push(word);
           displayText += `<span class="blank">______</span> `;
-          blankCount++;
         } else {
           displayText += words[i] + " ";
         }
       }
-
+      
+      // Display the verse
       document.getElementById("verse").innerHTML = `
         <p>${displayText}</p>
         <p class="reference">${verse.reference}</p>
       `;
-
-      // Recreate input fields
+      
+      // Create input fields
       const inputContainer = document.getElementById("input-container");
       inputContainer.innerHTML = "";
-      for (let i = 0; i < blankCount; i++) {
+      for (let i = 0; i < currentBlanks.length; i++) {
         const input = document.createElement("input");
         input.type = "text";
         input.placeholder = `Blank #${i+1}`;
@@ -563,23 +630,26 @@
         inputContainer.appendChild(input);
         if (i === 0) input.focus();
       }
+      
+      // Reset submit button
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.textContent = "Submit";
+      submitBtn.onclick = checkAnswer;
+      
+      console.log(`Reloading verse with ${numBlanks} blanks (difficulty: ${difficulty})`);
     }
 
-    // Function to handle retry
     function retryVerse() {
       const submitBtn = document.getElementById("submit-btn");
-      const feedbackEl = document.getElementById("feedback");
       
-      // Reset button back to Submit
-      submitBtn.textContent = "Submit";
-      submitBtn.removeEventListener('click', retryVerse);
-      submitBtn.addEventListener('click', checkAnswer);
+      // Clear any existing event listeners
+      submitBtn.replaceWith(submitBtn.cloneNode(true));
+      
+      // Reload the verse with correct blanks
+      loadCurrentVerse();
       
       // Clear feedback
-      feedbackEl.innerHTML = "";
-      
-      // Reload the same verse
-      loadCurrentVerse();
+      document.getElementById("feedback").innerHTML = "";
     }
 
     function checkAnswer() {
@@ -588,8 +658,10 @@
       const feedbackEl = document.getElementById("feedback");
       const submitBtn = document.getElementById("submit-btn");
 
+      // Clear previous feedback
       feedbackEl.innerHTML = "";
 
+      // Check each answer
       for (let i = 0; i < inputs.length; i++) {
         const userAnswer = inputs[i].value.trim();
         const correctAnswer = currentBlanks[i];
@@ -603,42 +675,35 @@
       }
 
       if (allCorrect) {
-        // Reset incorrect streak on correct answer
+        // Correct answer handling
         incorrectStreak = 0;
-        
-        // Award points (1 per verse + level points)
         const pointsEarned = 1 + currentLevel;
         score += pointsEarned;
         levelScore += pointsEarned;
         
-        // Move to next verse or complete level
         currentVerseIndex++;
         if (currentVerseIndex < currentLevel) {
-          setTimeout(() => {
-            feedbackEl.innerHTML = "";
-            loadNextVerse();
-          }, 3000);
+          setTimeout(loadNextVerse, 2000);
         } else {
           completeLevel();
         }
       } else {
-        // Increment incorrect streak
+        // Incorrect answer handling
         incorrectStreak++;
         lives--;
         updateHearts();
         
-        // Change button to Retry and update its functionality
+        // Reset the submit button properly
         submitBtn.textContent = "Retry";
-        submitBtn.removeEventListener('click', checkAnswer);
-        submitBtn.addEventListener('click', retryVerse);
+        submitBtn.onclick = retryVerse;
         
         feedbackEl.innerHTML += `<p>Try again! Lives left: ${lives}</p>`;
         
-        // Check if game over
         if (lives <= 0) {
           setTimeout(() => {
-            gameOver();
-          }, 1500);
+            document.getElementById("game-screen").classList.add("game-over");
+            setTimeout(gameOver, 500);
+          }, 1000);
         }
       }
     }
@@ -656,13 +721,8 @@
     }
 
     function gameOver() {
-      const gameScreen = document.getElementById("game-screen");
-      gameScreen.classList.add("game-over");
-      
-      setTimeout(() => {
-        alert(`Game Over! You got 3 incorrect answers in a row. Your score: ${score}`);
-        quitToMenu();
-      }, 500);
+      alert(`Game Over! You got 3 incorrect answers in a row. Your score: ${score}`);
+      quitToMenu();
     }
 
     function resetLives() {
@@ -671,22 +731,22 @@
       updateHearts();
     }
 
-function completeLevel() {
-    // Clear feedback before showing level complete screen
-    document.getElementById("feedback").innerHTML = "";
-    
-    document.getElementById("completed-level").textContent = currentLevel;
-    document.getElementById("level-points-earned").textContent = levelScore;
-    document.getElementById("total-score").textContent = score;
-    
-    if (currentLevel >= 20) {
-      document.getElementById("next-level-btn").disabled = true;
-    } else {
-      document.getElementById("next-level-btn").disabled = false;
+    function completeLevel() {
+      // Clear feedback before showing level complete screen
+      document.getElementById("feedback").innerHTML = "";
+      
+      document.getElementById("completed-level").textContent = currentLevel;
+      document.getElementById("level-points-earned").textContent = levelScore;
+      document.getElementById("total-score").textContent = score;
+      
+      if (currentLevel >= 20) {
+        document.getElementById("next-level-btn").disabled = true;
+      } else {
+        document.getElementById("next-level-btn").disabled = false;
+      }
+      
+      showScreen("levelComplete");
     }
-    
-    showScreen("levelComplete");
-  }
 
     function replayLevel() {
       startLevel();
@@ -742,6 +802,16 @@ function completeLevel() {
         console.log("Score saved to Firebase");
       } catch (error) {
         console.error("Error saving score to Firebase:", error);
+        // Fallback to localStorage
+        const username = currentUser.displayName || document.getElementById("username").value.trim();
+        scoreboard.push({
+          username: username,
+          score: score,
+          level: currentLevel - 1,
+          difficulty: difficulty,
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem("bibleQuizScoreboard", JSON.stringify(scoreboard));
       }
     }
 
@@ -752,7 +822,10 @@ function completeLevel() {
 
     async function loadScoreboard() {
       const scoreboardData = document.getElementById("scoreboard-data");
-      scoreboardData.innerHTML = "<tr><td colspan='5'>Loading scores...</td></tr>";
+      const loadingIndicator = document.getElementById("loading-scores");
+      
+      scoreboardData.innerHTML = "";
+      loadingIndicator.style.display = "inline-block";
 
       try {
         // Try to load from Firebase first
@@ -764,6 +837,7 @@ function completeLevel() {
         
         const querySnapshot = await getDocs(q);
         scoreboardData.innerHTML = "";
+        loadingIndicator.style.display = "none";
 
         if (querySnapshot.empty) {
           fallbackToLocalStorage();
@@ -790,6 +864,7 @@ function completeLevel() {
         });
       } catch (error) {
         console.error("Error loading scoreboard:", error);
+        loadingIndicator.style.display = "none";
         fallbackToLocalStorage();
       }
     }
