@@ -442,18 +442,21 @@
       loadNextVerse();
     }
 
-    function loadNextVerse() {
-      // Update progress display
-      document.getElementById("current-level").textContent = currentLevel;
-      document.getElementById("current-verse").textContent = currentVerseIndex + 1;
-      document.getElementById("total-verses").textContent = currentLevel;
-      document.getElementById("score").textContent = score;
-      document.getElementById("level-score").textContent = levelScore;
-      
-      // Calculate progress
-      const progress = ((currentVerseIndex) / currentLevel) * 100;
-      document.getElementById("progress-bar").style.width = `${progress}%`;
-
+  function loadNextVerse() {
+    // Clear previous feedback
+    document.getElementById("feedback").innerHTML = "";
+    
+    // Update progress display
+    document.getElementById("current-level").textContent = currentLevel;
+    document.getElementById("current-verse").textContent = currentVerseIndex + 1;
+    document.getElementById("total-verses").textContent = currentLevel;
+    document.getElementById("score").textContent = score;
+    document.getElementById("level-score").textContent = levelScore;
+    
+    // Calculate progress
+    const progress = ((currentVerseIndex) / currentLevel) * 100;
+    document.getElementById("progress-bar").style.width = `${progress}%`;
+	
       // Get a random verse we haven't used yet in this level
       let randomIndex;
       do {
@@ -668,20 +671,22 @@
       updateHearts();
     }
 
-    function completeLevel() {
-      document.getElementById("completed-level").textContent = currentLevel;
-      document.getElementById("level-points-earned").textContent = levelScore;
-      document.getElementById("total-score").textContent = score;
-      
-      // Disable next level button if at max level
-      if (currentLevel >= 20) {
-        document.getElementById("next-level-btn").disabled = true;
-      } else {
-        document.getElementById("next-level-btn").disabled = false;
-      }
-      
-      showScreen("levelComplete");
+function completeLevel() {
+    // Clear feedback before showing level complete screen
+    document.getElementById("feedback").innerHTML = "";
+    
+    document.getElementById("completed-level").textContent = currentLevel;
+    document.getElementById("level-points-earned").textContent = levelScore;
+    document.getElementById("total-score").textContent = score;
+    
+    if (currentLevel >= 20) {
+      document.getElementById("next-level-btn").disabled = true;
+    } else {
+      document.getElementById("next-level-btn").disabled = false;
     }
+    
+    showScreen("levelComplete");
+  }
 
     function replayLevel() {
       startLevel();
