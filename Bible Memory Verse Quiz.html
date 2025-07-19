@@ -218,6 +218,12 @@
     .blank-count {
       color: #3498db;
     }
+    #dashboard-btn, #dashboard-btn-difficulty {
+      background: #9b59b6;
+    }
+    #dashboard-btn:hover, #dashboard-btn-difficulty:hover {
+      background: #8e44ad;
+    }
   </style>
 </head>
 <body>
@@ -233,6 +239,7 @@
       </div>
       <button id="start-game-btn">Start Game</button>
       <button id="view-scoreboard-btn">View Scoreboard</button>
+      <button id="dashboard-btn">Back to Dashboard</button>
     </div>
     
     <div class="username-container">
@@ -249,6 +256,7 @@
     <button class="difficulty-btn intermediate" id="intermediate-btn">Intermediate (3 missing words)</button>
     <button class="difficulty-btn expert" id="expert-btn">Expert (5 missing words)</button>
     <button id="back-to-menu-btn">Back to Menu</button>
+    <button id="dashboard-btn-difficulty">Back to Dashboard</button>
   </div>
 
   <!-- Verse Display Screen -->
@@ -315,6 +323,7 @@
       </tbody>
     </table>
     <button id="return-to-menu-btn">Return to Menu</button>
+    <button id="dashboard-btn-scoreboard">Back to Dashboard</button>
   </div>
 
   <script type="module">
@@ -387,6 +396,12 @@
     // Helper function to normalize words by removing punctuation
     function normalizeWord(word) {
       return word.toLowerCase().replace(/[.,;!?'"]/g, '');
+    }
+
+    // Function to navigate to dashboard
+    function goToDashboard() {
+      // Replace with your actual dashboard URL or navigation method
+      window.location.href = '/dashboard.html';
     }
 
     // Show full verse with countdown
@@ -911,12 +926,14 @@
       document.getElementById('login-btn').addEventListener('click', signIn);
       document.getElementById('logout-btn').addEventListener('click', signOut);
       document.getElementById('edit-username-btn').addEventListener('click', enableUsernameEdit);
+      document.getElementById('dashboard-btn').addEventListener('click', goToDashboard);
       
       // Difficulty screen
       document.getElementById('easy-btn').addEventListener('click', () => setDifficulty('easy'));
       document.getElementById('intermediate-btn').addEventListener('click', () => setDifficulty('intermediate'));
       document.getElementById('expert-btn').addEventListener('click', () => setDifficulty('expert'));
       document.getElementById('back-to-menu-btn').addEventListener('click', returnToMenu);
+      document.getElementById('dashboard-btn-difficulty').addEventListener('click', goToDashboard);
       
       // Game screen
       document.getElementById('submit-btn').addEventListener('click', checkAnswer);
@@ -928,6 +945,7 @@
       
       // Scoreboard screen
       document.getElementById('return-to-menu-btn').addEventListener('click', returnToMenu);
+      document.getElementById('dashboard-btn-scoreboard').addEventListener('click', goToDashboard);
       
       // Enter key handling
       document.addEventListener("keypress", function(e) {
