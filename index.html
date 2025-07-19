@@ -24,7 +24,7 @@
 
     header {
       background-color: #FFFFFF; /* Changed from var(--light) to pure white */
-      padding: 1.5rem;
+      padding: 0.7rem;
       position: fixed;
       width: 100%;
       z-index: 100;
@@ -84,7 +84,7 @@
     }
 
     .logo-container img {
-      max-width: 180px;
+      max-width: 135px;
       height: auto;
       transition: transform 0.3s;
     }
@@ -262,63 +262,135 @@
       color: transparent;
     }
 
-    /* TESTIMONIALS - UPDATED VERSION */
-    .testimonials-container {
-      position: relative;
-      height: 300px; /* Fixed height for smooth transitions */
-      margin: 2rem auto;
-      max-width: 800px;
-      overflow: hidden;
-	  padding: 20px;
-      box-sizing: border-box; /* Ensures padding is included in height calculation */
-    }
+/* TESTIMONIALS - UPDATED WITH IMAGES */
+.testimonials-container {
+  position: relative;
+  height: 350px; /* Increased height to accommodate images */
+  margin: 2rem auto;
+  max-width: 800px;
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
-    .testimonial {
-      position: absolute;
-      width: 100%;
-      background: white;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      top: 0;
-      left: 0;
-	  height: 100%;
-      overflow-y: auto; /* Adds scroll if content is too tall */
-      box-sizing: border-box; /* Includes padding in height */
-    }
+.testimonial {
+  position: absolute;
+  width: 100%;
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  box-sizing: border-box;
+}
 
-    .testimonial.active {
-      opacity: 1;
-    }
+.testimonial.active {
+  opacity: 1;
+}
 
-    .testimonial::before {
-      content: '"';
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 5rem;
-      color: rgba(110,69,226,0.1);
-      font-family: serif;
-      line-height: 1;
-    }
+.testimonial-image {
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
 
-    .testimonial-content {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      margin-bottom: 1.5rem;
-      font-style: italic;
-      position: relative;
-      z-index: 1;
-	  padding-right: 10px; /* Gives some breathing room */
-    }
+.testimonial-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .testimonial-author {
-      font-weight: bold;
-      color: var(--secondary);
-    }
+.testimonial-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  position: relative;
+  padding-right: 10px;
+}
 
+.testimonial::before {
+  content: '"';
+  position: absolute;
+  top: 20px;
+  left: 140px; /* Adjusted to account for image */
+  font-size: 5rem;
+  color: rgba(110,69,226,0.1);
+  font-family: serif;
+  line-height: 1;
+  z-index: 0;
+}
+
+.testimonial-author {
+  font-weight: bold;
+  color: var(--secondary);
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .testimonials-container {
+    height: 500px; /* More space for stacked layout */
+  }
+  
+  .testimonial {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  .testimonial-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .testimonial::before {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 120px;
+  }
+  
+  .testimonial-content {
+    margin-top: 1rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .testimonials-container {
+    height: auto;
+    page-break-inside: avoid;
+  }
+  
+  .testimonial {
+    position: relative;
+    opacity: 1;
+    display: block;
+    margin-bottom: 2rem;
+    page-break-inside: avoid;
+  }
+  
+  .testimonial-image {
+    float: left;
+    margin-right: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .testimonial::before {
+    display: none;
+  }
+}
     /* PARTNER SECTION */
     .partner-call {
       background: linear-gradient(135deg, var(--secondary), var(--primary));
@@ -504,25 +576,41 @@
   <section class="section">
     <h2>Victory Stories</h2>
     <div class="testimonials-container">
-      <div class="testimonial active">
-        <div class="testimonial-content">
-          "This was my D-Day. After 15 years of addiction, I met Christ through this program. Now I lead others to freedom!"
-        </div>
-        <div class="testimonial-author">— Angela, Manchester</div>
-      </div>
-      <div class="testimonial">
-        <div class="testimonial-content">
-          "Hope For Recovery didn't just change my life—it saved my marriage and restored my ministry. The chains are broken!"
-        </div>
-        <div class="testimonial-author">— Craig, Birmingham</div>
-      </div>
-      <div class="testimonial">
-        <div class="testimonial-content">
-          "I went from overdose to overflow! Now I'm planting a recovery ministry in my city because freedom is contagious."
-        </div>
-        <div class="testimonial-author">— Mark, London</div>
-      </div>
+			<div class="testimonial active">
+				<div class="testimonial-image">
+				<img src="images/angela.png" alt="Angela">
+			</div>
+	<div class="testimonial-text">
+	
+    <div class="testimonial-content">
+      "This was my D-Day. After 15 years of addiction, I met Christ through this program. Now I lead others to freedom!"
     </div>
+    <div class="testimonial-author">— Angela, Manchester</div>
+  </div>
+</div>
+		<div class="testimonial">
+		<div class="testimonial-image">
+			<img src="images/craig.jpg" alt="Craig">
+		</div>
+			<div class="testimonial-text">
+			<div class="testimonial-content">
+			"Hope For Recovery didn't just change my life—it saved my marriage and restored my ministry. The chains are broken!"
+			</div>
+		<div class="testimonial-author">— Craig, Birmingham</div>
+	</div>
+	</div>
+
+		<div class="testimonial">
+		<div class="testimonial-image">
+    <img src="images/mark.jpg" alt="Mark">
+		</div>
+		<div class="testimonial-text">
+		<div class="testimonial-content">
+      "I went from overdose to overflow! Now I'm planting a recovery ministry in my city because freedom is contagious."
+    </div>
+    <div class="testimonial-author">— Mark, London</div>
+  </div>
+</div>
   </section>
 
   <section class="partner-call">
