@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bible Memory Verse Quiz</title>
   <style>
     body {
@@ -11,23 +11,34 @@
       margin: 0 auto;
       padding: 20px;
       text-align: center;
-      background: 
-      linear-gradient(rgba(0, 0, 0, 0.2), 
-      url('https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') 
-      center/cover no-repeat fixed;
+      background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), 
+                  url('https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat fixed;
       color: #333;
+      min-height: 100vh;
     }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+        background-attachment: scroll;
+      }
+      .screen {
+        padding: 20px;
+      }
+    }
+
     h1 {
       color: #2c3e50;
       margin-bottom: 20px;
     }
     .screen {
       display: none;
-      background: white;
+      background: rgba(255, 255, 255, 0.85);
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       margin: 20px 0;
+      backdrop-filter: blur(2px);
     }
     .active {
       display: block;
@@ -221,10 +232,10 @@
     .blank-count {
       color: #3498db;
     }
-    #dashboard-btn, #dashboard-btn-difficulty {
+    #dashboard-btn, #dashboard-btn-difficulty, #dashboard-btn-scoreboard {
       background: #9b59b6;
     }
-    #dashboard-btn:hover, #dashboard-btn-difficulty:hover {
+    #dashboard-btn:hover, #dashboard-btn-difficulty:hover, #dashboard-btn-scoreboard:hover {
       background: #8e44ad;
     }
   </style>
@@ -403,7 +414,6 @@
 
     // Function to navigate to dashboard
     function goToDashboard() {
-      // Replace with your actual dashboard URL or navigation method
       window.location.href = '/dashboard.html';
     }
 
