@@ -370,6 +370,11 @@
       scoreboard: document.getElementById("scoreboard-screen")
     };
 
+    // Helper function to normalize words by removing punctuation
+    function normalizeWord(word) {
+      return word.toLowerCase().replace(/[.,;!?'"]/g, '');
+    }
+
     // Update auth UI based on login state
     function updateAuthUI(user) {
       const loginBtn = document.getElementById('login-btn');
@@ -534,7 +539,7 @@
       let displayText = "";
       for (let i = 0; i < words.length; i++) {
         if (blankIndices.includes(i)) {
-          // Store the original word with punctuation for comparison
+          // Store the original word for comparison
           currentBlanks.push(words[i]);
           displayText += `<span class="blank">______</span> `;
         } else {
@@ -605,7 +610,7 @@
       let displayText = "";
       for (let i = 0; i < words.length; i++) {
         if (blankIndices.includes(i)) {
-          // Store the original word with punctuation for comparison
+          // Store the original word for comparison
           currentBlanks.push(words[i]);
           displayText += `<span class="blank">______</span> `;
         } else {
@@ -664,14 +669,14 @@
       // Check each answer
       for (let i = 0; i < inputs.length; i++) {
         const userAnswer = inputs[i].value.trim();
-        let correctAnswer = currentBlanks[i];
+        const correctAnswer = currentBlanks[i];
         
-        // Remove any surrounding quotes from correct answer for display
-        let displayAnswer = correctAnswer.replace(/^['"]|['"]$/g, '');
+        // Remove punctuation from both answers for comparison
+        const normalizedUser = normalizeWord(userAnswer);
+        const normalizedCorrect = normalizeWord(correctAnswer);
         
-        // Compare while ignoring case and outer punctuation
-        const normalizedUser = userAnswer.toLowerCase().replace(/^['"]|['"]$/g, '');
-        const normalizedCorrect = correctAnswer.toLowerCase().replace(/^['"]|['"]$/g, '');
+        // For display, show the correct word without punctuation
+        const displayAnswer = correctAnswer.replace(/[.,;!?'"]/g, '');
         
         if (normalizedUser === normalizedCorrect) {
           feedbackEl.innerHTML += `<p>Blank #${i+1}: ✅ Correct! (${displayAnswer})</p>`;
