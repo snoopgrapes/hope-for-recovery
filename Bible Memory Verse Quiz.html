@@ -53,6 +53,8 @@
       border: 2px solid #3498db;
       border-radius: 5px;
       margin: 10px;
+      width: 300px;
+      max-width: 80%;
     }
     .verse-container {
       font-size: 1.2em;
@@ -96,6 +98,48 @@
     }
     .difficulty-btn.expert {
       background: #e74c3c;
+    }
+    #auth-status {
+      margin: 10px 0;
+      display: inline-block;
+    }
+    #auth-status button {
+      padding: 8px 15px;
+      margin: 0 5px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #auth-status button:hover {
+      background: #2980b9;
+    }
+    #username[readonly] {
+      background-color: #f0f0f0;
+      color: #555;
+    }
+    .username-container {
+      margin: 20px auto;
+      text-align: center;
+    }
+    .edit-username {
+      margin-left: 5px;
+      background: none;
+      border: none;
+      color: #3498db;
+      cursor: pointer;
+      padding: 0;
+    }
+    .button-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    .button-row button {
+      margin: 5px;
     }
     .scoreboard {
       width: 100%;
@@ -156,11 +200,23 @@
   <div id="welcome-screen" class="screen active">
     <h1>Bible Memory Verse Quiz</h1>
     <p>Test your knowledge of Scripture with this challenging quiz!</p>
-    <input type="text" id="username" placeholder="Enter your username" required>
-    <button onclick="startGame()">Start Game</button>
-    <button onclick="showScoreboard()">View Scoreboard</button>
+    
+    <div class="button-row">
+      <div id="auth-status">
+        <button id="login-btn" onclick="signIn()">Sign In</button>
+        <button id="logout-btn" style="display:none;" onclick="signOut()">Sign Out</button>
+      </div>
+      <button onclick="startGame()">Start Game</button>
+      <button onclick="showScoreboard()">View Scoreboard</button>
+    </div>
+    
+    <div class="username-container">
+      <input type="text" id="username" placeholder="Enter your username" required>
+      <button id="edit-username-btn" class="edit-username" style="display:none;" onclick="enableUsernameEdit()">✏️</button>
+    </div>
   </div>
 
+  <!-- Rest of your HTML remains the same -->
   <!-- Difficulty Selection Screen -->
   <div id="difficulty-screen" class="screen">
     <h1>Select Difficulty</h1>
@@ -226,8 +282,38 @@
     <button onclick="returnToMenu()">Return to Menu</button>
   </div>
 
-  <script>
-    // Game Data - 100 Bible verses
+  <!-- JavaScript remains the same as in previous version -->
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      GoogleAuthProvider, 
+      signInWithPopup,
+      signOut as firebaseSignOut 
+    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.appspot.com",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    
+    // Game Data - Bible verses
     const bibleVerses = [
       { verse: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", reference: "John 3:16" },
       { verse: "I can do all things through Christ who strengthens me.", reference: "Philippians 4:13" },
@@ -238,21 +324,11 @@
       { verse: "And we know that in all things God works for the good of those who love him, who have been called according to his purpose.", reference: "Romans 8:28" },
       { verse: "Jesus answered, 'I am the way and the truth and the life. No one comes to the Father except through me.'", reference: "John 14:6" },
       { verse: "But the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control.", reference: "Galatians 5:22-23" },
-      { verse: "For the wages of sin is death, but the gift of God is eternal life in Christ Jesus our Lord.", reference: "Romans 6:23" },
-      { verse: "But seek first his kingdom and his righteousness, and all these things will be given to you as well.", reference: "Matthew 6:33" },
-      { verse: "In the beginning God created the heavens and the earth.", reference: "Genesis 1:1" },
-      { verse: "For everyone has sinned; we all fall short of God's glorious standard.", reference: "Romans 3:23" },
-      { verse: "If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness.", reference: "1 John 1:9" },
-      { verse: "The Lord is not slow in keeping his promise, as some understand slowness. Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance.", reference: "2 Peter 3:9" },
-      { verse: "But God demonstrates his own love for us in this: While we were still sinners, Christ died for us.", reference: "Romans 5:8" },
-      { verse: "Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!", reference: "2 Corinthians 5:17" },
-      { verse: "Your word is a lamp for my feet, a light on my path.", reference: "Psalm 119:105" },
-      { verse: "Cast all your anxiety on him because he cares for you.", reference: "1 Peter 5:7" },
-      { verse: "Come to me, all you who are weary and burdened, and I will give you rest.", reference: "Matthew 11:28" }
+      { verse: "For the wages of sin is death, but the gift of God is eternal life in Christ Jesus our Lord.", reference: "Romans 6:23" }
     ];
 
     // Game State Variables
-    let currentUser = "";
+    let currentUser = null;
     let difficulty = "easy";
     let currentLevel = 1;
     let currentVerseIndex = 0;
@@ -273,6 +349,68 @@
       scoreboard: document.getElementById("scoreboard-screen")
     };
 
+    // Update auth UI based on login state
+    function updateAuthUI(user) {
+      const loginBtn = document.getElementById('login-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+      const usernameInput = document.getElementById('username');
+      const editUsernameBtn = document.getElementById('edit-username-btn');
+
+      if (user) {
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        usernameInput.value = user.displayName || user.email.split('@')[0];
+        usernameInput.readOnly = true;
+        editUsernameBtn.style.display = 'inline-block';
+      } else {
+        loginBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        usernameInput.readOnly = false;
+        editUsernameBtn.style.display = 'none';
+      }
+    }
+
+    // Enable username editing
+    function enableUsernameEdit() {
+      const usernameInput = document.getElementById('username');
+      usernameInput.readOnly = false;
+      usernameInput.focus();
+    }
+
+    // Sign in with Google
+    async function signIn() {
+      try {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+      } catch (error) {
+        console.error("Sign-in error:", error);
+        alert("Sign-in failed. Please try again.");
+      }
+    }
+
+    // Sign out function
+    async function signOut() {
+      try {
+        await firebaseSignOut(auth);
+        console.log("User signed out");
+        currentUser = null;
+        updateAuthUI(null);
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    }
+
+    // Track authentication state
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      updateAuthUI(user);
+      if (user) {
+        console.log("User is signed in:", user.uid);
+      } else {
+        console.log("No user signed in");
+      }
+    });
+
     // Initialize the game
     function startGame() {
       const username = document.getElementById("username").value.trim();
@@ -280,7 +418,6 @@
         alert("Please enter a username");
         return;
       }
-      currentUser = username;
       showScreen("difficulty");
     }
 
@@ -487,25 +624,22 @@
       startLevel();
     }
 
-    function quitToMenu() {
-      // Save score to scoreboard
+    async function quitToMenu() {
+      // Save score to Firebase if user is logged in
+      await saveScoreToFirebase();
+      
+      // Also save to localStorage as fallback
+      const username = currentUser?.displayName || document.getElementById("username").value.trim();
       scoreboard.push({
-        username: currentUser,
+        username: username,
         score: score,
-        level: currentLevel - 1, // They completed up to this level
+        level: currentLevel - 1,
         difficulty: difficulty,
         timestamp: new Date().toISOString()
       });
       
-      // Sort scoreboard by score (descending)
       scoreboard.sort((a, b) => b.score - a.score);
-      
-      // Keep only top 50 scores
-      if (scoreboard.length > 50) {
-        scoreboard = scoreboard.slice(0, 50);
-      }
-      
-      // Save to localStorage
+      if (scoreboard.length > 50) scoreboard = scoreboard.slice(0, 50);
       localStorage.setItem("bibleQuizScoreboard", JSON.stringify(scoreboard));
       
       // Reset game state
@@ -516,13 +650,93 @@
       showScoreboard();
     }
 
-    function showScoreboard() {
+    async function saveScoreToFirebase() {
+      if (!currentUser) {
+        console.log("Not saving score - no user signed in");
+        return;
+      }
+
+      try {
+        const username = currentUser.displayName || document.getElementById("username").value.trim();
+        await addDoc(collection(db, "bibleQuizScores"), {
+          userId: currentUser.uid,
+          username: username,
+          score: score,
+          level: currentLevel - 1,
+          difficulty: difficulty,
+          timestamp: serverTimestamp()
+        });
+        console.log("Score saved to Firebase");
+      } catch (error) {
+        console.error("Error saving score to Firebase:", error);
+      }
+    }
+
+    async function showScoreboard() {
+      await loadScoreboard();
+      showScreen("scoreboard");
+    }
+
+    async function loadScoreboard() {
+      const scoreboardData = document.getElementById("scoreboard-data");
+      scoreboardData.innerHTML = "<tr><td colspan='5'>Loading scores...</td></tr>";
+
+      try {
+        // Try to load from Firebase first
+        const q = query(
+          collection(db, "bibleQuizScores"),
+          orderBy("score", "desc"),
+          limit(50)
+        );
+        
+        const querySnapshot = await getDocs(q);
+        scoreboardData.innerHTML = "";
+
+        if (querySnapshot.empty) {
+          fallbackToLocalStorage();
+          return;
+        }
+
+        let rank = 1;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const row = document.createElement("tr");
+          
+          if (currentUser && data.userId === currentUser.uid) {
+            row.style.backgroundColor = "#e6f7ff";
+          }
+
+          row.innerHTML = `
+            <td>${rank++}</td>
+            <td>${data.username}</td>
+            <td>${data.score}</td>
+            <td>${data.level}</td>
+            <td>${data.difficulty.charAt(0).toUpperCase() + data.difficulty.slice(1)}</td>
+          `;
+          scoreboardData.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error loading scoreboard:", error);
+        fallbackToLocalStorage();
+      }
+    }
+
+    function fallbackToLocalStorage() {
       const scoreboardData = document.getElementById("scoreboard-data");
       scoreboardData.innerHTML = "";
       
-      // Add each score to the table
+      if (scoreboard.length === 0) {
+        scoreboardData.innerHTML = "<tr><td colspan='5'>No scores yet!</td></tr>";
+        return;
+      }
+
       scoreboard.forEach((entry, index) => {
         const row = document.createElement("tr");
+        const username = currentUser?.displayName || document.getElementById("username")?.value.trim();
+        if (username && entry.username === username) {
+          row.style.backgroundColor = "#e6f7ff";
+        }
+
         row.innerHTML = `
           <td>${index + 1}</td>
           <td>${entry.username}</td>
@@ -532,12 +746,9 @@
         `;
         scoreboardData.appendChild(row);
       });
-      
-      showScreen("scoreboard");
     }
 
     function returnToMenu() {
-      // Reset game state
       currentLevel = 1;
       score = 0;
       resetLives();
@@ -545,12 +756,9 @@
     }
 
     function showScreen(screenId) {
-      // Hide all screens
       Object.values(screens).forEach(screen => {
         screen.classList.remove("active");
       });
-      
-      // Show the requested screen
       screens[screenId].classList.add("active");
     }
 
@@ -561,7 +769,7 @@
       }
     });
 
-    // Initialize scoreboard if empty
+    // Initialize localStorage scoreboard if empty
     if (scoreboard.length === 0) {
       localStorage.setItem("bibleQuizScoreboard", JSON.stringify([]));
     }

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard – Fruit of Freedom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Default theme (light) */
+      --primary-color: #4ca1af;
+      --primary-hover: #3d8b99;
+      --background-color: #f0f4f8;
+      --card-bg: #fff;
+      --text-color: #333;
+      --header-bg: #fff;
+      --header-text: #000;
+      --progress-bg: #d9e9f1;
+      --shadow-color: rgba(0,0,0,0.1);
+      --inspiration-color: #444;
+      --footer-color: #777;
+    }
+
+    /* Dark theme */
+    [data-theme="dark"] {
+      --primary-color: #5cb3c1;
+      --primary-hover: #4ca1af;
+      --background-color: #1a1a1a;
+      --card-bg: #2d2d2d;
+      --text-color: #e0e0e0;
+      --header-bg: #1e1e1e;
+      --header-text: #f0f0f0;
+      --progress-bg: #3a3a3a;
+      --shadow-color: rgba(0,0,0,0.3);
+      --inspiration-color: #aaa;
+      --footer-color: #999;
+    }
+
+    /* High contrast theme */
+    [data-theme="high-contrast"] {
+      --primary-color: #0057b7;
+      --primary-hover: #004494;
+      --background-color: #ffffff;
+      --card-bg: #f0f0f0;
+      --text-color: #000000;
+      --header-bg: #0057b7;
+      --header-text: #ffffff;
+      --progress-bg: #e0e0e0;
+      --shadow-color: rgba(0,0,0,0.5);
+      --inspiration-color: #333;
+      --footer-color: #555;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--background-color);
+      margin: 0;
+      padding: 0;
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav {
+      margin-top: 1rem;
+    }
+
+    nav a {
+      color: var(--header-text);
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .login-link {
+      color: #4CAF50 !important;
+      font-weight: bold;
+    }
+
+    .profile-link {
+      color: var(--primary-color) !important;
+      font-weight: bold;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+    .logo-container img {
+      max-width: 150px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .dashboard {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    .progress-section {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 6px var(--shadow-color);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .progress-bar {
+      background-color: var(--progress-bg);
+      height: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .progress-bar-inner {
+      width: 50%;
+      height: 100%;
+      background-color: var(--primary-color);
+      text-align: center;
+      color: white;
+      font-size: 0.8rem;
+      line-height: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .card {
+      flex: 1 1 300px;
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 6px var(--shadow-color);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card h4 {
+      margin-top: 0;
+      color: var(--text-color);
+    }
+
+    .card p {
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.5rem 1.2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .inspiration {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem 1rem;
+      font-style: italic;
+      color: var(--inspiration-color);
+      transition: color 0.3s ease;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--footer-color);
+      transition: color 0.3s ease;
+    }
+
+    .sign-out-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--progress-bg);
+      color: var(--text-color);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .sign-out-btn:hover {
+      background-color: var(--primary-hover);
+      color: white;
+    }
+
+    /* Theme selector styles */
+    .theme-selector {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .theme-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--text-color);
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.3s ease;
+      background-size: cover;
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .theme-btn[data-theme="light"] {
+      background: linear-gradient(135deg, #f0f4f8 50%, #4ca1af 50%);
+    }
+
+    .theme-btn[data-theme="dark"] {
+      background: linear-gradient(135deg, #1a1a1a 50%, #5cb3c1 50%);
+    }
+
+    .theme-btn[data-theme="high-contrast"] {
+      background: linear-gradient(135deg, #ffffff 50%, #0057b7 50%);
+    }
+
+    .theme-btn.active {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+    /* Leaderboard styles */
+    .leaderboard-card {
+      flex: 1 1 100%;
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .leaderboard-table th, 
+    .leaderboard-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--progress-bg);
+    }
+
+    .leaderboard-table th {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .leaderboard-table tr:nth-child(even) {
+      background-color: var(--progress-bg);
+    }
+
+    .leaderboard-table tr:hover {
+      background-color: var(--primary-hover);
+      color: white;
+    }
+
+    .leaderboard-rank {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .leaderboard-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .leaderboard-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .cards {
+        flex-direction: column;
+      }
+      .sign-out-btn {
+        position: static;
+        margin: 10px auto;
+        display: block;
+      }
+      .theme-selector {
+        position: static;
+        justify-content: center;
+        margin: 10px auto;
+      }
+      
+      .leaderboard-table {
+        font-size: 0.8rem;
+      }
+      
+      .leaderboard-table th, 
+      .leaderboard-table td {
+        padding: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="theme-selector">
+      <button class="theme-btn" data-theme="light" title="Light theme"></button>
+      <button class="theme-btn" data-theme="dark" title="Dark theme"></button>
+      <button class="theme-btn" data-theme="high-contrast" title="High contrast theme"></button>
+    </div>
+
+    <div class="logo-container">
+      <a href="index.html">
+        <img src="images/logo.png" alt="Hope For Recovery Logo">
+      </a>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">About</a>
+      <a href="#">Fruit of Freedom</a>
+      <a href="journey.html">Join</a>
+      <a href="#">Partners</a>
+      <a href="local-program.html">Recovery Program</a>
+      <a id="authLink" href="login.html" class="login-link">Login</a>
+    </nav>
+  </header>
+
+  <div class="dashboard">
+    <button id="signOutButton" class="sign-out-btn">Sign Out</button>
+    <h1>Welcome Back, <span id="userFirstName">Friend</span>!</h1>
+    <p>Your journey to freedom continues. Keep going!</p>
+
+    <section class="progress-section">
+      <h2>Course Progress</h2>
+      <p>You've completed 6 out of 12 weeks</p>
+      <div class="progress-bar">
+        <div class="progress-bar-inner">50%</div>
+      </div>
+    </section>
+
+    <div class="cards">
+      <div class="card">
+        <h4>📖 Current Week: Patience (Week 6)</h4>
+        <p>Explore this week's video, worksheet and guided reflection.</p>
+        <a href="#" class="btn">Go to Week 6</a>
+      </div>
+
+      <div class="card">
+        <h4>🧠 Memory Verse</h4>
+        <p>"Be completely humble and gentle; be patient, bearing with one another in love." <br><em>– Ephesians 4:2</em></p>
+        <a href="Bible Memory Verse Quiz.html" class="btn">Review & Memorize</a>
+      </div>
+
+      <div class="card">
+        <h4>📝 Your Journal</h4>
+        <p>Record how God is working in your life this week. Reflect on growth or struggles.</p>
+        <a href="journal.html" class="btn">Open Journal</a>
+      </div>
+
+      <div class="card">
+        <h4>📆 View Past Weeks</h4>
+        <p>Revisit previous fruits or complete missed weeks at your pace.</p>
+        <a href="#" class="btn">View Timeline</a>
+      </div>
+
+      <div class="card leaderboard-card">
+        <h4>🏆 Community Leaderboard</h4>
+        <p>See how you compare with others in the Bible Memory Verse Challenge</p>
+        <table class="leaderboard-table" id="leaderboard">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Score</th>
+              <th>Level</th>
+              <th>Difficulty</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-data">
+            <!-- Leaderboard data will be loaded here -->
+          </tbody>
+        </table>
+        <a href="Bible Memory Verse Quiz.html" class="btn" style="margin-top: 1rem;">Play Now</a>
+      </div>
+    </div>
+
+    <div class="inspiration">
+      "The Spirit of God who raised Jesus from the dead lives in you." — Romans 8:11
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Fruit of Freedom | All rights reserved.
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlraUCERxYy9b1vN4FRtimdltQWNfEXww",
+      authDomain: "hopeforrecovery-8afc7.firebaseapp.com",
+      projectId: "hopeforrecovery-8afc7",
+      storageBucket: "hopeforrecovery-8afc7.firebasestorage.app",
+      messagingSenderId: "272983348501",
+      appId: "1:272983348501:web:0bba174aed5ec827ba051c",
+      measurementId: "G-BJB0E4LXSP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const signOutButton = document.getElementById('signOutButton');
+    const userFirstNameElement = document.getElementById('userFirstName');
+    const authLink = document.getElementById('authLink');
+    const leaderboardData = document.getElementById('leaderboard-data');
+
+    // Function to extract first name from full name
+    function getFirstName(fullName) {
+      return fullName ? fullName.split(' ')[0] : 'Friend';
+    }
+
+    // Update auth link based on login state
+    function updateAuthLink(user) {
+      if (user) {
+        authLink.textContent = 'My Profile';
+        authLink.href = 'dashboard.html';
+        authLink.className = 'profile-link';
+      } else {
+        authLink.textContent = 'Login';
+        authLink.href = 'login.html';
+        authLink.className = 'login-link';
+      }
+    }
+
+    // Function to make all links open in new tab
+    function makeLinksOpenInNewTab() {
+      const links = document.querySelectorAll('a');
+      links.forEach(link => {
+        // Skip links that don't have href or have special classes
+        if (link.href && !link.classList.contains('no-new-tab')) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+      });
+    }
+
+    // Theme switching functionality
+    function setupThemeSwitcher() {
+      const themeButtons = document.querySelectorAll('.theme-btn');
+      const html = document.documentElement;
+      
+      // Load saved theme from localStorage
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      html.setAttribute('data-theme', savedTheme);
+      
+      // Set active button
+      themeButtons.forEach(btn => {
+        if (btn.dataset.theme === savedTheme) {
+          btn.classList.add('active');
+        }
+        
+        btn.addEventListener('click', () => {
+          const theme = btn.dataset.theme;
+          html.setAttribute('data-theme', theme);
+          localStorage.setItem('theme', theme);
+          
+          // Update active button
+          themeButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    }
+
+    // Load leaderboard data
+    async function loadLeaderboard() {
+      try {
+        const q = query(
+          collection(db, "leaderboard"),
+          orderBy("score", "desc"),
+          limit(10)
+        );
+        
+        const querySnapshot = await getDocs(q);
+        leaderboardData.innerHTML = "";
+        
+        let rank = 1;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const row = document.createElement('tr');
+          
+          // Create avatar from first letter of name
+          const avatarLetter = data.username.charAt(0).toUpperCase();
+          
+          row.innerHTML = `
+            <td class="leaderboard-rank">${rank}</td>
+            <td>
+              <div class="leaderboard-user">
+                <div class="leaderboard-avatar">${avatarLetter}</div>
+                ${data.username}
+              </div>
+            </td>
+            <td>${data.score}</td>
+            <td>${data.level}</td>
+            <td>${data.difficulty.charAt(0).toUpperCase() + data.difficulty.slice(1)}</td>
+          `;
+          
+          leaderboardData.appendChild(row);
+          rank++;
+        });
+        
+        // If no scores yet
+        if (querySnapshot.empty) {
+          leaderboardData.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center;">No scores yet. Be the first!</td>
+            </tr>
+          `;
+        }
+      } catch (error) {
+        console.error("Error loading leaderboard:", error);
+        leaderboardData.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center;">Error loading leaderboard</td>
+          </tr>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupThemeSwitcher();
+      makeLinksOpenInNewTab();
+      loadLeaderboard();
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User is signed in.
+        if (!user.emailVerified && user.providerData[0].providerId === 'password') {
+          // If email/password user and not verified, redirect to verification page
+          window.location.href = "verify-email.html";
+        } else {
+          // User is verified or signed in via Google (which is inherently verified)
+          console.log("User is authenticated and email verified (or Google login):", user);
+          
+          // Update auth link
+          updateAuthLink(user);
+          
+          // Get user data from Firestore
+          try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+              const userData = userDoc.data();
+              
+              // Determine the name to display
+              let displayName;
+              if (userData.name) {
+                displayName = getFirstName(userData.name);
+              } else if (user.displayName) {
+                displayName = getFirstName(user.displayName);
+              } else {
+                displayName = 'Friend';
+              }
+              
+              // Update the welcome message
+              userFirstNameElement.textContent = displayName;
+            } else {
+              console.log("No user data found in Firestore");
+              userFirstNameElement.textContent = 'Friend';
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            userFirstNameElement.textContent = 'Friend';
+          }
+        }
+      } else {
+        // No user is signed in. Update auth link
+        updateAuthLink(null);
+      }
+    });
+
+    signOutButton.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        console.log("User signed out.");
+        window.location.href = "index.html"; // Redirect to home page after sign out
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    });
+  </script>
+</body>
+</html>
