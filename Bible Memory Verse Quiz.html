@@ -203,28 +203,27 @@
     
     <div class="button-row">
       <div id="auth-status">
-        <button id="login-btn" onclick="signIn()">Sign In</button>
-        <button id="logout-btn" style="display:none;" onclick="signOut()">Sign Out</button>
+        <button id="login-btn">Sign In</button>
+        <button id="logout-btn" style="display:none;">Sign Out</button>
       </div>
-      <button onclick="startGame()">Start Game</button>
-      <button onclick="showScoreboard()">View Scoreboard</button>
+      <button id="start-game-btn">Start Game</button>
+      <button id="view-scoreboard-btn">View Scoreboard</button>
     </div>
     
     <div class="username-container">
       <input type="text" id="username" placeholder="Enter your username" required>
-      <button id="edit-username-btn" class="edit-username" style="display:none;" onclick="enableUsernameEdit()">✏️</button>
+      <button id="edit-username-btn" class="edit-username" style="display:none;">✏️</button>
     </div>
   </div>
 
-  <!-- Rest of your HTML remains the same -->
   <!-- Difficulty Selection Screen -->
   <div id="difficulty-screen" class="screen">
     <h1>Select Difficulty</h1>
     <p>Choose how challenging you want the quiz to be:</p>
-    <button class="difficulty-btn easy" onclick="setDifficulty('easy')">Easy (1 missing word)</button>
-    <button class="difficulty-btn intermediate" onclick="setDifficulty('intermediate')">Intermediate (3 missing words)</button>
-    <button class="difficulty-btn expert" onclick="setDifficulty('expert')">Expert (5 missing words)</button>
-    <button onclick="returnToMenu()">Back to Menu</button>
+    <button class="difficulty-btn easy" id="easy-btn">Easy (1 missing word)</button>
+    <button class="difficulty-btn intermediate" id="intermediate-btn">Intermediate (3 missing words)</button>
+    <button class="difficulty-btn expert" id="expert-btn">Expert (5 missing words)</button>
+    <button id="back-to-menu-btn">Back to Menu</button>
   </div>
 
   <!-- Game Screen -->
@@ -244,7 +243,7 @@
     </div>
     <div class="verse-container" id="verse"></div>
     <div id="input-container"></div>
-    <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+    <button id="submit-btn">Submit</button>
     <div class="feedback" id="feedback"></div>
     <div class="score-info">
       Score: <span id="score">0</span> | 
@@ -257,9 +256,9 @@
     <h1>Level <span id="completed-level">1</span> Complete!</h1>
     <p>You earned <span id="level-points-earned">0</span> points this level.</p>
     <p>Total Score: <span id="total-score">0</span></p>
-    <button onclick="replayLevel()">Replay Level</button>
-    <button id="next-level-btn" onclick="nextLevel()">Next Level</button>
-    <button onclick="quitToMenu()">Quit to Menu</button>
+    <button id="replay-level-btn">Replay Level</button>
+    <button id="next-level-btn">Next Level</button>
+    <button id="quit-to-menu-btn">Quit to Menu</button>
   </div>
 
   <!-- Scoreboard Screen -->
@@ -279,10 +278,9 @@
         <!-- Scores will be inserted here -->
       </tbody>
     </table>
-    <button onclick="returnToMenu()">Return to Menu</button>
+    <button id="return-to-menu-btn">Return to Menu</button>
   </div>
 
-  <!-- JavaScript remains the same as in previous version -->
   <script type="module">
     // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -402,12 +400,16 @@
 
     // Track authentication state
     onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      updateAuthUI(user);
-      if (user) {
-        console.log("User is signed in:", user.uid);
-      } else {
-        console.log("No user signed in");
+      try {
+        currentUser = user;
+        updateAuthUI(user);
+        if (user) {
+          console.log("User is signed in:", user.uid);
+        } else {
+          console.log("No user signed in");
+        }
+      } catch (error) {
+        console.error("Auth state error:", error);
       }
     });
 
@@ -415,6 +417,9 @@
     function startGame() {
       const username = document.getElementById("username").value.trim();
       if (!username) {
+        const usernameInput = document.getElementById("username");
+        usernameInput.style.border = "2px solid red";
+        setTimeout(() => { usernameInput.style.border = ""; }, 2000);
         alert("Please enter a username");
         return;
       }
@@ -762,17 +767,49 @@
       screens[screenId].classList.add("active");
     }
 
-    // Handle Enter key in input fields
-    document.addEventListener("keypress", function(e) {
-      if (e.key === "Enter" && screens.game.classList.contains("active")) {
-        checkAnswer();
+    // Initialize all event listeners
+    function initEventListeners() {
+      // Welcome screen
+      document.getElementById('start-game-btn').addEventListener('click', startGame);
+      document.getElementById('view-scoreboard-btn').addEventListener('click', showScoreboard);
+      document.getElementById('login-btn').addEventListener('click', signIn);
+      document.getElementById('logout-btn').addEventListener('click', signOut);
+      document.getElementById('edit-username-btn').addEventListener('click', enableUsernameEdit);
+      
+      // Difficulty screen
+      document.getElementById('easy-btn').addEventListener('click', () => setDifficulty('easy'));
+      document.getElementById('intermediate-btn').addEventListener('click', () => setDifficulty('intermediate'));
+      document.getElementById('expert-btn').addEventListener('click', () => setDifficulty('expert'));
+      document.getElementById('back-to-menu-btn').addEventListener('click', returnToMenu);
+      
+      // Game screen
+      document.getElementById('submit-btn').addEventListener('click', checkAnswer);
+      
+      // Level complete screen
+      document.getElementById('replay-level-btn').addEventListener('click', replayLevel);
+      document.getElementById('next-level-btn').addEventListener('click', nextLevel);
+      document.getElementById('quit-to-menu-btn').addEventListener('click', quitToMenu);
+      
+      // Scoreboard screen
+      document.getElementById('return-to-menu-btn').addEventListener('click', returnToMenu);
+      
+      // Enter key handling
+      document.addEventListener("keypress", function(e) {
+        if (e.key === "Enter" && screens.game.classList.contains("active")) {
+          checkAnswer();
+        }
+      });
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      initEventListeners();
+      
+      // Initialize localStorage scoreboard if empty
+      if (scoreboard.length === 0) {
+        localStorage.setItem("bibleQuizScoreboard", JSON.stringify([]));
       }
     });
-
-    // Initialize localStorage scoreboard if empty
-    if (scoreboard.length === 0) {
-      localStorage.setItem("bibleQuizScoreboard", JSON.stringify([]));
-    }
   </script>
 </body>
 </html>
