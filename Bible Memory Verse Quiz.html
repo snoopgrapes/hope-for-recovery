@@ -534,8 +534,8 @@
       let displayText = "";
       for (let i = 0; i < words.length; i++) {
         if (blankIndices.includes(i)) {
-          const word = words[i].replace(/[.,;!?]/g, "");
-          currentBlanks.push(word);
+          // Store the original word with punctuation for comparison
+          currentBlanks.push(words[i]);
           displayText += `<span class="blank">______</span> `;
         } else {
           displayText += words[i] + " ";
@@ -605,8 +605,8 @@
       let displayText = "";
       for (let i = 0; i < words.length; i++) {
         if (blankIndices.includes(i)) {
-          const word = words[i].replace(/[.,;!?]/g, "");
-          currentBlanks.push(word);
+          // Store the original word with punctuation for comparison
+          currentBlanks.push(words[i]);
           displayText += `<span class="blank">______</span> `;
         } else {
           displayText += words[i] + " ";
@@ -664,13 +664,20 @@
       // Check each answer
       for (let i = 0; i < inputs.length; i++) {
         const userAnswer = inputs[i].value.trim();
-        const correctAnswer = currentBlanks[i];
+        let correctAnswer = currentBlanks[i];
         
-        if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-          feedbackEl.innerHTML += `<p>Blank #${i+1}: ✅ Correct! (${correctAnswer})</p>`;
+        // Remove any surrounding quotes from correct answer for display
+        let displayAnswer = correctAnswer.replace(/^['"]|['"]$/g, '');
+        
+        // Compare while ignoring case and outer punctuation
+        const normalizedUser = userAnswer.toLowerCase().replace(/^['"]|['"]$/g, '');
+        const normalizedCorrect = correctAnswer.toLowerCase().replace(/^['"]|['"]$/g, '');
+        
+        if (normalizedUser === normalizedCorrect) {
+          feedbackEl.innerHTML += `<p>Blank #${i+1}: ✅ Correct! (${displayAnswer})</p>`;
         } else {
           allCorrect = false;
-          feedbackEl.innerHTML += `<p>Blank #${i+1}: ❌ Incorrect. The answer was "${correctAnswer}"</p>`;
+          feedbackEl.innerHTML += `<p>Blank #${i+1}: ❌ Incorrect. The answer was "${displayAnswer}"</p>`;
         }
       }
 
