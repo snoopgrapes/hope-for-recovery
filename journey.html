@@ -4,216 +4,369 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Journey with Hope For Recovery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@800&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Open Sans', sans-serif;
-      background-color: #f5f7fa;
-      color: #333;
-      line-height: 1.6;
-    }
+:root {
+  --primary: #FF4D80; /* Vibrant pink */
+  --secondary: #6E45E2; /* Purple */
+  --accent: #FFD166; /* Gold */
+  --dark: #2A2D34; /* Dark slate */
+  --light: #FDFFFC; /* Off-white */
+}
 
-    header {
-      background-color: #fff;
-      color: #000;
-      padding: 1.5rem;
-      text-align: center;
-    }
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+  padding-top: 180px; /* Matches header height */
+}
 
-    nav {
-      margin-top: 1rem;
-    }
+/* Header Styles - Updated to match local-program.html */
+header {
+  background-color: #FFFFFF;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  padding: 0.7rem;
+  box-sizing: border-box;
+  border-bottom: 3px solid #f0f0f0;
+}
 
-    nav a {
-      color: #000;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: 600;
-    }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+}
 
-	.login-link {
-		color: #4CAF50 !important; /* Green color to stand out */
-		font-weight: bold;
-	}
+nav {
+  display: flex;
+  transition: all 0.3s ease;
+}
 
-	.login-link:hover {
-		text-decoration: underline;
-	}
-    .logo-container img {
-      max-width: 150px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
+nav a {
+  color: var(--dark);
+  margin: 0 1rem;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s;
+}
 
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 1.5rem;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+nav a:hover {
+  color: var(--primary);
+}
 
-    h1, h2, h3 {
-      font-family: 'Poppins', sans-serif;
-      color: #2c3e50;
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.3s;
+}
 
-    .section-content {
-      margin-bottom: 2rem;
-    }
+nav a:hover::after {
+  width: 100%;
+}
 
-    .section-content ul {
-      list-style: none;
-      padding: 0;
-    }
+.login-link {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+}
 
-    .section-content ul li {
-      background: #f9f9f9;
-      margin-bottom: 0.8rem;
-      padding: 1rem;
-      border-left: 5px solid #fdd835;
-      border-radius: 5px;
-    }
+.profile-link {
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+}
 
-    .registration-form {
-      padding: 2rem;
-      background-color: #f5f7fa;
-      border-radius: 8px;
-      margin-top: 2rem;
-    }
+.logo-container img {
+  max-width: 135px;
+  height: auto;
+  transition: transform 0.3s;
+}
 
-    .registration-form label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      color: #555;
-    }
+.logo-container img:hover {
+  transform: scale(1.05);
+}
 
-    .registration-form input[type="text"],
-    .registration-form input[type="email"],
-    .registration-form input[type="password"] {
-      width: calc(100% - 20px);
-      padding: 10px;
-      margin-bottom: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
+/* Mobile Menu Styles */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+}
 
-    .registration-form button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-      display: block;
-      width: 100%;
-    }
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: var(--dark);
+  transition: all 0.3s ease;
+}
 
-    .registration-form button:hover {
-      background-color: #45a049;
-    }
+.menu-toggle.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
 
-    footer {
-      background: #f1f1f1;
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: 0.95rem;
-      color: #444;
-      margin-top: 3rem;
-    }
-    
-    /* Updated styles for the Google Sign-In button */
-    .signin-options {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    
-    .or-divider {
-      display: flex;
-      align-items: center;
-      margin: 1rem 0;
-      color: #666;
-      font-size: 0.9rem;
-    }
-    
-    .or-divider::before,
-    .or-divider::after {
-      content: "";
-      flex: 1;
-      border-bottom: 1px solid #ddd;
-    }
-    
-    .or-divider::before {
-      margin-right: 1rem;
-    }
-    
-    .or-divider::after {
-      margin-left: 1rem;
-    }
-    
-    .google-signin-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #fff;
-      color: #757575;
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .google-signin-btn:hover {
-      background-color: #f9f9f9;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-    }
-    
-    .google-icon {
-      width: 20px;
-      height: 20px;
-      margin-right: 12px;
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzArrayAdapterOC44IDguOCAwIDAgMCAyLjYtNi41eiIgZmlsbD0iIzQyODVGNCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTkgMThjMi40IDAgNC41LS44IDYtMi4ybC0zLTIuMmE1LjQgNS40IDAgMCAxLTgtMi45SDFWMTJgOSAzNiAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=');
-      background-size: contain;
-    }
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Main Content Styles */
+.container {
+  max-width: 900px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-content {
+  margin-bottom: 2rem;
+}
+
+.section-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.section-content ul li {
+  background: #f9f9f9;
+  margin-bottom: 0.8rem;
+  padding: 1rem;
+  border-left: 5px solid #fdd835;
+  border-radius: 5px;
+}
+
+.registration-form {
+  padding: 2rem;
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.registration-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.registration-form button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+}
+
+.registration-form button:hover {
+  background-color: #45a049;
+}
+
+footer {
+  background: #f1f1f1;
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 3rem;
+}
+
+/* Google Sign-In Button */
+.signin-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.or-divider::before {
+  margin-right: 1rem;
+}
+
+.or-divider::after {
+  margin-left: 1rem;
+}
+
+.google-signin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  color: #757575;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.google-signin-btn:hover {
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzArrayAdapterOC44IDguOCAwIDAgMCAyLjYtNi41eiIgZmlsbD0iIzQyODVGNCIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTkgMThjMi40IDAgNC41LS44IDYtMi4ybC0zLTIuMmE1LjQgNS40IDAgMCAxLTgtMi45SDFWMTJgOSAzNiAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNMCAwaDE4djE4SDB6Ii8+PC9nPjwvc3ZnPg==');
+  background-size: contain;
+}
+
+/* Mobile view - Updated to match local-program.html */
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+
+  header {
+    height: 60px;
+    padding: 0;
+  }
+
+  .header-container {
+    padding: 1rem;
+  }
+
+  .hero {
+    min-height: 400px;
+    padding: 40px 20px;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  nav {
+    position: fixed;
+    top: 60px;
+    right: -100%;
+    width: 70%;
+    height: calc(100vh - 60px);
+    background: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
+
+  nav.active {
+    right: 0;
+  }
+
+  nav a {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+  }
+
+  .logo-container img {
+    max-width: 100px;
+  }
+}
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo-container">
-      <a href="index.html">
-        <img src="images/logo.png" alt="Hope For Recovery Logo">
-      </a>
+    <div class="header-container">
+      <div class="logo-container">
+        <a href="index.html">
+          <img src="images/HFR.png" alt="Hope For Recovery Logo">
+        </a>
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav>
+        <a href="mainpage.html">Hope Community Church</a>
+        <a href="journey.html">Join</a>
+        <a href="#">Partners</a>
+        <a href="local-program.html">Recovery Program</a>
+        <a id="authLink" href="login.html" class="login-link">Login</a>
+      </nav>
     </div>
-
-	<nav>
-		<a href="index.html">Home</a>
-		<a href="#">About</a>
-		<a href="#">Fruit of Freedom</a>
-		<a href="journey.html">Join</a>
-		<a href="#">Partners</a>
-		<a href="local-program.html">Recovery Program</a>
-		<a href="login.html" class="login-link">Login</a> <!-- New login link -->
-	</nav>
-
   </header>
 
+  <!-- Rest of your HTML content remains the same -->
   <div class="container">
     <h1>Embark on Your Journey to Freedom</h1>
 
@@ -290,7 +443,57 @@
     © 2025 Hope For Recovery | A ministry of healing and hope.
   </footer>
 
+  <!-- Rest of your JavaScript remains the same -->
   <script type="module">
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const nav = document.querySelector('nav');
+
+      menuToggle.addEventListener('click', function() {
+        menuToggle.classList.toggle('active');
+        nav.classList.toggle('active');
+      });
+
+      // Close menu when clicking on a nav link (for mobile)
+      const navLinks = document.querySelectorAll('nav a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            menuToggle.classList.remove('active');
+            nav.classList.remove('active');
+          }
+        });
+      });
+
+      // Smooth scrolling with offset for fixed header
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = targetElement.offsetTop - headerHeight;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+
+            // Update URL without page jump
+            if (history.pushState) {
+              history.pushState(null, null, targetId);
+            } else {
+              location.hash = targetId;
+            }
+          }
+        });
+      });
+    });
+
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
@@ -299,7 +502,8 @@
       createUserWithEmailAndPassword, 
       sendEmailVerification,
       GoogleAuthProvider,
-      signInWithPopup
+      signInWithPopup,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
@@ -324,6 +528,7 @@
     const registrationForm = document.getElementById('registrationForm');
     const formMessage = document.getElementById('formMessage');
     const googleSignIn = document.getElementById('googleSignIn');
+    const authLink = document.getElementById('authLink');
 
     // Google Sign-In Handler
     googleSignIn.addEventListener('click', async (e) => {
@@ -429,6 +634,23 @@
         formMessage.style.color = '#dc3545';
         console.error("Error during registration:", error);
       }
+    });
+
+    // Authentication state management
+    function updateAuthLink(user) {
+      if (user) {
+        authLink.textContent = 'My Profile';
+        authLink.href = 'dashboard.html';
+        authLink.className = 'profile-link';
+      } else {
+        authLink.textContent = 'Login';
+        authLink.href = 'login.html';
+        authLink.className = 'login-link';
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      updateAuthLink(user);
     });
   </script>
 </body>
