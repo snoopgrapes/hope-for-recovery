@@ -637,7 +637,7 @@
 
   // Try to load devotions from module
   try {
-    import('./Docs/devotional.js').then(module => {
+    import('./devotional.js').then(module => {
       if (module && module.devotions) {
         devotions = module.devotions;
       }
