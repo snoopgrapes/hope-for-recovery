@@ -194,4 +194,3 @@ const devotions = {
         link: "/signup"
     }
 ]
-export { devotions };  // <-- Add this line
