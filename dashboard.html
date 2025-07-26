@@ -636,20 +636,20 @@
   };
 
   // Try to load devotions from module
-  try {
-    import('./devotional.js').then(module => {
-      if (module && module.devotions) {
-        devotions = module.devotions;
-      }
+try {
+  import('./devotional.js')
+    .then(module => {
+      let devotions = module.devotions || [];
       initDashboard();
-    }).catch(err => {
+    })
+    .catch(err => {
       console.error('Failed to load devotions:', err);
       initDashboard();
     });
-  } catch (e) {
-    console.error('Import error:', e);
-    initDashboard();
-  }
+} catch (e) {
+  console.error('Import error:', e);
+  initDashboard();
+}
 
   function initDashboard() {
     // DOM Elements
