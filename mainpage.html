@@ -56,6 +56,7 @@
 
         nav a::after {
             content: '';
+;
             position: absolute;
             bottom: -5px;
             left: 0;
@@ -171,11 +172,10 @@
         body {
             font-family: 'Nunito Sans', sans-serif;
             margin: 0;
-            padding: 0; /* Updated: Removed padding-top */
+            padding: 0;
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            /* padding-top: 70px; /* Removed this line */
         }
 
         h1, h2, h3 {
@@ -278,11 +278,11 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-		
-		html {
-			scroll-behavior: smooth;
-		}
-		
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
         /* About Section */
         .about-grid {
             display: grid;
@@ -329,8 +329,8 @@
             border-radius: 10px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Updated: Changed from center to flex-start */
-            align-items: flex-start; /* Added: Align items to the left */
+            justify-content: flex-start;
+            align-items: flex-start;
         }
 
         .card-back {
@@ -345,12 +345,12 @@
 
         .service-card h3 {
             color: var(--primary);
-            margin-top: 0; /* Ensure this remains 0 */
-            margin-bottom: 10px; /* Added: Small bottom margin for spacing */
+            margin-top: 0;
+            margin-bottom: 10px;
         }
 
         .service-card p {
-            margin-top: 0; /* Added: Remove default top margin from paragraphs */
+            margin-top: 0;
         }
 
         /* Testimonials */
@@ -450,15 +450,22 @@
         /* Live Badge */
         .live-badge {
             position: fixed;
-            top: 80px; /* Adjusted for fixed header */
-            right: 20px;
+            bottom: 100px;
+            right: 30px;
             background: red;
             color: white;
             padding: 8px 15px;
             border-radius: 20px;
-            z-index: 1000;
+            z-index: 900;
             display: none;
             animation: pulse 2s infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .live-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
         }
 
         .pulse {
@@ -469,39 +476,6 @@
             border-radius: 50%;
             margin-right: 5px;
             animation: pulseOpacity 1.5s infinite;
-        }
-
-        /* Verse Trigger */
-        .verse-trigger {
-            position: fixed;
-            bottom: 100px;
-            right: 30px;
-            background: var(--secondary);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 900;
-            display: flex;
-            align-items: center;
-        }
-
-        .verse-popup {
-            display: none;
-            position: absolute;
-            right: 0;
-            bottom: 50px;
-            width: 250px;
-            background: var(--secondary);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .verse-trigger:hover .verse-popup {
-            display: block;
-            animation: fadeIn 0.3s;
         }
 
         /* Chat Button */
@@ -519,13 +493,79 @@
             height: 60px;
         }
 
-        /* Map */
+        /* Enhanced Map Section */
+        .map-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
         #churchMap {
-            height: 300px;
-            margin: 30px 0;
+            height: 400px;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .directions-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .directions-panel h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .transport-options {
+            margin-top: 20px;
+        }
+
+        .transport-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .transport-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--primary);
+            width: 30px;
+            text-align: center;
+        }
+
+        .transport-details h4 {
+            margin: 0 0 5px 0;
+        }
+
+        .transport-details p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .get-directions-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .get-directions-btn:hover {
+            background-color: var(--accent);
         }
 
         /* Footer */
@@ -638,13 +678,17 @@
                 display: none;
             }
 
-            .verse-trigger, .chat-button {
+            .chat-button {
                 right: 15px;
                 bottom: 80px;
             }
 
-            .verse-trigger {
-                bottom: 150px;
+            .map-container {
+                grid-template-columns: 1fr;
+            }
+            
+            #churchMap {
+                height: 300px;
             }
         }
     </style>
@@ -664,19 +708,18 @@
                 <span></span>
             </button>
 
-		<nav>
-			<!--<a href="mainpage.html">Home</a>-->
-			<a href="index.html">Hope for Recovery</a>                
-			<a href="#services">Worship</a>  <!-- New link -->
-			<a href="#recovery">Recovery</a>  <!-- Updated link -->
-			<a href="#testimonies">Testimonies</a>  <!-- New link -->
-			<a href="#about">About</a>
-			<a id="authLink" href="login.html" class="login-link">Login</a>
-		</nav>
+        <nav>
+            <a href="index.html">Hope for Recovery</a>                
+            <a href="#services">Worship</a>
+            <a href="#recovery">Recovery</a>
+            <a href="#testimonies">Testimonies</a>
+            <a href="#about">About</a>
+            <a id="authLink" href="login.html" class="login-link">Login</a>
+        </nav>
         </div>
     </header>
 
-    <div class="live-badge" id="liveBadge">
+    <div class="live-badge" id="liveBadge" onclick="openLiveStream()">
         <span class="pulse"></span> LIVE: Sunday Service
     </div>
 
@@ -819,9 +862,9 @@
         </div>
     </section>
 
-	<section class="section" id="testimonies">
-		<div class="container">
-			<h2 style="text-align: center;">Stories of Hope</h2>
+    <section class="section" id="testimonies">
+        <div class="container">
+            <h2 style="text-align: center;">Stories of Hope</h2>
             <div class="testimonial-gallery">
                 <div class="testimonial active">
                     <p class="testimonial-quote">"This church saved my life. The recovery program gave me structure when I had nothing left. Today I'm two years sober and rebuilding relationships with my family."</p>
@@ -847,7 +890,41 @@
     <section class="section section-accent">
         <div class="container">
             <h2 style="text-align: center;">Find Us</h2>
-            <div id="churchMap"></div>
+            <div class="map-container">
+                <div id="churchMap"></div>
+                <div class="directions-panel">
+                    <h3>How to Get Here</h3>
+                    <p>We're located at 30 Shelley Drive, Clydebank, G81 3EL</p>
+                    
+                    <div class="transport-options">
+                        <div class="transport-option">
+                            <div class="transport-icon">🚗</div>
+                            <div class="transport-details">
+                                <h4>By Car</h4>
+                                <p>Free parking available on site</p>
+                            </div>
+                        </div>
+                        <div class="transport-option">
+                            <div class="transport-icon">🚌</div>
+                            <div class="transport-details">
+                                <h4>By Bus</h4>
+                                <p>Routes 1, 2, and 3 stop nearby (5 min walk)</p>
+                            </div>
+                        </div>
+                        <div class="transport-option">
+                            <div class="transport-icon">🚆</div>
+                            <div class="transport-details">
+                                <h4>By Train</h4>
+                                <p>Clydebank station is 10 minutes walk away</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="get-directions-btn" onclick="openDirections()">
+                        Get Directions
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -886,14 +963,6 @@
         </div>
     </div>
 
-    <div class="verse-trigger">
-        Today's Verse
-        <div class="verse-popup">
-            <p>"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."</p>
-            <p>- Jeremiah 29:11</p>
-        </div>
-    </div>
-
     <div class="chat-button" onclick="openChat()">
         <img src="assets/chat-icon.png" alt="Chat with us">
     </div>
@@ -923,18 +992,42 @@
     function updateCountdown() {
         const now = new Date();
         const nextSunday = new Date();
-        nextSunday.setDate(now.getDate() + (7 - now.getDay()) % 7);
+        
+        // Calculate days until next Sunday
+        let daysUntilSunday = (7 - now.getDay()) % 7;
+        
+        // If today is Sunday, check if it's before or after 11am
+        if (daysUntilSunday === 0) {
+            if (now.getHours() < 11 || (now.getHours() === 11 && now.getMinutes() < 0)) {
+                // It's Sunday before 11am - service is today
+                daysUntilSunday = 0;
+            } else {
+                // It's Sunday after 11am - next service is next Sunday
+                daysUntilSunday = 7;
+            }
+        }
+        
+        nextSunday.setDate(now.getDate() + daysUntilSunday);
         nextSunday.setHours(11, 0, 0, 0);
         
         const diff = nextSunday - now;
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         
-        document.getElementById('countdown').innerHTML = 
-            `Next service in: <strong>${days}d ${Math.floor(hours)}h</strong>`;
+        let countdownText;
+        if (days > 0) {
+            countdownText = `Next service in: <strong>${days}d ${hours}h</strong>`;
+        } else if (hours > 0) {
+            countdownText = `Next service in: <strong>${hours}h ${minutes}m</strong>`;
+        } else {
+            countdownText = `Service starts in: <strong>${minutes}m</strong>`;
+        }
+        
+        document.getElementById('countdown').innerHTML = countdownText;
     }
-    setInterval(updateCountdown, 3600000);
-    updateCountdown();
+    setInterval(updateCountdown, 60000); // Update every minute
+    updateCountdown(); // Initial call
 
     // Testimonial slider
     function showTestimonial(index) {
@@ -968,14 +1061,43 @@
         }
     }
 
-    // Live badge
+    // Add this to your script
+    window.toggleLiveBadge = function(show) {
+        document.getElementById('liveBadge').style.display = 
+        show ? 'block' : 'none';
+    };
+
+    // Live badge functionality
     function checkLive() {
         const now = new Date();
-        if (now.getDay() === 0 && now.getHours() >= 10 && now.getHours() <= 12) {
-            document.getElementById('liveBadge').style.display = 'block';
+        const day = now.getDay(); // 0 = Sunday
+        const hour = now.getHours();
+        const minutes = now.getMinutes();
+        
+        // Adjust these times to match your actual stream schedule
+        const isLiveTime = (day === 0 && // Sunday
+                           ((hour === 10 && minutes >= 30) || // From 10:30am
+                            (hour === 11) ||                  // Until 12:00pm
+                            (hour === 12 && minutes < 30)));  // (adjust as needed)
+        
+        const liveBadge = document.getElementById('liveBadge');
+        if (isLiveTime) {
+            liveBadge.style.display = 'block';
+        } else {
+            liveBadge.style.display = 'none';
         }
     }
-    checkLive();
+    
+    // Check every minute (60000ms)
+    setInterval(checkLive, 60000);
+    checkLive(); // Initial check
+
+    // YouTube Live Stream function
+    function openLiveStream() {
+        // Replace with your actual YouTube live stream URL or channel URL
+        const youtubeLiveUrl = "https://youtu.be/Z6GvIj0fywg";
+        window.open(youtubeLiveUrl, '_blank');
+    }
 
     // Smooth scrolling with offset for fixed header
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1012,12 +1134,19 @@
     // Set current year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Initialize Google Map
+    // Enhanced Google Map Initialization
+    let map;
+    let marker;
+    let directionsService;
+    let directionsRenderer;
+
     function initMap() {
-        const location = { lat: 55.9022, lng: -4.4041 }; // Clydebank coordinates
-        const map = new google.maps.Map(document.getElementById("churchMap"), {
+        const churchLocation = { lat: 55.9022, lng: -4.4041 }; // Clydebank coordinates
+        
+        // Initialize the map
+        map = new google.maps.Map(document.getElementById("churchMap"), {
             zoom: 15,
-            center: location,
+            center: churchLocation,
             styles: [
                 {
                     "featureType": "poi",
@@ -1029,13 +1158,92 @@
                 }
             ]
         });
-        new google.maps.Marker({
-            position: location,
+        
+        // Add marker
+        marker = new google.maps.Marker({
+            position: churchLocation,
             map: map,
-            title: "Hope Community Church"
+            title: "Hope Community Church",
+            icon: {
+                url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            }
+        });
+        
+        // Initialize directions services
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+            map: map,
+            suppressMarkers: true
+        });
+        
+        // Add info window
+        const infoWindow = new google.maps.InfoWindow({
+            content: `
+                <div style="padding: 10px;">
+                    <h3 style="margin: 0 0 5px 0; color: ${getComputedStyle(document.documentElement).getPropertyValue('--primary')}">Hope Community Church</h3>
+                    <p style="margin: 0;">30 Shelley Drive, Clydebank, G81 3EL</p>
+                </div>
+            `
+        });
+        
+        marker.addListener("click", () => {
+            infoWindow.open(map, marker);
         });
     }
+
+    function openDirections() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    
+                    calculateAndDisplayRoute(userLocation);
+                },
+                () => {
+                    // If geolocation fails, show directions from city center
+                    const clydebankCenter = { lat: 55.9014, lng: -4.4057 };
+                    calculateAndDisplayRoute(clydebankCenter);
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            const clydebankCenter = { lat: 55.9014, lng: -4.4057 };
+            calculateAndDisplayRoute(clydebankCenter);
+        }
+    }
+
+    function calculateAndDisplayRoute(startLocation) {
+        const churchLocation = { lat: 55.9022, lng: -4.4041 };
+        
+        directionsService.route(
+            {
+                origin: startLocation,
+                destination: churchLocation,
+                travelMode: google.maps.TravelMode.DRIVING,
+            },
+            (response, status) => {
+                if (status === "OK") {
+                    directionsRenderer.setDirections(response);
+                    
+                    // Add custom marker for church
+                    new google.maps.Marker({
+                        position: churchLocation,
+                        map: map,
+                        title: "Hope Community Church",
+                        icon: {
+                            url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                        }
+                    });
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            }
+        );
+    }
 </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCoVwuEk_z4nUL8W4zuK6dS2ODDqlse0Ik&callback=initMap&libraries=places" async defer></script>
 </body>
 </html>

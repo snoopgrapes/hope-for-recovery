@@ -4,45 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Dashboard – Fruit of Freedom</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Default theme (light) */
-      --primary-color: #4ca1af;
-      --primary-hover: #3d8b99;
-      --background-color: #f0f4f8;
+      /* Vibrant theme (light) */
+      --primary-color: #FF7E5D;
+      --primary-hover: #E0694A;
+      --background-color: #F7F9FC;
       --card-bg: #fff;
-      --text-color: #333;
-      --progress-bg: #d9e9f1;
-      --shadow-color: rgba(0,0,0,0.1);
+      --text-color: #2E2E2E;
+      --progress-bg: #E3F2FD;
+      --shadow-color: rgba(74, 144, 226, 0.2);
       --inspiration-color: #444;
       --footer-color: #777;
-    }
-
-    /* Dark theme */
-    [data-theme="dark"] {
-      --primary-color: #5cb3c1;
-      --primary-hover: #4ca1af;
-      --background-color: #1a1a1a;
-      --card-bg: #2d2d2d;
-      --text-color: #e0e0e0;
-      --progress-bg: #3a3a3a;
-      --shadow-color: rgba(0,0,0,0.3);
-      --inspiration-color: #aaa;
-      --footer-color: #999;
-    }
-
-    /* High contrast theme */
-    [data-theme="high-contrast"] {
-      --primary-color: #0057b7;
-      --primary-hover: #004494;
-      --background-color: #ffffff;
-      --card-bg: #f0f0f0;
-      --text-color: #000000;
-      --progress-bg: #e0e0e0;
-      --shadow-color: rgba(0,0,0,0.5);
-      --inspiration-color: #333;
-      --footer-color: #555;
+      --accent-blue: #4A90E2;
+      --accent-green: #6BBF70;
+      --accent-yellow: #FFD166;
+      --accent-purple: #A05CFF;
     }
 
     body {
@@ -123,99 +101,6 @@
       width: 100%;
     }
 
-    /* Login/Profile link styles */
-    .login-link {
-      background-color: var(--primary-color);
-      color: white !important;
-      padding: 8px 20px;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-      margin-left: 15px;
-    }
-
-    .login-link:hover {
-      background-color: var(--primary-hover);
-      color: white !important;
-    }
-
-    .login-link::after {
-      display: none;
-    }
-
-    .profile-link {
-      background-color: var(--primary-color);
-      color: white !important;
-      padding: 8px 20px;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-      margin-left: 15px;
-    }
-
-    .profile-link:hover {
-      background-color: var(--primary-hover);
-      color: white !important;
-    }
-
-    .profile-link::after {
-      display: none;
-    }
-
-    /* Sign out button */
-    .sign-out-btn {
-      background-color: #f5f7fa;
-      color: #2c3e50;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-      margin-left: 15px;
-    }
-
-    .sign-out-btn:hover {
-      background-color: #e1e5eb;
-    }
-
-    /* Theme selector styles */
-    .theme-selector {
-      display: flex;
-      gap: 10px;
-      margin-left: 15px;
-    }
-
-    .theme-btn {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      border: 2px solid var(--text-color);
-      cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.3s ease;
-      background-size: cover;
-    }
-
-    .theme-btn:hover {
-      transform: scale(1.1);
-    }
-
-    .theme-btn[data-theme="light"] {
-      background: linear-gradient(135deg, #f0f4f8 50%, #4ca1af 50%);
-    }
-
-    .theme-btn[data-theme="dark"] {
-      background: linear-gradient(135deg, #1a1a1a 50%, #5cb3c1 50%);
-    }
-
-    .theme-btn[data-theme="high-contrast"] {
-      background: linear-gradient(135deg, #ffffff 50%, #0057b7 50%);
-    }
-
-    .theme-btn.active {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 2px var(--primary-color);
-    }
-
     /* Dashboard styles */
     .dashboard {
       max-width: 1000px;
@@ -271,6 +156,18 @@
       border-radius: 8px;
       box-shadow: 0 1px 6px var(--shadow-color);
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-blue), var(--accent-green));
     }
 
     .card h4 {
@@ -287,16 +184,55 @@
       display: inline-block;
       background-color: var(--primary-color);
       color: white;
-      padding: 0.5rem 1.2rem;
+      padding: 0.6rem 1.4rem;
       text-decoration: none;
-      border-radius: 5px;
+      border-radius: 8px;
       font-weight: bold;
       font-size: 0.9rem;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .btn:hover {
       background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .daily-devotional-card {
+      flex: 1 1 100%;
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 6px var(--shadow-color);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .daily-devotional-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-yellow), var(--accent-green));
+    }
+
+    .daily-devotional-content {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .daily-devotional-text {
+      flex: 1;
+    }
+
+    .daily-devotional-icon {
+      font-size: 3rem;
+      color: var(--accent-purple);
     }
 
     .inspiration {
@@ -400,6 +336,15 @@
       .cards {
         flex-direction: column;
       }
+
+      .daily-devotional-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .daily-devotional-icon {
+        margin-bottom: 1rem;
+      }
     }
   </style>
 </head>
@@ -426,13 +371,6 @@
       <a href="journey.html">Join</a>
       <a href="#">Partners</a>
       <a href="local-program.html">Recovery Program</a>
-      <a id="authLink" href="login.html" class="login-link">Login</a>
-      <button id="signOutButton" class="sign-out-btn">Sign Out</button>
-      <div class="theme-selector">
-        <button class="theme-btn" data-theme="light" title="Light theme"></button>
-        <button class="theme-btn" data-theme="dark" title="Dark theme"></button>
-        <button class="theme-btn" data-theme="high-contrast" title="High contrast theme"></button>
-      </div>
     </nav>
   </div>
 </header>
@@ -457,7 +395,7 @@
     </div>
 
     <div class="card">
-      <h4>🧠 Memory Verse</h4>
+      <h4>🧠 Memory Verse Quiz</h4>
       <p>"Be completely humble and gentle; be patient, bearing with one another in love." <br><em>– Ephesians 4:2</em></p>
       <a href="Bible Memory Verse Quiz.html" class="btn">Review & Memorize</a>
     </div>
@@ -473,6 +411,19 @@
       <p>Revisit previous fruits or complete missed weeks at your pace.</p>
       <a href="#" class="btn">View Timeline</a>
     </div>
+
+    <!-- New Daily Devotional Card -->
+    <div class="daily-devotional-card">
+      <div class="daily-devotional-content">
+        <div class="daily-devotional-icon">📖</div>
+        <div class="daily-devotional-text">
+          <h4>Daily Word of Encouragement</h4>
+          <p>"The Lord is my strength and my shield; my heart trusts in him, and he helps me." <em>— Psalm 28:7</em></p>
+          <p>Start your day with God's word and find strength for your journey.</p>
+          <a href="devotional.html" class="btn">Read Today's Devotional</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="inspiration">
@@ -485,88 +436,6 @@
 </footer>
 
 <script type="module">
-  // Check if user is logged in and display name
-  function checkAuthStatus() {
-    let user;
-    try {
-      user = JSON.parse(localStorage.getItem('user'));
-    } catch (e) {
-      console.error('Error reading user from localStorage:', e);
-    }
-
-    const authLink = document.getElementById('authLink');
-    const signOutButton = document.getElementById('signOutButton');
-    const userFirstNameEl = document.getElementById('userFirstName');
-
-    if (user && user.firstName && userFirstNameEl) {
-      userFirstNameEl.textContent = user.firstName;
-    }
-
-    if (authLink) {
-      if (user && user.firstName) {
-        authLink.textContent = 'Profile';
-        authLink.className = 'profile-link';
-        authLink.href = 'profile.html';
-      } else {
-        authLink.textContent = 'Login';
-        authLink.className = 'login-link';
-        authLink.href = 'login.html';
-      }
-    }
-
-    if (signOutButton) {
-      signOutButton.style.display = (user && user.firstName) ? 'inline-block' : 'none';
-    }
-  }
-
-  // Sign out functionality
-  const signOutButton = document.getElementById('signOutButton');
-  if (signOutButton) {
-    signOutButton.addEventListener('click', () => {
-      try {
-        localStorage.removeItem('user');
-      } catch (e) {
-        console.error('Error removing user from localStorage:', e);
-      }
-      checkAuthStatus();
-      window.location.href = 'index.html';
-    });
-  }
-
-  // Initialize auth status
-  checkAuthStatus();
-
-  // Theme switcher functionality
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const theme = btn.getAttribute('data-theme');
-      document.documentElement.setAttribute('data-theme', theme);
-      try {
-        localStorage.setItem('theme', theme);
-      } catch (e) {
-        console.error('Error saving theme preference:', e);
-      }
-      
-      // Update active state
-      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-
-  // Set saved theme or default
-  let savedTheme;
-  try {
-    savedTheme = localStorage.getItem('theme') || 'light';
-  } catch (e) {
-    console.error('Error reading theme preference:', e);
-    savedTheme = 'light';
-  }
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  const themeBtn = document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`);
-  if (themeBtn) {
-    themeBtn.classList.add('active');
-  }
-
   // Mobile menu toggle
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('nav');
