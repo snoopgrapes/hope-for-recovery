@@ -216,92 +216,6 @@
       box-shadow: 0 0 0 2px var(--primary-color);
     }
 
-    /* Devotional Card Styles */
-    .devotional-card {
-      background: var(--card-bg);
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-      box-shadow: 0 1px 6px var(--shadow-color);
-      border-left: 4px solid var(--primary-color);
-      position: relative;
-    }
-
-    .devotional-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .devotional-date {
-      font-size: 0.9rem;
-      color: var(--footer-color);
-    }
-
-    .verse-of-the-day {
-      margin-bottom: 1rem;
-    }
-
-    .scripture {
-      font-size: 1.2rem;
-      font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 0.5rem;
-    }
-
-    .reference {
-      text-align: right;
-      font-weight: 600;
-      color: var(--primary-color);
-    }
-
-    .devotional-content {
-      padding: 1rem 0;
-      border-top: 1px dashed var(--primary-color);
-      border-bottom: 1px dashed var(--primary-color);
-      margin: 1rem 0;
-      line-height: 1.7;
-    }
-
-    .devotional-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--primary-color);
-      color: var(--primary-color);
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .btn-outline:hover {
-      background: var(--primary-color);
-      color: white;
-    }
-
-    .devotion-history {
-      margin-top: 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--progress-bg);
-    }
-
-    .past-devotion {
-      padding: 0.5rem 0;
-      border-bottom: 1px dashed var(--progress-bg);
-    }
-
-    .past-devotion:last-child {
-      border-bottom: none;
-    }
-
     /* Dashboard styles */
     .dashboard {
       max-width: 1000px;
@@ -486,14 +400,6 @@
       .cards {
         flex-direction: column;
       }
-
-      .devotional-actions {
-        justify-content: center;
-      }
-
-      .btn-outline {
-        flex: 1 1 100%;
-      }
     }
   </style>
 </head>
@@ -534,51 +440,6 @@
 <div class="dashboard">
   <h1>Welcome Back, <span id="userFirstName">Friend</span>!</h1>
   <p>Your journey to freedom continues. Keep going!</p>
-
-  <!-- Daily Devotional Card -->
-  <div class="devotional-card">
-    <div class="devotional-header">
-      <h3>📖 Daily Encouragement</h3>
-      <div class="devotional-date" id="todayDate"></div>
-    </div>
-    <div class="verse-of-the-day">
-      <p class="scripture" id="dailyVerse">"The Lord is my shepherd, I lack nothing."</p>
-      <p class="reference" id="verseReference">Psalm 23:1 (NIV)</p>
-    </div>
-    <div class="devotional-content" id="devotionContent">
-      <p>No matter what challenges you face today, remember that God is your shepherd. He will guide you, protect you, and provide for all your needs. Take comfort in knowing you are never alone in your journey.</p>
-    </div>
-    <div class="devotional-actions">
-      <button class="btn-outline" id="saveDevotion">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-          <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-        </svg>
-        Save
-      </button>
-      <button class="btn-outline" id="shareVerse">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-          <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
-        </svg>
-        Share
-      </button>
-      <button class="btn-outline" id="newVerse">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-          <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-          <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-        </svg>
-        New Verse
-      </button>
-      <button class="btn-outline" id="addJournal">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px;">
-          <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
-          <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
-          <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-        </svg>
-        Journal
-      </button>
-    </div>
-    <div class="devotion-history" id="devotionHistory"></div>
-  </div>
 
   <section class="progress-section">
     <h2>Course Progress</h2>
@@ -624,301 +485,105 @@
 </footer>
 
 <script type="module">
-  // Default devotions data if module fails to load
-  let devotions = {
-    days: [{
-      day: 1,
-      title: "Psalm 23:1 (NIV)",
-      verse: "\"The Lord is my shepherd, I lack nothing.\"",
-      content: "No matter what challenges you face today, remember that God is your shepherd. He will guide you, protect you, and provide for all your needs. Take comfort in knowing you are never alone in your journey.",
-      prayer: "Lord, thank you for being my shepherd. Help me to trust in your provision today."
-    }]
-  };
+  // Check if user is logged in and display name
+  function checkAuthStatus() {
+    let user;
+    try {
+      user = JSON.parse(localStorage.getItem('user'));
+    } catch (e) {
+      console.error('Error reading user from localStorage:', e);
+    }
 
-  // Try to load devotions from module
-try {
-  import('./devotional.js')
-    .then(module => {
-      let devotions = module.devotions || [];
-      initDashboard();
-    })
-    .catch(err => {
-      console.error('Failed to load devotions:', err);
-      initDashboard();
-    });
-} catch (e) {
-  console.error('Import error:', e);
-  initDashboard();
-}
-
-  function initDashboard() {
-    // DOM Elements
-    const todayDateEl = document.getElementById('todayDate');
-    const dailyVerseEl = document.getElementById('dailyVerse');
-    const verseReferenceEl = document.getElementById('verseReference');
-    const devotionContentEl = document.getElementById('devotionContent');
-    const saveDevotionBtn = document.getElementById('saveDevotion');
-    const shareVerseBtn = document.getElementById('shareVerse');
-    const newVerseBtn = document.getElementById('newVerse');
-    const addJournalBtn = document.getElementById('addJournal');
-    const devotionHistoryEl = document.getElementById('devotionHistory');
+    const authLink = document.getElementById('authLink');
+    const signOutButton = document.getElementById('signOutButton');
     const userFirstNameEl = document.getElementById('userFirstName');
 
-    // Set today's date
-    const today = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    if (todayDateEl) {
-      todayDateEl.textContent = today.toLocaleDateString('en-US', options);
+    if (user && user.firstName && userFirstNameEl) {
+      userFirstNameEl.textContent = user.firstName;
     }
 
-    // Get the day of the month (1-31)
-    const dayOfMonth = today.getDate();
-    
-    // Calculate which devotion to show (1-28, cycling through the array)
-    const devotionIndex = (dayOfMonth - 1) % devotions.days.length;
-    const todaysDevotion = devotions.days[devotionIndex];
-
-    // Display the devotion
-    function displayDevotion(devotion) {
-      if (dailyVerseEl) dailyVerseEl.textContent = devotion.verse;
-      if (verseReferenceEl) verseReferenceEl.textContent = devotion.title;
-      
-      if (devotionContentEl) {
-        let contentHTML = `<h4>${devotion.title}</h4>`;
-        contentHTML += `<p>${devotion.content}</p>`;
-        
-        if (devotion.prayer) {
-          contentHTML += `<div class="prayer" style="margin-top: 1rem; font-style: italic; padding: 1rem; background-color: rgba(76, 161, 175, 0.1); border-radius: 5px;">
-            <strong>Prayer:</strong> ${devotion.prayer}
-          </div>`;
-        }
-        
-        devotionContentEl.innerHTML = contentHTML;
+    if (authLink) {
+      if (user && user.firstName) {
+        authLink.textContent = 'Profile';
+        authLink.className = 'profile-link';
+        authLink.href = 'profile.html';
+      } else {
+        authLink.textContent = 'Login';
+        authLink.className = 'login-link';
+        authLink.href = 'login.html';
       }
     }
 
-    // Display today's devotion
-    displayDevotion(todaysDevotion);
-
-    // Safe localStorage access
-    function getSavedDevotions() {
-      try {
-        return JSON.parse(localStorage.getItem('savedDevotions')) || [];
-      } catch (e) {
-        console.error('Error accessing localStorage:', e);
-        return [];
-      }
-    }
-
-    function setSavedDevotions(devotions) {
-      try {
-        localStorage.setItem('savedDevotions', JSON.stringify(devotions));
-      } catch (e) {
-        console.error('Error saving to localStorage:', e);
-      }
-    }
-
-    // Save devotion to localStorage
-    if (saveDevotionBtn) {
-      saveDevotionBtn.addEventListener('click', () => {
-        const savedDevotions = getSavedDevotions();
-        
-        // Check if this devotion is already saved
-        const alreadySaved = savedDevotions.some(d => d.day === todaysDevotion.day);
-        
-        if (!alreadySaved) {
-          savedDevotions.push({
-            day: todaysDevotion.day,
-            title: todaysDevotion.title,
-            date: today.toISOString()
-          });
-          setSavedDevotions(savedDevotions);
-          alert('Devotion saved! You can view it in your history.');
-          updateDevotionHistory();
-        } else {
-          alert('This devotion is already saved.');
-        }
-      });
-    }
-
-    // Share verse
-    if (shareVerseBtn) {
-      shareVerseBtn.addEventListener('click', () => {
-        const shareText = `Today's Verse: ${todaysDevotion.verse}\n\nFrom ${todaysDevotion.title}\n\nShared via Fruit of Freedom`;
-        
-        if (navigator.share) {
-          navigator.share({
-            title: 'Daily Devotion',
-            text: shareText,
-            url: window.location.href
-          }).catch(err => {
-            console.error('Error sharing:', err);
-            fallbackShare(shareText);
-          });
-        } else {
-          fallbackShare(shareText);
-        }
-      });
-    }
-
-    function fallbackShare(text) {
-      // Copy to clipboard as fallback
-      navigator.clipboard.writeText(text).then(() => {
-        alert('Verse copied to clipboard! You can paste it to share.');
-      }).catch(err => {
-        console.error('Could not copy text: ', err);
-        prompt('Copy this verse to share:', text);
-      });
-    }
-
-    // Get a random devotion
-    if (newVerseBtn) {
-      newVerseBtn.addEventListener('click', () => {
-        const randomIndex = Math.floor(Math.random() * devotions.days.length);
-        const randomDevotion = devotions.days[randomIndex];
-        displayDevotion(randomDevotion);
-      });
-    }
-
-    // Journal button
-    if (addJournalBtn) {
-      addJournalBtn.addEventListener('click', () => {
-        window.location.href = 'journal.html';
-      });
-    }
-
-    // Update devotion history from localStorage
-    function updateDevotionHistory() {
-      if (!devotionHistoryEl) return;
-      
-      const savedDevotions = getSavedDevotions();
-      
-      if (savedDevotions.length === 0) {
-        devotionHistoryEl.innerHTML = '<p>No saved devotions yet. Click "Save" to save your favorites.</p>';
-        return;
-      }
-      
-      let historyHTML = '<h4>Your Saved Devotions</h4>';
-      
-      savedDevotions.forEach(devotion => {
-        const devotionDate = new Date(devotion.date);
-        const formattedDate = devotionDate.toLocaleDateString('en-US', { 
-          month: 'short', day: 'numeric', year: 'numeric' 
-        });
-        
-        historyHTML += `
-          <div class="past-devotion">
-            <strong>Day ${devotion.day}: ${devotion.title}</strong>
-            <div style="font-size: 0.8rem; color: var(--footer-color);">Saved on ${formattedDate}</div>
-          </div>
-        `;
-      });
-      
-      devotionHistoryEl.innerHTML = historyHTML;
-    }
-
-    // Initialize devotion history
-    updateDevotionHistory();
-
-    // Check if user is logged in and display name
-    function checkAuthStatus() {
-      let user;
-      try {
-        user = JSON.parse(localStorage.getItem('user'));
-      } catch (e) {
-        console.error('Error reading user from localStorage:', e);
-      }
-
-      const authLink = document.getElementById('authLink');
-      const signOutButton = document.getElementById('signOutButton');
-
-      if (user && user.firstName && userFirstNameEl) {
-        userFirstNameEl.textContent = user.firstName;
-      }
-
-      if (authLink) {
-        if (user && user.firstName) {
-          authLink.textContent = 'Profile';
-          authLink.className = 'profile-link';
-          authLink.href = 'profile.html';
-        } else {
-          authLink.textContent = 'Login';
-          authLink.className = 'login-link';
-          authLink.href = 'login.html';
-        }
-      }
-
-      if (signOutButton) {
-        signOutButton.style.display = (user && user.firstName) ? 'inline-block' : 'none';
-      }
-    }
-
-    // Sign out functionality
-    const signOutButton = document.getElementById('signOutButton');
     if (signOutButton) {
-      signOutButton.addEventListener('click', () => {
-        try {
-          localStorage.removeItem('user');
-        } catch (e) {
-          console.error('Error removing user from localStorage:', e);
-        }
-        checkAuthStatus();
-        window.location.href = 'index.html';
-      });
+      signOutButton.style.display = (user && user.firstName) ? 'inline-block' : 'none';
     }
+  }
 
-    // Initialize auth status
-    checkAuthStatus();
+  // Sign out functionality
+  const signOutButton = document.getElementById('signOutButton');
+  if (signOutButton) {
+    signOutButton.addEventListener('click', () => {
+      try {
+        localStorage.removeItem('user');
+      } catch (e) {
+        console.error('Error removing user from localStorage:', e);
+      }
+      checkAuthStatus();
+      window.location.href = 'index.html';
+    });
+  }
 
-    // Theme switcher functionality
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const theme = btn.getAttribute('data-theme');
-        document.documentElement.setAttribute('data-theme', theme);
-        try {
-          localStorage.setItem('theme', theme);
-        } catch (e) {
-          console.error('Error saving theme preference:', e);
-        }
-        
-        // Update active state
-        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
+  // Initialize auth status
+  checkAuthStatus();
+
+  // Theme switcher functionality
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.getAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem('theme', theme);
+      } catch (e) {
+        console.error('Error saving theme preference:', e);
+      }
+      
+      // Update active state
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Set saved theme or default
+  let savedTheme;
+  try {
+    savedTheme = localStorage.getItem('theme') || 'light';
+  } catch (e) {
+    console.error('Error reading theme preference:', e);
+    savedTheme = 'light';
+  }
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const themeBtn = document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`);
+  if (themeBtn) {
+    themeBtn.classList.add('active');
+  }
+
+  // Mobile menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('nav');
+
+  if (menuToggle && nav) {
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      nav.classList.toggle('active');
     });
 
-    // Set saved theme or default
-    let savedTheme;
-    try {
-      savedTheme = localStorage.getItem('theme') || 'light';
-    } catch (e) {
-      console.error('Error reading theme preference:', e);
-      savedTheme = 'light';
-    }
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    const themeBtn = document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`);
-    if (themeBtn) {
-      themeBtn.classList.add('active');
-    }
-
-    // Mobile menu toggle
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
-
-    if (menuToggle && nav) {
-      menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        nav.classList.toggle('active');
+    // Close menu when clicking links
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        nav.classList.remove('active');
       });
-
-      // Close menu when clicking links
-      document.querySelectorAll('nav a').forEach(link => {
-        link.addEventListener('click', () => {
-          menuToggle.classList.remove('active');
-          nav.classList.remove('active');
-        });
-      });
-    }
+    });
   }
 </script>
 </body>
