@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hope Community Church - Media</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        /* Hero Section */
+        .hero-sermon {
+            background-color: #34495e;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero-sermon h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Series Carousel */
+        .series-section {
+            margin: 40px 0;
+        }
+        
+        .scrollable-series {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #3498db #f1f1f1;
+        }
+        
+        .scrollable-series::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .scrollable-series::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .scrollable-series::-webkit-scrollbar-thumb {
+            background-color: #3498db;
+            border-radius: 10px;
+        }
+        
+        .series-card {
+            flex: 0 0 250px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .series-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .series-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .series-card h4 {
+            padding: 15px;
+            text-align: center;
+        }
+        
+        /* Media Tabs */
+        .media-tabs {
+            margin: 40px 0;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #7f8c8d;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .sermon-item {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sermon-item iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .sermon-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .download-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .download-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .download-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Shorts Section */
+        .shorts-section {
+            margin: 40px 0;
+        }
+        
+        .shorts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .short-video {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .short-video:hover {
+            transform: scale(1.02);
+        }
+        
+        .short-video video {
+            width: 100%;
+            display: block;
+        }
+        
+        .short-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 20px;
+            color: white;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            position: relative;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        .modal-content video {
+            width: 100%;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        
+        .newsletter-form input {
+            padding: 10px;
+            width: 70%;
+            border: none;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .newsletter-form button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .shorts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                text-align: left;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .tab-button.active::after {
+                display: none;
+            }
+            
+            .sermon-item iframe {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Grace Community Church</h1>
+            <p>Media Library</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- Hero Section - Latest Sermon -->
+        <section class="hero-sermon">
+            <h2>Latest Sermon: "The Prodigal Son Part 3" – July 20th, 2025</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/Z6GvIj0fywg" allowfullscreen></iframe>
+            </div>
+        </section>
+        
+        <!-- Series Carousel -->
+        <section class="series-section">
+            <h3>Featured Series</h3>
+            <div class="scrollable-series">
+                <div class="series-card" onclick="showSeries('prodigal')">
+                    <img src="images/prodigal son.png" alt="Prodigal Son">
+                    <h4>The Prodigal Son</h4>
+                </div>
+                <div class="series-card" onclick="showSeries('faith')">
+                    <img src="images/holy spirit.png" alt="Walking in Faith">
+                    <h4>The Holy Spirit</h4>
+                </div>
+                <div class="series-card" onclick="showSeries('love')">
+                    <img src="images/jesus.png" alt="The Power of Love">
+                    <h4>Who is Jesus?</h4>
+                </div>
+                <div class="series-card" onclick="showSeries('hope')">
+                    <img src="images/sin.png" alt="Finding Hope">
+                    <h4>Understanding Sin</h4>
+                </div>
+                <div class="series-card" onclick="showSeries('forgiveness')">
+                    <img src="images/holistic health.png" alt="The Gift of Forgiveness">
+                    <h4>Holistic Health</h4>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Media Tabs -->
+        <section class="media-tabs">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="openTab('sermons')">Sermons</button>
+                <button class="tab-button" onclick="openTab('podcasts')">Podcasts</button>
+                <button class="tab-button" onclick="openTab('shorts')">Short Videos</button>
+            </div>
+            
+            <!-- Sermons Tab -->
+            <div id="sermons" class="tab-content active">
+                <div class="sermon-item">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    <div class="sermon-meta">
+                        <div>
+                            <h4>Walking in Faith - Part 1</h4>
+                            <p>Pastor John Smith | June 9, 2024</p>
+                        </div>
+                        <div class="download-buttons">
+                            <a href="#" class="download-button">Download Notes (PDF)</a>
+                            <a href="#" class="download-button">Download MP3</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sermon-item">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    <div class="sermon-meta">
+                        <div>
+                            <h4>The Power of Prayer</h4>
+                            <p>Pastor John Smith | June 2, 2024</p>
+                        </div>
+                        <div class="download-buttons">
+                            <a href="#" class="download-button">Download Notes (PDF)</a>
+                            <a href="#" class="download-button">Download MP3</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Podcasts Tab -->
+            <div id="podcasts" class="tab-content">
+                <div class="sermon-item">
+                    <h4>Grace Community Podcast</h4>
+                    <p>Subscribe to our podcast on your favorite platform:</p>
+                    <div style="display: flex; gap: 10px; margin: 15px 0;">
+                        <a href="#" style="background: #FC4C02; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none;">Apple Podcasts</a>
+                        <a href="#" style="background: #1DB954; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none;">Spotify</a>
+                        <a href="#" style="background: #4285F4; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none;">Google Podcasts</a>
+                    </div>
+                    <iframe src="https://anchor.fm/grace-community/embed" height="160px" width="100%" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+            
+            <!-- Shorts Tab -->
+            <div id="shorts" class="tab-content">
+                <div class="shorts-section">
+                    <h3>Short Videos & Highlights</h3>
+                    <div class="shorts-grid">
+                        <div class="short-video" onclick="openModal('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4')">
+                            <video muted loop>
+                                <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                            </video>
+                            <div class="short-overlay">
+                                <h4>Sunday Service Highlight</h4>
+                            </div>
+                        </div>
+                        <div class="short-video" onclick="openModal('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4')">
+                            <video muted loop>
+                                <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                            </video>
+                            <div class="short-overlay">
+                                <h4>Testimony: Finding Hope</h4>
+                            </div>
+                        </div>
+                        <div class="short-video" onclick="openModal('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4')">
+                            <video muted loop>
+                                <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                            </video>
+                            <div class="short-overlay">
+                                <h4>Bible Study Preview</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <video id="modalVideo" controls autoplay style="width:100%">
+                <source src="" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <h3>Stay Connected</h3>
+            <p>Subscribe to receive updates on new sermons and events</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address">
+                <button type="submit">Subscribe</button>
+            </form>
+            <p>&copy; 2024 Grace Community Church. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Tab functionality
+        function openTab(tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Series functionality (would expand to show sermons in the series)
+        function showSeries(seriesId) {
+            alert(`Showing sermons from the ${event.currentTarget.querySelector('h4').textContent} series.`);
+            // In a real implementation, this would filter the sermons list
+        }
+        
+        // Video modal functionality
+        function openModal(videoSrc) {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            modalVideo.src = videoSrc;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            modalVideo.pause();
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside the video
+        window.onclick = function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        // Auto-play short videos on hover
+        document.addEventListener('DOMContentLoaded', function() {
+            const shortVideos = document.querySelectorAll('.short-video video');
+            
+            shortVideos.forEach(video => {
+                video.addEventListener('mouseenter', function() {
+                    this.play();
+                });
+                
+                video.addEventListener('mouseleave', function() {
+                    this.pause();
+                    this.currentTime = 0;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

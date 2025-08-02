@@ -23,8 +23,8 @@
     }
 
     header {
-      background-color: var(--light);
-      padding: 1.5rem;
+      background-color: #FFFFFF;
+      padding: 0.7rem;
       position: fixed;
       width: 100%;
       z-index: 100;
@@ -37,6 +37,11 @@
       align-items: center;
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    nav {
+      display: flex;
+      transition: all 0.3s ease;
     }
 
     nav a {
@@ -84,13 +89,47 @@
     }
 
     .logo-container img {
-      max-width: 180px;
+      max-width: 135px;
       height: auto;
       transition: transform 0.3s;
     }
 
     .logo-container img:hover {
       transform: scale(1.05);
+    }
+
+    /* Mobile Menu Styles */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 101;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background: var(--dark);
+      transition: all 0.3s ease;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
     }
 
     /* HERO SECTION - BOLD STYLE */
@@ -262,34 +301,53 @@
       color: transparent;
     }
 
-    /* TESTIMONIALS */
+    /* TESTIMONIALS - UPDATED WITH IMAGES */
     .testimonials-container {
-      display: flex;
-      gap: 2rem;
-      overflow-x: auto;
-      padding: 2rem 0;
-      scroll-snap-type: x mandatory;
+      position: relative;
+      height: 350px;
+      margin: 2rem auto;
+      max-width: 800px;
+      overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     .testimonial {
-      min-width: 80%;
+      position: absolute;
+      width: 100%;
       background: white;
-      padding: 2.5rem;
+      padding: 2rem;
       border-radius: 20px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      scroll-snap-align: start;
-      position: relative;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      top: 0;
+      left: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      box-sizing: border-box;
     }
 
-    .testimonial::before {
-      content: '"';
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 5rem;
-      color: rgba(110,69,226,0.1);
-      font-family: serif;
-      line-height: 1;
+    .testimonial.active {
+      opacity: 1;
+    }
+
+    .testimonial-image {
+      width: 120px;
+      height: 120px;
+      min-width: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .testimonial-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .testimonial-content {
@@ -298,12 +356,25 @@
       margin-bottom: 1.5rem;
       font-style: italic;
       position: relative;
-      z-index: 1;
+      padding-right: 10px;
+    }
+
+    .testimonial::before {
+      content: '"';
+      position: absolute;
+      top: 20px;
+      left: 140px;
+      font-size: 5rem;
+      color: rgba(110,69,226,0.1);
+      font-family: serif;
+      line-height: 1;
+      z-index: 0;
     }
 
     .testimonial-author {
       font-weight: bold;
       color: var(--secondary);
+      position: relative;
     }
 
     /* PARTNER SECTION */
@@ -382,11 +453,39 @@
     /* RESPONSIVE */
     @media (max-width: 768px) {
       .header-container {
-        flex-direction: column;
+        padding: 1rem;
+      }
+
+      .menu-toggle {
+        display: flex;
       }
 
       nav {
-        margin-top: 1.5rem;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        z-index: 100;
+      }
+
+      nav.active {
+        right: 0;
+      }
+
+      nav a {
+        margin: 1rem 0;
+        font-size: 1.2rem;
+      }
+
+      .logo-container img {
+        max-width: 100px;
       }
 
       .hero h1 {
@@ -412,6 +511,39 @@
       .feature {
         flex: 1 1 100%;
       }
+
+      .testimonials-container {
+        height: 450px;
+      }
+  
+      .testimonial {
+        padding: 1.5rem;
+      }
+    }
+
+    @media print {
+      .testimonials-container {
+        height: auto;
+        page-break-inside: avoid;
+      }
+      
+      .testimonial {
+        position: relative;
+        opacity: 1;
+        display: block;
+        margin-bottom: 2rem;
+        page-break-inside: avoid;
+      }
+      
+      .testimonial-image {
+        float: left;
+        margin-right: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .testimonial::before {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -425,15 +557,21 @@
         </a>
       </div>
 
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="#">About</a>
-        <a href="#">Fruit of Freedom</a>
-        <a href="journey.html">Join</a>
-        <a href="#">Partners</a>
-        <a href="local-program.html">Recovery Program</a>
-        <a id="authLink" href="login.html" class="login-link">Login</a>
-      </nav>
+      <button class="menu-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+	<nav>
+		<!--<a href="index.html">Home</a>	-->	
+		<a href="mainpage.html">Hope Community Church</a>
+		<a href="journey.html">Join</a>
+		<!--<a href="#">Partners</a>-->
+		<a href="local-program.html">Recovery Program</a>
+		<a href="#">About</a>
+		<a id="authLink" href="login.html" class="login-link">Login</a>
+	</nav>
     </div>
   </header>
 
@@ -482,23 +620,38 @@
   <section class="section">
     <h2>Victory Stories</h2>
     <div class="testimonials-container">
-      <div class="testimonial">
-        <div class="testimonial-content">
-          "This was my D-Day. After 15 years of addiction, I met Christ through this program. Now I lead others to freedom!"
+      <div class="testimonial active">
+        <div class="testimonial-image">
+          <img src="images/angela.png" alt="Angela">
         </div>
-        <div class="testimonial-author">— Angela, Manchester</div>
+        <div class="testimonial-text">
+          <div class="testimonial-content">
+            "This was my D-Day. After 15 years of addiction, I met Christ through this program. Now I lead others to freedom!"
+          </div>
+          <div class="testimonial-author">— Angela, Manchester</div>
+        </div>
       </div>
       <div class="testimonial">
-        <div class="testimonial-content">
-          "Hope For Recovery didn't just change my life—it saved my marriage and restored my ministry. The chains are broken!"
+        <div class="testimonial-image">
+          <img src="images/craig.jpg" alt="Craig">
         </div>
-        <div class="testimonial-author">— Craig, Birmingham</div>
+        <div class="testimonial-text">
+          <div class="testimonial-content">
+            "Hope For Recovery didn't just change my life—it saved my marriage and restored my ministry. The chains are broken!"
+          </div>
+          <div class="testimonial-author">— Craig, Birmingham</div>
+        </div>
       </div>
       <div class="testimonial">
-        <div class="testimonial-content">
-          "I went from overdose to overflow! Now I'm planting a recovery ministry in my city because freedom is contagious."
+        <div class="testimonial-image">
+          <img src="images/mark.jpg" alt="Mark">
         </div>
-        <div class="testimonial-author">— Mark, London</div>
+        <div class="testimonial-text">
+          <div class="testimonial-content">
+            "I went from overdose to overflow! Now I'm planting a recovery ministry in my city because freedom is contagious."
+          </div>
+          <div class="testimonial-author">— Mark, London</div>
+        </div>
       </div>
     </div>
   </section>
@@ -521,6 +674,28 @@
   </footer>
 
   <script type="module">
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const nav = document.querySelector('nav');
+
+      menuToggle.addEventListener('click', function() {
+        menuToggle.classList.toggle('active');
+        nav.classList.toggle('active');
+      });
+
+      // Close menu when clicking on a nav link (for mobile)
+      const navLinks = document.querySelectorAll('nav a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            menuToggle.classList.remove('active');
+            nav.classList.remove('active');
+          }
+        });
+      });
+    });
+
     // Scripture animation
     document.addEventListener('DOMContentLoaded', function() {
       const scriptureElement = document.querySelector('.scripture-animation');
@@ -548,6 +723,24 @@
 
       scriptureElement.textContent = scriptures[0];
       setInterval(showNextScripture, 5000);
+    });
+
+    // Testimonial carousel functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const testimonials = document.querySelectorAll('.testimonial');
+      let currentTestimonial = 0;
+      
+      testimonials[currentTestimonial].classList.add('active');
+      
+      setInterval(() => {
+        testimonials[currentTestimonial].classList.remove('active');
+        
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+        
+        setTimeout(() => {
+          testimonials[currentTestimonial].classList.add('active');
+        }, 1000);
+      }, 10000);
     });
 
     // Authentication state
