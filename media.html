@@ -123,6 +123,35 @@
             padding: 15px;
             text-align: center;
         }
+		
+		.video-thumbnail {
+			position: relative;
+			display: inline-block;
+		}
+		.video-thumbnail img {
+			display: block;
+			width: 100%; /* Adjust as needed */
+		}
+		.play-button {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 60px;
+			height: 60px;
+			background: rgba(255, 0, 0, 0.8); /* Red play button (YouTube-style) */
+			border-radius: 50%;
+		}
+		.play-button::before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 55%;
+			transform: translate(-50%, -50%);
+			border-width: 15px 0 15px 25px;
+			border-style: solid;
+			border-color: transparent transparent transparent white;
+		}
         
         /* Media Tabs */
         .media-tabs {
@@ -392,28 +421,34 @@
             <!-- Sermons Tab -->
             <div id="sermons" class="tab-content active">
                 <div class="sermon-item">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+				<a href="https://www.youtube.com/watch?v=_gO56ubZ7yM" class="video-thumbnail" target="_blank">
+					<img src="images/Easter 2025.png" alt="YouTube Video">
+					<div class="play-button"></div>
+				</a>
                     <div class="sermon-meta">
                         <div>
-                            <h4>Walking in Faith - Part 1</h4>
-                            <p>Pastor John Smith | June 9, 2024</p>
+                            <h4>The Cross: Finished Event, Ongoing Victory</h4>
+                            <p>Pastor Craig Halkett | Easter, 2025</p>
                         </div>
                         <div class="download-buttons">
-                            <a href="#" class="download-button">Download Notes (PDF)</a>
-                            <a href="#" class="download-button">Download MP3</a>
+                            <a href="notes/Resurrection Sunday Study Notes.html" class="download-button" target="_blank">Download Notes (PDF)</a>
+                            <a href="podcasts/The Enduring Power of the Cross.mp3" class="download-button" target="_blank">Download MP3</a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="sermon-item">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    <a href="https://www.youtube.com/embed/SV4X9dKTUKw" class="video-thumbnail" target="_blank">
+					<img src="images/Psalm 23.png" alt="YouTube Video">
+					<div class="play-button"></div>
+					</a>
                     <div class="sermon-meta">
                         <div>
-                            <h4>The Power of Prayer</h4>
-                            <p>Pastor John Smith | June 2, 2024</p>
+                            <h4>Psalm 23: The Shepherd Who Meets Every Need</h4>
+                            <p>Pastor Allan McBride | May 4, 2025</p>
                         </div>
                         <div class="download-buttons">
-                            <a href="#" class="download-button">Download Notes (PDF)</a>
+                            <a href="notes/Psalm 23 Study Notes.html" class="download-button" target="_blank">Download Notes (PDF)</a>
                             <a href="#" class="download-button">Download MP3</a>
                         </div>
                     </div>
@@ -441,7 +476,7 @@
                     <div class="shorts-grid">
                         <div class="short-video" onclick="openModal('https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4')">
                             <video muted loop>
-                                <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                                <source src="Shorts/Protected by Faith_ The Devil Cannot Touch You!.mp4" type="video/mp4">
                             </video>
                             <div class="short-overlay">
                                 <h4>Sunday Service Highlight</h4>
@@ -487,7 +522,7 @@
                 <input type="email" placeholder="Your email address">
                 <button type="submit">Subscribe</button>
             </form>
-            <p>&copy; 2024 Grace Community Church. All Rights Reserved.</p>
+            <p>&copy; 2025 Hope Community Church. All Rights Reserved.</p>
         </div>
     </footer>
     
