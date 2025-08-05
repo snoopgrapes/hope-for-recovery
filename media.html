@@ -123,35 +123,35 @@
             padding: 15px;
             text-align: center;
         }
-		
-		.video-thumbnail {
-			position: relative;
-			display: inline-block;
-		}
-		.video-thumbnail img {
-			display: block;
-			width: 100%; /* Adjust as needed */
-		}
-		.play-button {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			width: 60px;
-			height: 60px;
-			background: rgba(255, 0, 0, 0.8); /* Red play button (YouTube-style) */
-			border-radius: 50%;
-		}
-		.play-button::before {
-			content: "";
-			position: absolute;
-			top: 50%;
-			left: 55%;
-			transform: translate(-50%, -50%);
-			border-width: 15px 0 15px 25px;
-			border-style: solid;
-			border-color: transparent transparent transparent white;
-		}
+        
+        .video-thumbnail {
+            position: relative;
+            display: inline-block;
+        }
+        .video-thumbnail img {
+            display: block;
+            width: 100%; /* Adjust as needed */
+        }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 0, 0, 0.8); /* Red play button (YouTube-style) */
+            border-radius: 50%;
+        }
+        .play-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+            border-width: 15px 0 15px 25px;
+            border-style: solid;
+            border-color: transparent transparent transparent white;
+        }
         
         /* Media Tabs */
         .media-tabs {
@@ -369,7 +369,7 @@
 <body>
     <header>
         <div class="container">
-            <h1>Grace Community Church</h1>
+            <h1>Hope Community Church</h1>
             <p>Media Library</p>
         </div>
     </header>
@@ -421,10 +421,10 @@
             <!-- Sermons Tab -->
             <div id="sermons" class="tab-content active">
                 <div class="sermon-item">
-				<a href="https://www.youtube.com/watch?v=_gO56ubZ7yM" class="video-thumbnail" target="_blank">
-					<img src="images/Easter 2025.png" alt="YouTube Video">
-					<div class="play-button"></div>
-				</a>
+                <a href="https://www.youtube.com/watch?v=_gO56ubZ7yM" class="video-thumbnail" target="_blank">
+                    <img src="images/Easter 2025.png" alt="YouTube Video">
+                    <div class="play-button"></div>
+                </a>
                     <div class="sermon-meta">
                         <div>
                             <h4>The Cross: Finished Event, Ongoing Victory</h4>
@@ -439,9 +439,9 @@
                 
                 <div class="sermon-item">
                     <a href="https://www.youtube.com/embed/SV4X9dKTUKw" class="video-thumbnail" target="_blank">
-					<img src="images/Psalm 23.png" alt="YouTube Video">
-					<div class="play-button"></div>
-					</a>
+                    <img src="images/Psalm 23.png" alt="YouTube Video">
+                    <div class="play-button"></div>
+                    </a>
                     <div class="sermon-meta">
                         <div>
                             <h4>Psalm 23: The Shepherd Who Meets Every Need</h4>
@@ -576,6 +576,38 @@
             }
         }
         
+        // Function to update the latest sermon from YouTube
+        function updateLatestSermon() {
+            const apiKey = 'AIzaSyAR8yD270TFHRDG2HT9aI8jR8y_EU1RjpA';
+            const channelId = 'UC2Cypz6hJ48JidL74tHGyOw';
+
+            fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.items && data.items.length > 0) {
+                        const video = data.items[0];
+                        const videoId = video.id.videoId;
+                        const videoTitle = video.snippet.title;
+                        const publishedAt = new Date(video.snippet.publishedAt);
+                        const dateString = publishedAt.toLocaleDateString('en-US', { 
+                            month: 'long', 
+                            day: 'numeric', 
+                            year: 'numeric' 
+                        });
+                        
+                        // Update the hero section
+                        const heroSection = document.querySelector('.hero-sermon');
+                        heroSection.innerHTML = `
+                            <h2>Latest Sermon: "${videoTitle}" – ${dateString}</h2>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => console.error('Error fetching latest sermon:', error));
+        }
+        
         // Auto-play short videos on hover
         document.addEventListener('DOMContentLoaded', function() {
             const shortVideos = document.querySelectorAll('.short-video video');
@@ -590,6 +622,9 @@
                     this.currentTime = 0;
                 });
             });
+            
+            // Call the function to update the latest sermon
+            updateLatestSermon();
         });
     </script>
 </body>
