@@ -394,7 +394,7 @@
 		<div class="progress-bar" style="height: 10px; margin: 10px 0;">
 			<div class="progress-bar-inner" id="weekProgress" style="width: 0%;"></div>
 		</div>
-		<a href="workbooks/Holistic Health.html" class="btn" id="weekBtn">Go to Current Week</a>
+		<a href="./workbooks/Holistic Health.html" class="btn" id="weekBtn">Go to Current Week</a>
 		</div>
 
     <div class="card">
@@ -524,7 +524,7 @@ function updateDashboard(progress) {
   
   // Update button to go to current week
   const weekBtn = document.getElementById('weekBtn');
-  weekBtn.href = `workbooks/Holistic Health.html#week${progress.currentWeek}`;
+  weekBtn.href = `./workbooks/Holistic Health.html#week${progress.currentWeek}`;
   
   // If all weeks completed, update button text
   if (progress.completedWeeks.length === 12) {
