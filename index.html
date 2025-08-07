@@ -477,20 +477,6 @@
             animation: pulseOpacity 1.5s infinite;
         }
 
-        /* Chat Button */
-        .chat-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            cursor: pointer;
-            z-index: 900;
-            animation: bounce 2s infinite;
-        }
-
-        .chat-button img {
-            width: 60px;
-            height: 60px;
-        }
 
         /* Enhanced Map Section */
         .map-container {
@@ -682,10 +668,7 @@
                 display: none;
             }
 
-            .chat-button {
-                right: 15px;
-                bottom: 80px;
-            }
+
 
             .map-container {
                 grid-template-columns: 1fr;
@@ -968,9 +951,10 @@
         </div>
     </div>
 
-    <div class="chat-button" onclick="openChat()">
+    <!--<div class="chat-button" onclick="openChat()">
         <img src="assets/chat-icon.png" alt="Chat with us">
-    </div>
+    </div>-->
+	
 <script>
     // Mobile menu functionality
     const menuToggle = document.querySelector('.menu-toggle');

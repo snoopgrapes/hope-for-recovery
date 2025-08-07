@@ -387,53 +387,37 @@
     </div>
   </section>
 
-  <div class="cards">
-    <div class="card">
-      <h4>📖 Current Week: Patience (Week 6)</h4>
-      <p>Explore this week's video, worksheet and guided reflection.</p>
-      <a href="#" class="btn">Go to Week 6</a>
+  <div class="card">
+    <h4>📖 Current Week: <span id="currentWeekTitle">Loading...</span></h4>
+    <p id="currentWeekDescription">Loading your current week progress...</p>
+    <div class="progress-bar" style="height: 10px; margin: 10px 0;">
+      <div class="progress-bar-inner" id="weekProgress" style="width: 0%;"></div>
     </div>
+    <a href="Holistic Health.html" class="btn" id="weekBtn">Go to Current Week</a>
+  </div>
 
-    <div class="card">
-      <h4>🧠 Memory Verse Quiz</h4>
-      <p>"Be completely humble and gentle; be patient, bearing with one another in love." <br><em>– Ephesians 4:2</em></p>
-      <a href="Bible Memory Verse Quiz.html" class="btn">Review & Memorize</a>
-    </div>
-
-    <div class="card">
-      <h4>📝 Your Journal</h4>
-      <p>Record how God is working in your life this week. Reflect on growth or struggles.</p>
-      <a href="journal.html" class="btn">Open Journal</a>
-    </div>
-
-    <div class="card">
-      <h4>📆 View Past Weeks</h4>
-      <p>Revisit previous fruits or complete missed weeks at your pace.</p>
-      <a href="#" class="btn">View Timeline</a>
-    </div>
-
-    <!-- New Daily Devotional Card -->
-    <div class="daily-devotional-card">
-      <div class="daily-devotional-content">
-        <div class="daily-devotional-icon">📖</div>
-        <div class="daily-devotional-text">
-          <h4>Daily Word of Encouragement</h4>
-          <p>"The Lord is my strength and my shield; my heart trusts in him, and he helps me." <em>— Psalm 28:7</em></p>
-          <p>Start your day with God's word and find strength for your journey.</p>
-          <a href="devotional.html" class="btn">Read Today's Devotional</a>
-        </div>
+  <div class="daily-devotional-card">
+    <div class="daily-devotional-content">
+      <div class="daily-devotional-icon">📖</div>
+      <div class="daily-devotional-text">
+        <h4>Daily Word of Encouragement</h4>
+        <p>"The Lord is my strength and my shield; my heart trusts in him, and he helps me." <em>— Psalm 28:7</em></p>
+        <p>Start your day with God's word and find strength for your journey.</p>
+        <a href="devotional.html" class="btn">Read Today's Devotional</a>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="inspiration">
-    "The Spirit of God who raised Jesus from the dead lives in you." — Romans 8:11
-  </div>
+<div class="inspiration">
+  "The Spirit of God who raised Jesus from the dead lives in you." — Romans 8:11
 </div>
 
 <footer>
   © 2025 Fruit of Freedom | All rights reserved.
 </footer>
+
+<script type="module" src="js/firebase-init.js"></script>
 
 <script type="module">
   // Mobile menu toggle
@@ -454,6 +438,91 @@
       });
     });
   }
+
+  // Import Firebase functions
+  import { loadProgress } from './js/firebase-init.js';
+  
+  // Track user progress through Holistic Health workbook
+  document.addEventListener('DOMContentLoaded', async function() {
+    // Get a unique user ID. In a real app, you would get this from Firebase Auth
+    const userId = "testUser123";
+
+    // Get user progress from Firebase or set defaults
+    const userProgress = await loadProgress(userId) || {
+      currentWeek: 1,
+      completedWeeks: [],
+      lastAccessed: new Date().toISOString()
+    };
+
+    // Update dashboard with current progress
+    updateDashboard(userProgress);
+
+    // Set user first name if available
+    const userName = localStorage.getItem('userFirstName') || 'Friend';
+    document.getElementById('userFirstName').textContent = userName;
+  });
+
+  function updateDashboard(progress) {
+    const weekTitles = [
+      "Introduction to Holistic Health",
+      "Spirit, Soul & Body",
+      "Physical Health",
+      "Emotional Health",
+      "Personal Reflection",
+      "Living in the Moment",
+      "Gratitude is the Best Attitude",
+      "Mental Health",
+      "Spiritual Health",
+      "Awareness vs Awakening",
+      "Case Study - John's Story",
+      "Final Assessment"
+    ];
+
+    const weekDescriptions = [
+      "Introduction to the four health components and their importance",
+      "Exploring the purpose of spirit, soul and body",
+      "Understanding and improving physical health",
+      "Managing emotions for a happier life",
+      "Reflecting on our emotional state and its causes",
+      "The principle of living in the present",
+      "How gratitude improves our mindset",
+      "Understanding and improving mental health",
+      "Exploring and nurturing spiritual health",
+      "Spirituality: awareness vs awakening",
+      "Applying concepts to a real-life scenario",
+      "Final evaluation of your holistic health journey"
+    ];
+
+    // Update current week display
+    const currentWeekIndex = progress.currentWeek - 1;
+    document.getElementById('currentWeekTitle').textContent = `Week ${progress.currentWeek}: ${weekTitles[currentWeekIndex]}`;
+    document.getElementById('currentWeekDescription').textContent = weekDescriptions[currentWeekIndex];
+    
+    // Update progress bar
+    const progressPercent = (progress.completedWeeks.length / 12) * 100;
+    const progressInner = document.getElementById('weekProgress');
+    progressInner.style.width = `${progressPercent}%`;
+    progressInner.textContent = `${Math.round(progressPercent)}%`;
+    
+    // Update course progress section
+    document.querySelector('.progress-section p').textContent = 
+      `You've completed ${progress.completedWeeks.length} out of 12 weeks`;
+
+    const courseProgressInner = document.querySelector('.progress-section .progress-bar-inner');
+    courseProgressInner.style.width = `${progressPercent}%`;
+    courseProgressInner.textContent = `${Math.round(progressPercent)}%`;
+    
+    // Update button to go to current week
+    const weekBtn = document.getElementById('weekBtn');
+    weekBtn.href = `Holistic Health.html#week${progress.currentWeek}`;
+    
+    if (progress.completedWeeks.length === 12) {
+      weekBtn.textContent = 'Review Course';
+    }
+  }
 </script>
+
+<script type="module" src="js/holistic-health-progress.js"></script>
+
 </body>
 </html>
