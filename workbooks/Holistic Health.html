@@ -123,6 +123,17 @@
 		.btn:hover {
 			background-color: #3e8e41;
 		}
+
+        .save-button-container {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .save-button-container .btn {
+            background-color: #008CBA; /* Blue for save */
+        }
+        .save-button-container .btn:hover {
+            background-color: #005f7a;
+        }
     </style>
 </head>
 <body>
@@ -214,8 +225,12 @@
         </ol>
     </div>
 
-    <!-- Week 1 -->
-    <div class="week-container">
+    <div class="week-container" id="week1">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="1">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 1: Introduction to Holistic Health</h2>
         <p>To begin, rank the four health components by importance and rate your current status (1-10):</p>
         
@@ -227,30 +242,30 @@
             </tr>
             <tr>
                 <td>Physical</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week1_physical_importance"></td>
+                <td><input type="number" min="1" max="10" name="week1_physical_score"></td>
             </tr>
             <tr>
                 <td>Mental</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week1_mental_importance"></td>
+                <td><input type="number" min="1" max="10" name="week1_mental_score"></td>
             </tr>
             <tr>
                 <td>Spiritual</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week1_spiritual_importance"></td>
+                <td><input type="number" min="1" max="10" name="week1_spiritual_score"></td>
             </tr>
             <tr>
                 <td>Emotional</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week1_emotional_importance"></td>
+                <td><input type="number" min="1" max="10" name="week1_emotional_score"></td>
             </tr>
         </table>
 
         <div class="improvement-tip">
             <img src="../icons/reflection.png" class="icon" alt="Question icon">
             <strong>Reflection:</strong> Why did you choose this order? How might it change by Week 12?
-            <textarea placeholder="Write your thoughts here..."></textarea>
+            <textarea placeholder="Write your thoughts here..." name="week1_reflection"></textarea>
         </div>
 
         <div class="memory-verse">
@@ -260,19 +275,23 @@
         </div>
     </div>
 
-    <!-- Week 2 -->
-    <div class="week-container">
+    <div class="week-container" id="week2">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="2">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 2: Spirit, Soul & Body</h2>
         <p>Mankind is a triune being made up of three parts: spirit, soul, and body. Today we'll explore the purpose of each component.</p>
         
         <h3>1. What is the purpose of your spirit?</h3>
-        <textarea rows="3" placeholder="Discuss in your group and write your thoughts here..."></textarea>
+        <textarea rows="3" placeholder="Discuss in your group and write your thoughts here..." name="week2_spirit_purpose"></textarea>
         
         <h3>2. What is the purpose of your soul?</h3>
-        <textarea rows="3" placeholder="Discuss in your group and write your thoughts here..."></textarea>
+        <textarea rows="3" placeholder="Discuss in your group and write your thoughts here..." name="week2_soul_purpose"></textarea>
         
         <h3>3. What is the purpose of your physical body?</h3>
-        <textarea rows="3" placeholder="Discuss in your group and write your thoughts here..."></textarea>
+        <textarea rows="3" placeholder="Discuss in your group and write your thoughts here..." name="week2_body_purpose"></textarea>
 
         <div class="memory-verse">
             <strong>Memory Verse (1 Thessalonians 5:23b):</strong> 
@@ -281,16 +300,20 @@
         </div>
     </div>
 
-    <!-- Week 3 -->
-    <div class="week-container">
+    <div class="week-container" id="week3">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="3">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 3: Physical Health</h2>
         <p>Today we'll explore physical health - what it is, its benefits, and how to improve it.</p>
         
         <h3>1. How would you define physical health?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week3_physical_definition"></textarea>
         
         <h3>2. What are the benefits of good physical health?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week3_physical_benefits"></textarea>
         
         <h3>3. Ways to improve physical health:</h3>
         <div class="improvement-tip">
@@ -298,12 +321,12 @@
             <strong>Action Plan:</strong> Check goals you want to work on:
         </div>
         <ul style="list-style-type:none;">
-            <li><input type="checkbox"> Regular exercise (3+ times/week)</li>
-            <li><input type="checkbox"> Balanced nutrition (fruits/vegetables daily)</li>
-            <li><input type="checkbox"> 7-8 hours of sleep nightly</li>
-            <li><input type="checkbox"> Annual medical check-ups</li>
-            <li><input type="checkbox"> Hydration (8 glasses of water daily)</li>
-            <li><input type="checkbox"> Other: <input type="text" placeholder="Specify"></li>
+            <li><input type="checkbox" name="week3_exercise"> Regular exercise (3+ times/week)</li>
+            <li><input type="checkbox" name="week3_nutrition"> Balanced nutrition (fruits/vegetables daily)</li>
+            <li><input type="checkbox" name="week3_sleep"> 7-8 hours of sleep nightly</li>
+            <li><input type="checkbox" name="week3_checkups"> Annual medical check-ups</li>
+            <li><input type="checkbox" name="week3_hydration"> Hydration (8 glasses of water daily)</li>
+            <li><input type="checkbox" name="week3_other_physical"> Other: <input type="text" placeholder="Specify" name="week3_other_physical_text"></li>
         </ul>
 
         <div class="memory-verse">
@@ -313,16 +336,20 @@
         </div>
     </div>
 
-    <!-- Week 4 -->
-    <div class="week-container">
+    <div class="week-container" id="week4">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="4">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 4: Emotional Health</h2>
         <p>Today we explore emotional health - how to understand and manage our emotions for a happier life.</p>
         
         <h3>1. How would you define emotional health?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week4_emotional_definition"></textarea>
         
         <h3>2. How might good emotional health help someone in addiction recovery?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week4_emotional_addiction_help"></textarea>
         
         <h3>3. Ways to increase emotional health:</h3>
         <div class="improvement-tip">
@@ -330,11 +357,11 @@
             <strong>Emotional Health Toolkit:</strong>
         </div>
         <ul style="list-style-type:none;">
-            <li><input type="checkbox"> Identify and name your emotions daily</li>
-            <li><input type="checkbox"> Practice deep breathing when stressed</li>
-            <li><input type="checkbox"> Journal about your feelings</li>
-            <li><input type="checkbox"> Talk to trusted friends or counselors</li>
-            <li><input type="checkbox"> Other: <input type="text" placeholder="Specify"></li>
+            <li><input type="checkbox" name="week4_identify_emotions"> Identify and name your emotions daily</li>
+            <li><input type="checkbox" name="week4_deep_breathing"> Practice deep breathing when stressed</li>
+            <li><input type="checkbox" name="week4_journaling"> Journal about your feelings</li>
+            <li><input type="checkbox" name="week4_talk_friends"> Talk to trusted friends or counselors</li>
+            <li><input type="checkbox" name="week4_other_emotional"> Other: <input type="text" placeholder="Specify" name="week4_other_emotional_text"></li>
         </ul>
 
         <div class="memory-verse">
@@ -344,13 +371,17 @@
         </div>
     </div>
 
-    <!-- Week 5 -->
-    <div class="week-container">
+    <div class="week-container" id="week5">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="5">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 5: Personal Reflection</h2>
         <p>Continuing our look at emotional health, we'll reflect on our emotional state and its causes.</p>
         
         <h3>1. What are emotions and why do we have them?</h3>
-        <textarea rows="3" placeholder="Your thoughts..."></textarea>
+        <textarea rows="3" placeholder="Your thoughts..." name="week5_emotions_definition"></textarea>
         
         <h3>2. List negative and positive emotions:</h3>
         <table>
@@ -359,20 +390,20 @@
                 <th>Positive Emotions</th>
             </tr>
             <tr>
-                <td><input type="text" placeholder="e.g., anger"></td>
-                <td><input type="text" placeholder="e.g., joy"></td>
+                <td><input type="text" placeholder="e.g., anger" name="week5_negative_emotion1"></td>
+                <td><input type="text" placeholder="e.g., joy" name="week5_positive_emotion1"></td>
             </tr>
             <tr>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
+                <td><input type="text" name="week5_negative_emotion2"></td>
+                <td><input type="text" name="week5_positive_emotion2"></td>
             </tr>
             <tr>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
+                <td><input type="text" name="week5_negative_emotion3"></td>
+                <td><input type="text" name="week5_positive_emotion3"></td>
             </tr>
         </table>
         <p>Which list would you rather live from and why?</p>
-        <textarea rows="2" placeholder="Your response..."></textarea>
+        <textarea rows="2" placeholder="Your response..." name="week5_emotion_list_choice"></textarea>
         
         <h3>3. Your emotional state this week:</h3>
         <table>
@@ -381,8 +412,8 @@
                 <th>Why?</th>
             </tr>
             <tr>
-                <td><input type="text" placeholder="Negative/Positive"></td>
-                <td><input type="text" placeholder="Reasons"></td>
+                <td><input type="text" placeholder="Negative/Positive" name="week5_current_emotional_state"></td>
+                <td><input type="text" placeholder="Reasons" name="week5_emotional_state_reason"></td>
             </tr>
         </table>
 
@@ -393,8 +424,12 @@
         </div>
     </div>
 
-    <!-- Week 6 -->
-    <div class="week-container">
+    <div class="week-container" id="week6">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="6">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 6: Living in the Moment</h2>
         <p>Today we begin exploring mental health - starting with the principle of living in the present.</p>
         
@@ -404,10 +439,10 @@
         </div>
         
         <h3>1. What might be advantages of worrying?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week6_worrying_advantages"></textarea>
         
         <h3>2. What are disadvantages of worrying?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week6_worrying_disadvantages"></textarea>
         
         <h3>3. How can we apply this "present moment" principle daily?</h3>
         <div class="improvement-tip">
@@ -415,15 +450,19 @@
             <strong>Mindfulness Practices:</strong>
         </div>
         <ul style="list-style-type:none;">
-            <li><input type="checkbox"> Pause and breathe when anxious</li>
-            <li><input type="checkbox"> Focus on one task at a time</li>
-            <li><input type="checkbox"> Notice sensory details (sights, sounds)</li>
-            <li><input type="checkbox"> Other: <input type="text" placeholder="Specify"></li>
+            <li><input type="checkbox" name="week6_pause_breathe"> Pause and breathe when anxious</li>
+            <li><input type="checkbox" name="week6_focus_task"> Focus on one task at a time</li>
+            <li><input type="checkbox" name="week6_sensory_details"> Notice sensory details (sights, sounds)</li>
+            <li><input type="checkbox" name="week6_other_mindfulness"> Other: <input type="text" placeholder="Specify" name="week6_other_mindfulness_text"></li>
         </ul>
     </div>
 
-    <!-- Week 7 -->
-    <div class="week-container">
+    <div class="week-container" id="week7">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="7">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 7: Gratitude is the Best Attitude</h2>
         <p>Continuing mental health principles, we explore how gratitude improves our mindset.</p>
         
@@ -434,13 +473,13 @@
         
         <h3>1. List three things you're thankful for:</h3>
         <ol>
-            <li><input type="text" style="width:80%"></li>
-            <li><input type="text" style="width:80%"></li>
-            <li><input type="text" style="width:80%"></li>
+            <li><input type="text" style="width:80%" name="week7_thankful1"></li>
+            <li><input type="text" style="width:80%" name="week7_thankful2"></li>
+            <li><input type="text" style="width:80%" name="week7_thankful3"></li>
         </ol>
         
         <h3>2. Benefits of a grateful attitude:</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week7_grateful_benefits"></textarea>
         
         <h3>3. How to practice gratitude daily:</h3>
         <div class="improvement-tip">
@@ -448,15 +487,19 @@
             <strong>Gratitude Practices:</strong>
         </div>
         <ul style="list-style-type:none;">
-            <li><input type="checkbox"> Keep a gratitude journal</li>
-            <li><input type="checkbox"> Share thanks during meals</li>
-            <li><input type="checkbox"> Thank someone daily</li>
-            <li><input type="checkbox"> Other: <input type="text" placeholder="Specify"></li>
+            <li><input type="checkbox" name="week7_gratitude_journal"> Keep a gratitude journal</li>
+            <li><input type="checkbox" name="week7_share_thanks"> Share thanks during meals</li>
+            <li><input type="checkbox" name="week7_thank_someone"> Thank someone daily</li>
+            <li><input type="checkbox" name="week7_other_gratitude"> Other: <input type="text" placeholder="Specify" name="week7_other_gratitude_text"></li>
         </ul>
     </div>
 
-    <!-- Week 8 -->
-    <div class="week-container">
+    <div class="week-container" id="week8">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="8">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 8: Mental Health</h2>
         <p>Today we explore mental health - what it is, how it differs from physical health, and ways to improve it.</p>
         
@@ -467,17 +510,17 @@
                 <th>Physical Health</th>
             </tr>
             <tr>
-                <td><input type="text" placeholder="e.g., thoughts"></td>
-                <td><input type="text" placeholder="e.g., exercise"></td>
+                <td><input type="text" placeholder="e.g., thoughts" name="week8_mental_word1"></td>
+                <td><input type="text" placeholder="e.g., exercise" name="week8_physical_word1"></td>
             </tr>
             <tr>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
+                <td><input type="text" name="week8_mental_word2"></td>
+                <td><input type="text" name="week8_physical_word2"></td>
             </tr>
         </table>
         
         <h3>2. How would you define mental health?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week8_mental_health_definition"></textarea>
         
         <h3>3. Ways to improve mental health:</h3>
         <div class="improvement-tip">
@@ -485,10 +528,10 @@
             <strong>Mental Wellness Strategies:</strong>
         </div>
         <ul style="list-style-type:none;">
-            <li><input type="checkbox"> Challenge negative thoughts</li>
-            <li><input type="checkbox"> Engage in stimulating activities</li>
-            <li><input type="checkbox"> Practice relaxation techniques</li>
-            <li><input type="checkbox"> Other: <input type="text" placeholder="Specify"></li>
+            <li><input type="checkbox" name="week8_challenge_thoughts"> Challenge negative thoughts</li>
+            <li><input type="checkbox" name="week8_stimulating_activities"> Engage in stimulating activities</li>
+            <li><input type="checkbox" name="week8_relaxation_techniques"> Practice relaxation techniques</li>
+            <li><input type="checkbox" name="week8_other_mental"> Other: <input type="text" placeholder="Specify" name="week8_other_mental_text"></li>
         </ul>
 
         <div class="memory-verse">
@@ -498,16 +541,20 @@
         </div>
     </div>
 
-    <!-- Week 9 -->
-    <div class="week-container">
+    <div class="week-container" id="week9">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="9">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 9: Spiritual Health</h2>
         <p>Today we begin exploring spiritual health - what it is, its benefits, and how to nurture it.</p>
         
         <h3>1. How would you define spiritual health?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week9_spiritual_definition"></textarea>
         
         <h3>2. How might spiritual health help someone in addiction?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week9_spiritual_addiction_help"></textarea>
         
         <h3>3. Ways to increase spiritual health:</h3>
         <div class="improvement-tip">
@@ -515,10 +562,10 @@
             <strong>Spiritual Growth Practices:</strong>
         </div>
         <ul style="list-style-type:none;">
-            <li><input type="checkbox"> Daily prayer/meditation</li>
-            <li><input type="checkbox"> Scripture reading</li>
-            <li><input type="checkbox"> Worship participation</li>
-            <li><input type="checkbox"> Other: <input type="text" placeholder="Specify"></li>
+            <li><input type="checkbox" name="week9_daily_prayer"> Daily prayer/meditation</li>
+            <li><input type="checkbox" name="week9_scripture_reading"> Scripture reading</li>
+            <li><input type="checkbox" name="week9_worship_participation"> Worship participation</li>
+            <li><input type="checkbox" name="week9_other_spiritual"> Other: <input type="text" placeholder="Specify" name="week9_other_spiritual_text"></li>
         </ul>
 
         <div class="memory-verse">
@@ -528,16 +575,20 @@
         </div>
     </div>
 
-    <!-- Week 10 -->
-    <div class="week-container">
+    <div class="week-container" id="week10">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="10">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 10: Awareness vs. Awakening</h2>
         <p>Continuing spiritual health, we explore whether spirituality requires awareness or awakening.</p>
         
         <h3>1. Is spirituality about awareness or awakening?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week10_awareness_awakening"></textarea>
         
         <h3>2. How might spirituality be awakened in someone?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week10_spiritual_awakening_how"></textarea>
         
         <h3>3. What hinders spiritual awakening? How to overcome?</h3>
         <table>
@@ -546,12 +597,12 @@
                 <th>Solutions</th>
             </tr>
             <tr>
-                <td><input type="text" placeholder="e.g., doubt"></td>
-                <td><input type="text" placeholder="e.g., prayer"></td>
+                <td><input type="text" placeholder="e.g., doubt" name="week10_hindrance1"></td>
+                <td><input type="text" placeholder="e.g., prayer" name="week10_solution1"></td>
             </tr>
             <tr>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
+                <td><input type="text" name="week10_hindrance2"></td>
+                <td><input type="text" name="week10_solution2"></td>
             </tr>
         </table>
 
@@ -562,19 +613,23 @@
         </div>
     </div>
 
-    <!-- Week 11 -->
-    <div class="week-container">
+    <div class="week-container" id="week11">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="11">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 11: Case Study - John's Story</h2>
         <p><em>John has been a Christian for 18 years but struggles with guilt and relapses into heroin use. He feels disconnected from God and unworthy of love.</em></p>
         
         <h3>1. How would you describe John's spiritual health?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week11_john_spiritual_health"></textarea>
         
         <h3>2. How might you help John improve his spiritual health?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week11_help_john"></textarea>
         
         <h3>3. What positive impacts might improved spiritual health have on John's life?</h3>
-        <textarea rows="3" placeholder="Group discussion notes..."></textarea>
+        <textarea rows="3" placeholder="Group discussion notes..." name="week11_john_impacts"></textarea>
 
         <div class="memory-verse">
             <strong>Memory Verse (Colossians 1:14):</strong> 
@@ -583,8 +638,12 @@
         </div>
     </div>
 
-    <!-- Week 12 -->
-    <div class="week-container">
+    <div class="week-container" id="week12">
+        <div class="save-button-container">
+            <button class="btn save-week-btn" data-week="12">
+                <img src="../icons/game.png" class="icon" alt="Save icon"> Save Progress
+            </button>
+        </div>
         <h2>Week 12: Final Assessment</h2>
         <p>Re-evaluate your holistic health components and compare to Week 1:</p>
         
@@ -596,32 +655,32 @@
             </tr>
             <tr>
                 <td>Physical</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week12_physical_importance"></td>
+                <td><input type="number" min="1" max="10" name="week12_physical_score"></td>
             </tr>
             <tr>
                 <td>Mental</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week12_mental_importance"></td>
+                <td><input type="number" min="1" max="10" name="week12_mental_score"></td>
             </tr>
             <tr>
                 <td>Spiritual</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week12_spiritual_importance"></td>
+                <td><input type="number" min="1" max="10" name="week12_spiritual_score"></td>
             </tr>
             <tr>
                 <td>Emotional</td>
-                <td><input type="number" min="1" max="4"></td>
-                <td><input type="number" min="1" max="10"></td>
+                <td><input type="number" min="1" max="4" name="week12_emotional_importance"></td>
+                <td><input type="number" min="1" max="10" name="week12_emotional_score"></td>
             </tr>
         </table>
 
         <h3>Reflection:</h3>
         <p>How has your understanding of holistic health changed during this course?</p>
-        <textarea rows="3" placeholder="Your reflections..."></textarea>
+        <textarea rows="3" placeholder="Your reflections..." name="week12_reflection1"></textarea>
         
         <p>What specific changes have you made in each area?</p>
-        <textarea rows="3" placeholder="Your progress..."></textarea>
+        <textarea rows="3" placeholder="Your progress..." name="week12_reflection2"></textarea>
 
         <div class="memory-verse">
             <strong>Memory Verse (Ephesians 5:18):</strong> 
@@ -630,26 +689,24 @@
         </div>
     </div>
 
-    <!-- Feedback Form -->
     <div class="feedback-form">
         <h2>Course Feedback</h2>
         <p><strong>1. Which week was most impactful for you? Why?</strong></p>
-        <textarea rows="3"></textarea>
+        <textarea rows="3" name="feedback_impactful_week"></textarea>
         
         <p><strong>2. What specific changes have you noticed in these areas?</strong></p>
         <ul style="list-style-type:none;">
-            <li><input type="checkbox"> Physical health</li>
-            <li><input type="checkbox"> Emotional well-being</li>
-            <li><input type="checkbox"> Mental clarity</li>
-            <li><input type="checkbox"> Spiritual growth</li>
-            <li><input type="checkbox"> Other: <input type="text"></li>
+            <li><input type="checkbox" name="feedback_physical_change"> Physical health</li>
+            <li><input type="checkbox" name="feedback_emotional_change"> Emotional well-being</li>
+            <li><input type="checkbox" name="feedback_mental_change"> Mental clarity</li>
+            <li><input type="checkbox" name="feedback_spiritual_change"> Spiritual growth</li>
+            <li><input type="checkbox" name="feedback_other_change"> Other: <input type="text" name="feedback_other_change_text"></li>
         </ul>
         
         <p><strong>3. How could we improve this course?</strong></p>
-        <textarea rows="3"></textarea>
+        <textarea rows="3" name="feedback_improvements"></textarea>
     </div>
 
-    <!-- Resource Appendix -->
     <div class="resource-list">
         <h2>Additional Resources</h2>
         <h3>Recommended Reading:</h3>
@@ -674,6 +731,6 @@
         <p>Copyright © Hope for Recovery | September 2023 | Craig Halkett</p>
     </div>
 	
-	
+	<script src="js/holistic-health-progress.js" type="module"></script>
 </body>
 </html>
