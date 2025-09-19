@@ -477,8 +477,7 @@
             animation: pulseOpacity 1.5s infinite;
         }
 
-
-        /* Enhanced Map Section */
+        /* Enhanced Map Section - Updated */
         .map-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -496,6 +495,16 @@
             align-items: center;
             justify-content: center;
             color: #666;
+        }
+
+        .map-placeholder {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .map-placeholder a {
+            color: var(--primary);
+            text-decoration: underline;
         }
 
         .directions-panel {
@@ -556,6 +565,55 @@
 
         .get-directions-btn:hover {
             background-color: var(--accent);
+        }
+        
+        /* Modal styles for directions options */
+        .directions-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+        }
+        
+        .directions-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close-directions-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .directions-option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            text-align: left;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .directions-option-btn:hover {
+            background: #e5e5e5;
         }
 
         /* Footer */
@@ -667,8 +725,6 @@
             .card-back {
                 display: none;
             }
-
-
 
             .map-container {
                 grid-template-columns: 1fr;
@@ -793,64 +849,7 @@
             </div>
         </div>
     </section>
-<!--
-    <section class="section section-dark" id="recovery">
-        <div class="container">
-            <h2 style="text-align: center;">Recovery & Support Programs</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h3>Hope for Recovery</h3>
-                            <p><strong>Mondays 11:00 AM - 1:30 PM</strong></p>
-                            <p>A safe space for those struggling with addiction, homelessness, or isolation. Includes light lunch and recovery planning.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Recovery Support</h3>
-                            <p>Confidential</p>
-                            <p>Practical help</p>
-                            <p>Spiritual guidance</p>
-                            <p>No judgment</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h3>Drop-In Café</h3>
-                            <p><strong>Fridays 12:00 PM - 2:00 PM</strong></p>
-                            <p>Homemade meals and warm fellowship. Everyone welcome - no need to book.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Cafe Details</h3>
-                            <p>Free meal</p>
-                            <p>Friendly faces</p>
-                            <p>Community hub</p>
-                            <p>All welcome</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h3>One-to-One Support</h3>
-                            <p><strong>Wednesdays by appointment</strong></p>
-                            <p>Personalized recovery sessions with our trained support team.</p>
-                            <a href="#contact" class="btn btn-primary" style="margin-top: 15px;">Get in Touch</a>
-                        </div>
-                        <div class="card-back">
-                            <h3>Personal Support</h3>
-                            <p>Tailored help</p>
-                            <p>Trained mentors</p>
-                            <p>Spiritual support</p>
-                            <p>Flexible scheduling</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
--->
+
     <section class="section" id="testimonies">
         <div class="container">
             <h2 style="text-align: center;">Stories of Hope</h2>
@@ -880,7 +879,16 @@
         <div class="container">
             <h2 style="text-align: center;">Find Us</h2>
             <div class="map-container">
-                <div id="churchMap">Loading map...</div>
+                <div id="churchMap">
+                    <div class="map-placeholder">
+                        <h3>Hope Community Church</h3>
+                        <p>30 Shelley Drive, Clydebank, G81 3EL</p>
+                        <p><a href="https://www.google.com/maps/place/30+Shelley+Dr,+Clydebank+G81+3EL" target="_blank">View on Google Maps</a></p>
+                        <!-- Static map image as fallback -->
+                        <img src="https://maps.googleapis.com/maps/api/staticmap?center=30+Shelley+Drive,Clydebank,G81+3EL&zoom=15&size=400x300&markers=color:red%7C30+Shelley+Drive,Clydebank,G81+3EL&key=AIzaSyCoVwuEk_z4nUL8W4zuK6dS2ODDqlse0Ik" 
+                             alt="Map to Hope Community Church" style="max-width: 100%; border-radius: 8px; margin-top: 15px;">
+                    </div>
+                </div>
                 <div class="directions-panel">
                     <h3>How to Get Here</h3>
                     <p>We're located at 30 Shelley Drive, Clydebank, G81 3EL</p>
@@ -909,7 +917,7 @@
                         </div>
                     </div>
                     
-                    <button class="get-directions-btn" onclick="openDirections()">
+                    <button class="get-directions-btn" onclick="showDirectionsOptions()">
                         Get Directions
                     </button>
                 </div>
@@ -951,495 +959,210 @@
             <button class="btn btn-primary" onclick="submitPrayer()">Submit</button>
         </div>
     </div>
-
-    <!--<div class="chat-button" onclick="openChat()">
-        <img src="assets/chat-icon.png" alt="Chat with us">
-    </div>-->
-	
-<script>
-    // Mobile menu functionality
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
-
-    menuToggle.addEventListener('click', function() {
-        menuToggle.classList.toggle('active');
-        nav.classList.toggle('active');
-    });
-
-    // Close menu when clicking on a nav link (for mobile)
-    const navLinks = document.querySelectorAll('nav a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                menuToggle.classList.remove('active');
-                nav.classList.remove('active');
-            }
-        });
-    });
-
-    // Countdown to next service
-    function updateCountdown() {
-        const now = new Date();
-        const nextSunday = new Date();
-        
-        // Calculate days until next Sunday
-        let daysUntilSunday = (7 - now.getDay()) % 7;
-        
-        // If today is Sunday, check if it's before or after 11am
-        if (daysUntilSunday === 0) {
-            if (now.getHours() < 11 || (now.getHours() === 11 && now.getMinutes() < 0)) {
-                // It's Sunday before 11am - service is today
-                daysUntilSunday = 0;
-            } else {
-                // It's Sunday after 11am - next service is next Sunday
-                daysUntilSunday = 7;
-            }
-        }
-        
-        nextSunday.setDate(now.getDate() + daysUntilSunday);
-        nextSunday.setHours(11, 0, 0, 0);
-        
-        const diff = nextSunday - now;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        
-        let countdownText;
-        if (days > 0) {
-            countdownText = `Next service in: <strong>${days}d ${hours}h</strong>`;
-        } else if (hours > 0) {
-            countdownText = `Next service in: <strong>${hours}h ${minutes}m</strong>`;
-        } else {
-            countdownText = `Service starts in: <strong>${minutes}m</strong>`;
-        }
-        
-        document.getElementById('countdown').innerHTML = countdownText;
-    }
-    setInterval(updateCountdown, 60000); // Update every minute
-    updateCountdown(); // Initial call
-
-    // Testimonial slider
-    function showTestimonial(index) {
-        const testimonials = document.querySelectorAll('.testimonial');
-        const dots = document.querySelectorAll('.dot');
-        
-        testimonials.forEach(testimonial => testimonial.classList.remove('active'));
-        dots.forEach(dot => dot.classList.remove('active'));
-        
-        testimonials[index].classList.add('active');
-        dots[index].classList.add('active');
-    }
-
-    // Prayer form modal
-    function openPrayerForm() {
-        document.getElementById('prayerForm').style.display = 'block';
-    }
-
-    function closeModal() {
-        document.getElementById('prayerForm').style.display = 'none';
-    }
-
-    function submitPrayer() {
-        const textarea = document.querySelector('.modal textarea');
-        if (textarea.value.trim() !== '') {
-            alert('Thank you for your prayer request. Our team will pray for you this week.');
-            textarea.value = '';
-            closeModal();
-        } else {
-            alert('Please enter your prayer request');
-        }
-    }
-
-    // Add this to your script
-    window.toggleLiveBadge = function(show) {
-        document.getElementById('liveBadge').style.display = 
-        show ? 'block' : 'none';
-    };
-
-    // Live badge functionality
-    function checkLive() {
-        const now = new Date();
-        const day = now.getDay(); // 0 = Sunday
-        const hour = now.getHours();
-        const minutes = now.getMinutes();
-        
-        // Adjust these times to match your actual stream schedule
-        const isLiveTime = (day === 0 && // Sunday
-                           ((hour === 10 && minutes >= 30) || // From 10:30am
-                            (hour === 11) ||                  // Until 12:00pm
-                            (hour === 12 && minutes < 30)));  // (adjust as needed)
-        
-        const liveBadge = document.getElementById('liveBadge');
-        if (isLiveTime) {
-            liveBadge.style.display = 'block';
-        } else {
-            liveBadge.style.display = 'none';
-        }
-    }
     
-    // Check every minute (60000ms)
-    setInterval(checkLive, 60000);
-    checkLive(); // Initial check
-
-    // YouTube Live Stream function
-    function openLiveStream() {
-        // Replace with your actual YouTube live stream URL or channel URL
-        const youtubeLiveUrl = "https://youtu.be/Z6GvIj0fywg";
-        window.open(youtubeLiveUrl, '_blank');
-    }
-
-    // Smooth scrolling with offset for fixed header
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
+    <!-- Directions Modal -->
+    <div id="directionsModal" class="directions-modal" style="display: none;">
+        <div class="directions-modal-content">
+            <span class="close-directions-modal" onclick="closeDirectionsModal()">&times;</span>
+            <h3>Get Directions</h3>
+            <p>Choose how you'd like to get directions to our church:</p>
             
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = targetElement.offsetTop - headerHeight;
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+            <button class="directions-option-btn" onclick="openGoogleMapsDirections()">
+                <strong>Open in Google Maps</strong><br>
+                <small>Get turn-by-turn navigation on your device</small>
+            </button>
+            
+            <button class="directions-option-btn" onclick="openAppleMapsDirections()">
+                <strong>Open in Apple Maps</strong><br>
+                <small>For iPhone and Mac users</small>
+            </button>
+            
+            <button class="directions-option-btn" onclick="showPublicTransportInfo()">
+                <strong>Public Transport Options</strong><br>
+                <small>View bus and train routes</small>
+            </button>
+        </div>
+    </div>
 
-                // Update URL without page jump
-                if (history.pushState) {
-                    history.pushState(null, null, targetId);
+    <script>
+        // Mobile menu functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a nav link (for mobile)
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    menuToggle.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+        });
+
+        // Countdown to next service
+        function updateCountdown() {
+            const now = new Date();
+            const nextSunday = new Date();
+            
+            // Calculate days until next Sunday
+            let daysUntilSunday = (7 - now.getDay()) % 7;
+            
+            // If today is Sunday, check if it's before or after 11am
+            if (daysUntilSunday === 0) {
+                if (now.getHours() < 11 || (now.getHours() === 11 && now.getMinutes() < 0)) {
+                    // It's Sunday before 11am - service is today
+                    daysUntilSunday = 0;
                 } else {
-                    location.hash = targetId;
+                    // It's Sunday after 11am - next service is next Sunday
+                    daysUntilSunday = 7;
                 }
             }
-        });
-    });
-
-    // Chat function
-    function openChat() {
-        alert("Our chat service is currently offline. Please email us or visit during service times.");
-    }
-
-    // Set current year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Enhanced Google Map Initialization with error handling
-    let map;
-    let marker;
-    let directionsService;
-    let directionsRenderer;
-
-    // Church location - 30 Shelley Drive, Clydebank
-    const churchLocation = { lat: 55.91264139417948, lng: -4.414077211180472 };
-
-    function initMap() {
-        try {
-            // Initialize the map with corrected coordinates
-            map = new google.maps.Map(document.getElementById("churchMap"), {
-                zoom: 17,  // Increased zoom level for better precision
-                center: churchLocation,
-                styles: [
-                    {
-                        "featureType": "poi",
-                        "stylers": [{"visibility": "off"}]
-                    },
-                    {
-                        "featureType": "transit",
-                        "stylers": [{"visibility": "off"}]
-                    }
-                ]
-            });
             
-            // Add marker with precise location
-            marker = new google.maps.Marker({
-                position: churchLocation,
-                map: map,
-                title: "Hope Community Church",
-                icon: {
-                    url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
-                }
-            });
+            nextSunday.setDate(now.getDate() + daysUntilSunday);
+            nextSunday.setHours(11, 0, 0, 0);
             
-            // Initialize directions services
-            directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer({
-                map: map,
-                suppressMarkers: true
-            });
+            const diff = nextSunday - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             
-            // Add info window
-            const infoWindow = new google.maps.InfoWindow({
-                content: `
-                    <div style="padding: 10px;">
-                        <h3 style="margin: 0 0 5px 0; color: ${getComputedStyle(document.documentElement).getPropertyValue('--primary')}">Hope Community Church</h3>
-                        <p style="margin: 0;">30 Shelley Drive, Clydebank, G81 3EL</p>
-                    </div>
-                `
-            });
-            
-            marker.addListener("click", () => {
-                infoWindow.open(map, marker);
-            });
-
-        } catch (error) {
-            console.error("Error loading Google Maps:", error);
-            document.getElementById("churchMap").innerHTML = 
-                "<p>Unable to load map. Please refresh the page or try again later.</p>";
-        }
-    }
-
-    function handleMapError() {
-        console.error("Google Maps failed to load");
-        document.getElementById("churchMap").innerHTML = 
-            "<p>Unable to load map. Please check your internet connection or try again later.</p>";
-    }
-
-    // Improved geolocation with better accuracy handling
-    function openDirections() {
-        if (!map) {
-            alert("Map is not loaded yet. Please try again in a moment.");
-            return;
-        }
-
-        // Show loading state
-        const directionsBtn = document.querySelector('.get-directions-btn');
-        const originalBtnText = directionsBtn.textContent;
-        directionsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Locating you...';
-        directionsBtn.disabled = true;
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    
-                    // Verify location accuracy
-                    if (position.coords.accuracy > 1000) { // If accuracy radius > 1km
-                        showLocationOptions(userLocation);
-                    } else {
-                        calculateAndDisplayRoute(userLocation);
-                    }
-                    
-                    directionsBtn.textContent = originalBtnText;
-                    directionsBtn.disabled = false;
-                },
-                (error) => {
-                    // Handle different error cases
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            showLocationOptions();
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                        case error.TIMEOUT:
-                            showLocationOptions();
-                            break;
-                        default:
-                            showLocationOptions();
-                    }
-                    directionsBtn.textContent = originalBtnText;
-                    directionsBtn.disabled = false;
-                },
-                {
-                    enableHighAccuracy: true,  // Try to use GPS if available
-                    timeout: 8000,            // Wait up to 8 seconds
-                    maximumAge: 0             // Don't use cached position
-                }
-            );
-        } else {
-            // Browser doesn't support Geolocation
-            showLocationOptions();
-            directionsBtn.textContent = originalBtnText;
-            directionsBtn.disabled = false;
-        }
-    }
-
-    // Show options when automatic location fails
-    function showLocationOptions(detectedLocation = null) {
-        const modalContent = `
-            <div class="location-modal" style="padding:20px;max-width:500px;background:white;border-radius:10px;">
-                <h3 style="color:var(--primary);margin-top:0;">Where are you coming from?</h3>
-                ${detectedLocation ? `
-                <p>We detected you might be near:<br>
-                <strong>${getNearestLandmark(detectedLocation.lat, detectedLocation.lng)}</strong></p>
-                <button onclick="calculateAndDisplayRoute(${JSON.stringify(detectedLocation)})" 
-                    class="btn btn-primary" style="width:100%;margin-bottom:10px;">
-                    Use Detected Location
-                </button>
-                ` : ''}
-                
-                <button onclick="calculateAndDisplayRoute({lat:55.8756,lng:-4.3859})" 
-                    class="btn btn-secondary" style="width:100%;margin-bottom:10px;">
-                    From Renfrew Town Center
-                </button>
-                
-                <button onclick="calculateAndDisplayRoute({lat:55.8992,lng:-4.4009})" 
-                    class="btn btn-secondary" style="width:100%;margin-bottom:10px;">
-                    From Clydebank Town Center
-                </button>
-                
-                <button onclick="showManualLocationEntry()" 
-                    class="btn btn-secondary" style="width:100%;">
-                    Enter Custom Location
-                </button>
-            </div>
-        `;
-        
-        const modal = document.createElement('div');
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.width = '100%';
-        modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0,0,0,0.7)';
-        modal.style.zIndex = '2000';
-        modal.style.display = 'flex';
-        modal.style.justifyContent = 'center';
-        modal.style.alignItems = 'center';
-        modal.innerHTML = modalContent;
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                document.body.removeChild(modal);
-            }
-        });
-        
-        document.body.appendChild(modal);
-    }
-
-    // For manual location entry
-    function showManualLocationEntry() {
-        const modalContent = `
-            <div style="padding:20px;background:white;border-radius:10px;width:90%;max-width:500px;">
-                <h3 style="color:var(--primary);margin-top:0;">Enter Your Location</h3>
-                <input type="text" id="manualLocationInput" placeholder="Enter your address or postcode" 
-                    style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:5px;">
-                <button onclick="geocodeManualLocation()" 
-                    class="btn btn-primary" style="width:100%;">
-                    Get Directions
-                </button>
-            </div>
-        `;
-        
-        const modal = document.createElement('div');
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.width = '100%';
-        modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0,0,0,0.7)';
-        modal.style.zIndex = '2000';
-        modal.style.display = 'flex';
-        modal.style.justifyContent = 'center';
-        modal.style.alignItems = 'center';
-        modal.innerHTML = modalContent;
-        
-        document.body.appendChild(modal);
-    }
-
-    // Convert address to coordinates
-    function geocodeManualLocation() {
-        const input = document.getElementById('manualLocationInput').value;
-        if (!input) return;
-        
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address: input }, (results, status) => {
-            if (status === 'OK' && results[0]) {
-                const location = results[0].geometry.location;
-                calculateAndDisplayRoute({
-                    lat: location.lat(),
-                    lng: location.lng()
-                });
-                // Remove all modals
-                document.querySelectorAll('div[style*="position: fixed;"]').forEach(el => {
-                    document.body.removeChild(el);
-                });
+            let countdownText;
+            if (days > 0) {
+                countdownText = `Next service in: <strong>${days}d ${hours}h</strong>`;
+            } else if (hours > 0) {
+                countdownText = `Next service in: <strong>${hours}h ${minutes}m</strong>`;
             } else {
-                alert("Couldn't find that location. Please try a different address or postcode.");
+                countdownText = `Service starts in: <strong>${minutes}m</strong>`;
+            }
+            
+            document.getElementById('countdown').innerHTML = countdownText;
+        }
+        setInterval(updateCountdown, 60000); // Update every minute
+        updateCountdown(); // Initial call
+
+        // Testimonial slider
+        function showTestimonial(index) {
+            const testimonials = document.querySelectorAll('.testimonial');
+            const dots = document.querySelectorAll('.dot');
+            
+            testimonials.forEach(testimonial => testimonial.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            testimonials[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        // Prayer form modal
+        function openPrayerForm() {
+            document.getElementById('prayerForm').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('prayerForm').style.display = 'none';
+        }
+
+        function submitPrayer() {
+            const textarea = document.querySelector('.modal textarea');
+            if (textarea.value.trim() !== '') {
+                alert('Thank you for your prayer request. Our team will pray for you this week.');
+                textarea.value = '';
+                closeModal();
+            } else {
+                alert('Please enter your prayer request');
+            }
+        }
+
+        // Add this to your script
+        window.toggleLiveBadge = function(show) {
+            document.getElementById('liveBadge').style.display = 
+            show ? 'block' : 'none';
+        };
+
+        // Live badge functionality
+        function checkLive() {
+            const now = new Date();
+            const day = now.getDay(); // 0 = Sunday
+            const hour = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // Adjust these times to match your actual stream schedule
+            const isLiveTime = (day === 0 && // Sunday
+                               ((hour === 10 && minutes >= 30) || // From 10:30am
+                                (hour === 11) ||                  // Until 12:00pm
+                                (hour === 12 && minutes < 30)));  // (adjust as needed)
+            
+            const liveBadge = document.getElementById('liveBadge');
+            if (isLiveTime) {
+                liveBadge.style.display = 'block';
+            } else {
+                liveBadge.style.display = 'none';
+            }
+        }
+        
+        function openLiveStream() {
+            window.open('https://www.facebook.com/hopecommunityclydebank/live', '_blank');
+        }
+        
+        // Check if currently live every minute
+        setInterval(checkLive, 60000);
+        checkLive(); // Initial check
+
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Close modal if clicked outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('prayerForm');
+            if (event.target === modal) {
+                closeModal();
             }
         });
-    }
-
-    // Try to identify nearest landmark for better UX
-    function getNearestLandmark(lat, lng) {
-        // These would be adjusted to your local area
-        const landmarks = [
-            {name: "Clydebank Town Center", lat: 55.8992, lng: -4.4009},
-            {name: "Renfrew Town Center", lat: 55.8756, lng: -4.3859},
-            {name: "Glasgow Airport", lat: 55.8719, lng: -4.4331},
-            {name: "Braehead Shopping Centre", lat: 55.8774, lng: -4.3557}
-        ];
         
-        let nearest = {name: "your location", distance: Infinity};
+        // Show directions options modal
+        function showDirectionsOptions() {
+            document.getElementById('directionsModal').style.display = 'flex';
+        }
         
-        landmarks.forEach(landmark => {
-            const distance = getDistanceFromLatLonInKm(lat, lng, landmark.lat, landmark.lng);
-            if (distance < nearest.distance) {
-                nearest = {name: landmark.name, distance: distance};
+        function closeDirectionsModal() {
+            document.getElementById('directionsModal').style.display = 'none';
+        }
+        
+        // Open Google Maps with directions to the church
+        function openGoogleMapsDirections() {
+            const address = encodeURIComponent("30 Shelley Drive, Clydebank, G81 3EL");
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${address}`, '_blank');
+            closeDirectionsModal();
+        }
+        
+        // Open Apple Maps with directions to the church
+        function openAppleMapsDirections() {
+            const address = encodeURIComponent("30 Shelley Drive, Clydebank, G81 3EL");
+            window.open(`https://maps.apple.com/?daddr=${address}`, '_blank');
+            closeDirectionsModal();
+        }
+        
+        // Show public transport information
+        function showPublicTransportInfo() {
+            alert("Public Transport Options:\n\n" +
+                  "Bus: Routes 1, 2, and 3 stop near Shelley Drive (5 minute walk)\n" +
+                  "Train: Clydebank Station is a 10 minute walk away\n\n" +
+                  "Visit Traveline Scotland (www.travelinescotland.com) for detailed schedules.");
+            closeDirectionsModal();
+        }
+        
+        // Close modal if clicked outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('directionsModal');
+            if (event.target === modal) {
+                closeDirectionsModal();
             }
         });
-        
-        return nearest.distance < 3 ? nearest.name : "your current location";
-    }
-
-    function calculateAndDisplayRoute(startLocation) {
-        directionsService.route(
-            {
-                origin: startLocation,
-                destination: churchLocation,  // Using your exact coordinates
-                travelMode: google.maps.TravelMode.DRIVING,
-            },
-            (response, status) => {
-                if (status === "OK") {
-                    directionsRenderer.setDirections(response);
-                    
-                    // Add custom marker with correct position
-                    new google.maps.Marker({
-                        position: churchLocation,
-                        map: map,
-                        title: "Hope Community Church",
-                        icon: {
-                            url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
-                        }
-                    });
-                } else {
-                    window.alert("Directions request failed due to " + status);
-                }
-            }
-        );
-    }
-
-    // Helper function to calculate distance between coordinates
-    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Radius of the earth in km
-        const dLat = deg2rad(lat2-lat1);
-        const dLon = deg2rad(lon2-lon1); 
-        const a = 
-            Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-            Math.sin(dLon/2) * Math.sin(dLon/2); 
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        const d = R * c; // Distance in km
-        return d;
-    }
-
-    function deg2rad(deg) {
-        return deg * (Math.PI/180);
-    }
-
-    // Load Google Maps API with error handling
-    function loadGoogleMaps() {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCoVwuEk_z4nUL8W4zuK6dS2ODDqlse0Ik&callback=initMap&libraries=places`;
-        script.async = true;
-        script.defer = true;
-        script.onerror = handleMapError;
-        document.head.appendChild(script);
-    }
-    
-    window.addEventListener('load', loadGoogleMaps);
-</script>
- 
+    </script>
 </body>
 </html>
