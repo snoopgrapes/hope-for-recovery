@@ -18,10 +18,10 @@
             --text-light: #FFFFFF;
         }
 
-        /* Header Styles */
+        /* Header Styles - UPDATED */
         header {
             background-color: #FFFFFF;
-            padding: 0.7rem;
+            padding: 0.1rem 0;
             position: fixed;
             width: 100%;
             z-index: 100;
@@ -32,8 +32,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1200px; /* Reduced from 1200px */
             margin: 0 auto;
+            padding: 0 20px;
         }
 
         nav {
@@ -48,6 +49,7 @@
             font-weight: 600;
             position: relative;
             transition: color 0.3s;
+            white-space: nowrap;
         }
 
         nav a:hover {
@@ -86,7 +88,7 @@
         }
 
         .logo-container img {
-            max-width: 135px;
+            max-width: 120px; /* Slightly reduced */
             height: auto;
             transition: transform 0.3s;
         }
@@ -129,9 +131,9 @@
             transform: translateY(-9px) rotate(-45deg);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) { /* Adjusted breakpoint */
             .header-container {
-                padding: 1rem;
+                padding: 0 15px;
             }
 
             .menu-toggle {
@@ -479,141 +481,77 @@
 
         /* Enhanced Map Section - Updated */
         .map-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 30px;
             margin-top: 30px;
         }
 
         #churchMap {
-            height: 400px;
-            border-radius: 10px;
+            height: 500px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            background-color: #f5f5f5;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            background-color: #f8f9fa;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: #666;
+            position: relative;
+            padding: 20px;
+        }
+
+        .map-header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .map-header h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .map-header p {
+            font-size: 1.1rem;
+            margin: 5px 0;
         }
 
         .map-placeholder {
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            padding: 20px;
+            width: 100%;
         }
 
         .map-placeholder a {
-            color: var(--primary);
-            text-decoration: underline;
-        }
-
-        .directions-panel {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .directions-panel h3 {
-            color: var(--primary);
-            margin-top: 0;
-        }
-
-        .transport-options {
+            display: inline-block;
             margin-top: 20px;
-        }
-
-        .transport-option {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .transport-icon {
-            font-size: 24px;
-            margin-right: 15px;
-            color: var(--primary);
-            width: 30px;
-            text-align: center;
-        }
-
-        .transport-details h4 {
-            margin: 0 0 5px 0;
-        }
-
-        .transport-details p {
-            margin: 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .get-directions-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
+            padding: 12px 25px;
             background-color: var(--primary);
             color: white;
-            border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             font-weight: 600;
-            margin-top: 20px;
-            cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 125, 0, 0.3);
         }
 
-        .get-directions-btn:hover {
+        .map-placeholder a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 125, 0, 0.4);
             background-color: var(--accent);
         }
-        
-        /* Modal styles for directions options */
-        .directions-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            animation: fadeIn 0.3s;
-        }
-        
-        .directions-modal-content {
-            background: white;
-            padding: 30px;
+
+        .map-image {
+            max-width: 100%;
             border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-        }
-        
-        .close-directions-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        .directions-option-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            text-align: left;
-            background: #f5f5f5;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .directions-option-btn:hover {
-            background: #e5e5e5;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         /* Footer */
@@ -726,12 +664,13 @@
                 display: none;
             }
 
-            .map-container {
-                grid-template-columns: 1fr;
+            #churchMap {
+                height: 450px;
+                padding: 15px;
             }
             
-            #churchMap {
-                height: 300px;
+            .map-header h3 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -880,47 +819,20 @@
             <h2 style="text-align: center;">Find Us</h2>
             <div class="map-container">
                 <div id="churchMap">
-                    <div class="map-placeholder">
+                    <div class="map-header">
                         <h3>Hope Community Church</h3>
                         <p>30 Shelley Drive, Clydebank, G81 3EL</p>
-                        <p><a href="https://www.google.com/maps/place/30+Shelley+Dr,+Clydebank+G81+3EL" target="_blank">View on Google Maps</a></p>
+                    </div>
+                    <div class="map-placeholder">
                         <!-- Static map image as fallback -->
-                        <img src="https://maps.googleapis.com/maps/api/staticmap?center=30+Shelley+Drive,Clydebank,G81+3EL&zoom=15&size=400x300&markers=color:red%7C30+Shelley+Drive,Clydebank,G81+3EL&key=AIzaSyCoVwuEk_z4nUL8W4zuK6dS2ODDqlse0Ik" 
-                             alt="Map to Hope Community Church" style="max-width: 100%; border-radius: 8px; margin-top: 15px;">
+                        <img src="https://maps.googleapis.com/maps/api/staticmap?center=30+Shelley+Drive,Clydebank,G81+3EL&zoom=15&size=600x300&markers=color:red%7C30+Shelley+Drive,Clydebank,G81+3EL&key=AIzaSyCoVwuEk_z4nUL8W4zuK6dS2ODDqlse0Ik" 
+                             alt="Map to Hope Community Church" class="map-image">
                     </div>
                 </div>
-                <div class="directions-panel">
-                    <h3>How to Get Here</h3>
-                    <p>We're located at 30 Shelley Drive, Clydebank, G81 3EL</p>
-                    
-                    <div class="transport-options">
-                        <div class="transport-option">
-                            <div class="transport-icon">🚗</div>
-                            <div class="transport-details">
-                                <h4>By Car</h4>
-                                <p>Free parking available on site</p>
-                            </div>
-                        </div>
-                        <div class="transport-option">
-                            <div class="transport-icon">🚌</div>
-                            <div class="transport-details">
-                                <h4>By Bus</h4>
-                                <p>Routes 1, 2, and 3 stop nearby (5 min walk)</p>
-                            </div>
-                        </div>
-                        <div class="transport-option">
-                            <div class="transport-icon">🚆</div>
-                            <div class="transport-details">
-                                <h4>By Train</h4>
-                                <p>Clydebank station is 10 minutes walk away</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button class="get-directions-btn" onclick="showDirectionsOptions()">
-                        Get Directions
-                    </button>
-                </div>
+                <!-- Moved the button outside the map container -->
+                <a href="https://www.google.com/maps/place/30+Shelley+Dr,+Clydebank+G81+3EL" target="_blank" class="btn btn-primary" style="margin-top: 20px; align-self: center;">
+                    View on Google Maps
+                </a>
             </div>
         </div>
     </section>
@@ -930,7 +842,7 @@
             <h2 style="text-align: center;">Get Involved</h2>
             <div style="text-align: center; margin-top: 30px;">
                 <a href="mailto:info@hopecommunityclydebank.org" class="btn btn-primary">Email Us</a>
-                <a href="https://facebook.com" class="btn btn-secondary" style="margin-left: 15px;">Facebook</a>
+                <a href="https://www.facebook.com/profile.php?id=61581172410948" class="btn btn-secondary" style="margin-left: 15px;">Facebook</a>
             </div>
         </div>
     </section>
@@ -998,7 +910,7 @@
         const navLinks = document.querySelectorAll('nav a');
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 900) {
                     menuToggle.classList.remove('active');
                     nav.classList.remove('active');
                 }
