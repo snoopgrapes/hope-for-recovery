@@ -1074,6 +1074,13 @@
         menuToggle.addEventListener('click', function() {
             menuToggle.classList.toggle('active');
             nav.classList.toggle('active');
+            
+            // Toggle body scroll
+            if (nav.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
         });
 
         // Close menu when clicking on a nav link (for mobile)
@@ -1083,83 +1090,73 @@
                 if (window.innerWidth <= 900) {
                     menuToggle.classList.remove('active');
                     nav.classList.remove('active');
+                    document.body.style.overflow = 'auto';
                 }
             });
         });
 
-        // Countdown to next service
-        function updateCountdown() {
-            const now = new Date();
-            const nextSunday = new Date();
+        // Close menu when clicking outside (for mobile)
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
             
-            // Calculate days until next Sunday
-            let daysUntilSunday = (7 - now.getDay()) % 7;
-            
-            // If today is Sunday, check if it's before or after 11am
-            if (daysUntilSunday === 0) {
-                if (now.getHours() < 11 || (now.getHours() === 11 && now.getMinutes() < 0)) {
-                    // It's Sunday before 11am - service is today
-                    daysUntilSunday = 0;
-                } else {
-                    // It's Sunday after 11am - next service is next Sunday
-                    daysUntilSunday = 7;
-                }
+            if (window.innerWidth <= 900 && nav.classList.contains('active') && 
+                !isClickInsideNav && !isClickOnToggle) {
+                menuToggle.classList.remove('active');
+                nav.classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
-            
-            nextSunday.setDate(now.getDate() + daysUntilSunday);
-            nextSunday.setHours(11, 0, 0, 0);
-            
-            const diff = nextSunday - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            
-            let countdownText;
-            if (days > 0) {
-                countdownText = `Next service in: <strong>${days}d ${hours}h</strong>`;
-            } else if (hours > 0) {
-                countdownText = `Next service in: <strong>${hours}h ${minutes}m</strong>`;
-            } else {
-                countdownText = `Service starts in: <strong>${minutes}m</strong>`;
+        });
+
+        // Close menu on window resize if it becomes larger than mobile
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 900) {
+                menuToggle.classList.remove('active');
+                nav.classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
-            
-            document.getElementById('countdown').innerHTML = countdownText;
-        }
-        setInterval(updateCountdown, 60000); // Update every minute
-        updateCountdown(); // Initial call
+        });
 
-        // Testimonial slider
-        let currentTestimonial = 0;
-        const testimonials = document.querySelectorAll('.testimonial');
-        const dots = document.querySelectorAll('.dot');
-        let testimonialInterval;
-
+        // Testimonial gallery
         function showTestimonial(index) {
-            // Clear the current interval
-            clearInterval(testimonialInterval);
+            const testimonials = document.querySelectorAll('.testimonial');
+            const dots = document.querySelectorAll('.dot');
             
             testimonials.forEach(testimonial => testimonial.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
             
             testimonials[index].classList.add('active');
             dots[index].classList.add('active');
-            currentTestimonial = index;
+        }
+
+        // Auto-rotate testimonials
+        let testimonialIndex = 0;
+        setInterval(() => {
+            testimonialIndex = (testimonialIndex + 1) % 3;
+            showTestimonial(testimonialIndex);
+        }, 5000);
+
+        // Image carousel
+        let currentCarouselImage = 0;
+        
+        function showCarouselImage(index) {
+            const carouselImages = document.querySelector('.carousel-images');
+            const dots = document.querySelectorAll('.carousel-dot');
             
-            // Restart the interval
-            startTestimonialInterval();
+            currentCarouselImage = index;
+            carouselImages.style.transform = `translateX(-${index * 33.333}%)`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
         }
+        
+        // Auto-rotate carousel
+        setInterval(() => {
+            currentCarouselImage = (currentCarouselImage + 1) % 3;
+            showCarouselImage(currentCarouselImage);
+        }, 4000);
 
-        function startTestimonialInterval() {
-            testimonialInterval = setInterval(() => {
-                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-                showTestimonial(currentTestimonial);
-            }, 5000); // Change every 5 seconds
-        }
-
-        // Initialize testimonial slider
-        startTestimonialInterval();
-
-        // Modal functionality
+        // Prayer form modal
         function openPrayerForm() {
             document.getElementById('prayerForm').style.display = 'block';
         }
@@ -1169,11 +1166,83 @@
         }
 
         function submitPrayer() {
-            alert('Thank you for your prayer request. Our team will pray for you this week.');
-            closeModal();
+            const textarea = document.querySelector('#prayerForm textarea');
+            if (textarea.value.trim() !== '') {
+                alert('Thank you for your prayer request. Our team will pray for you this week.');
+                textarea.value = '';
+                closeModal();
+            } else {
+                alert('Please enter your prayer request.');
+            }
         }
 
-        // Close modal when clicking outside
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Live badge functionality
+        function openLiveStream() {
+            window.open('https://www.youtube.com/@HopeCommunityChurchClydebank', '_blank');
+        }
+
+        // Show live badge during Sunday service hours
+        function checkLiveStatus() {
+            const now = new Date();
+            const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            const hour = now.getHours();
+            
+            // Show badge on Sundays between 10:30 AM and 1:00 PM
+            if (day === 0 && hour >= 10 && hour < 13) {
+                document.getElementById('liveBadge').style.display = 'block';
+            } else {
+                document.getElementById('liveBadge').style.display = 'none';
+            }
+        }
+
+        // Countdown to next Sunday service
+        function updateCountdown() {
+            const now = new Date();
+            const day = now.getDay();
+            const nextSunday = new Date(now);
+            
+            // Calculate days until next Sunday (0 = Sunday, so if today is Sunday, we need to check the time)
+            let daysUntilSunday = 7 - day;
+            if (day === 0) {
+                // Today is Sunday, check if service has passed
+                if (now.getHours() >= 13) {
+                    daysUntilSunday = 7; // Next Sunday is 7 days away
+                } else {
+                    daysUntilSunday = 0; // Today is Sunday, service hasn't happened yet
+                }
+            }
+            
+            nextSunday.setDate(now.getDate() + daysUntilSunday);
+            nextSunday.setHours(11, 0, 0, 0); // Set to 11:00 AM
+            
+            const diff = nextSunday - now;
+            
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = "Service starting now!";
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (days === 0) {
+                document.getElementById('countdown').innerHTML = `Next service in ${hours}h ${minutes}m`;
+            } else {
+                document.getElementById('countdown').innerHTML = `Next service in ${days}d ${hours}h ${minutes}m`;
+            }
+        }
+
+        // Initialize functions
+        checkLiveStatus();
+        updateCountdown();
+        setInterval(updateCountdown, 60000); // Update every minute
+        setInterval(checkLiveStatus, 60000); // Check live status every minute
+
+        // Close modal if clicked outside
         window.onclick = function(event) {
             const modal = document.getElementById('prayerForm');
             if (event.target === modal) {
@@ -1181,146 +1250,25 @@
             }
         }
 
-        // Live badge functionality
-        function openLiveStream() {
-            alert('Sunday service is live now! Join us for worship and teaching.');
-        }
-
-        // Show live badge on Sundays between 10:30 and 12:30
-        function checkLiveStatus() {
-            const now = new Date();
-            const day = now.getDay();
-            const hour = now.getHours();
-            const minute = now.getMinutes();
+        // Simple authentication simulation
+        function checkAuthStatus() {
+            // This is a simplified version - in a real app, you'd check with a server
+            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+            const authLink = document.getElementById('authLink');
             
-            // Sunday between 10:30 and 12:30
-            if (day === 0 && ((hour === 10 && minute >= 30) || (hour === 11) || (hour === 12 && minute <= 30))) {
-                document.getElementById('liveBadge').style.display = 'block';
+            if (isLoggedIn) {
+                authLink.textContent = 'Profile';
+                authLink.href = 'profile.html';
+                authLink.className = 'profile-link';
             } else {
-                document.getElementById('liveBadge').style.display = 'none';
+                authLink.textContent = 'Login';
+                authLink.href = 'login.html';
+                authLink.className = 'login-link';
             }
         }
-        
-        setInterval(checkLiveStatus, 60000); // Check every minute
-        checkLiveStatus(); // Initial check
 
-        // Set current year in footer
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Image Carousel Functionality
-        let currentImageIndex = 0;
-        const carouselImages = document.querySelector('.carousel-images');
-        const carouselDots = document.querySelectorAll('.carousel-dot');
-        let carouselInterval;
-
-        function showCarouselImage(index) {
-            // Clear the current interval
-            clearInterval(carouselInterval);
-            
-            // Update the image position
-            carouselImages.style.transform = `translateX(-${index * 33.333}%)`;
-            
-            // Update active dot
-            carouselDots.forEach(dot => dot.classList.remove('active'));
-            carouselDots[index].classList.add('active');
-            
-            currentImageIndex = index;
-            
-            // Restart the interval
-            startCarouselInterval();
-        }
-
-        function nextCarouselImage() {
-            currentImageIndex = (currentImageIndex + 1) % 3; // 3 images total
-            showCarouselImage(currentImageIndex);
-        }
-
-        function startCarouselInterval() {
-            carouselInterval = setInterval(nextCarouselImage, 5000); // Change every 5 seconds
-        }
-
-        // Initialize the carousel
-        startCarouselInterval();
-
-        // Pause carousel on hover
-        const carousel = document.querySelector('.image-carousel');
-        carousel.addEventListener('mouseenter', () => {
-            clearInterval(carouselInterval);
-        });
-        
-        carousel.addEventListener('mouseleave', () => {
-            startCarouselInterval();
-        });
-		
-		    <script>
-        // Your existing JavaScript code...
-        // Mobile menu functionality
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('nav');
-        // ... all your existing code ...
-
-        // Pause carousel on hover
-        const carousel = document.querySelector('.image-carousel');
-        carousel.addEventListener('mouseenter', () => {
-            clearInterval(carouselInterval);
-        });
-        
-        carousel.addEventListener('mouseleave', () => {
-            startCarouselInterval();
-        });
-
-        // ===== NEW MOBILE FIXES =====
-        // Close menu when clicking outside (for mobile)
-        document.addEventListener('click', function(event) {
-            const nav = document.querySelector('nav');
-            const menuToggle = document.querySelector('.menu-toggle');
-            const isClickInsideNav = nav.contains(event.target);
-            const isClickOnToggle = menuToggle.contains(event.target);
-            
-            if (window.innerWidth <= 900 && nav.classList.contains('active') && 
-                !isClickInsideNav && !isClickOnToggle) {
-                menuToggle.classList.remove('active');
-                nav.classList.remove('active');
-                document.body.style.overflow = 'auto'; // Re-enable scrolling
-            }
-        });
-
-        // Prevent body scroll when menu is open and handle resize
-        function toggleBodyScroll(enable) {
-            document.body.style.overflow = enable ? 'auto' : 'hidden';
-        }
-
-        // Update existing menu toggle to control body scroll
-        menuToggle.addEventListener('click', function() {
-            const isActive = this.classList.contains('active');
-            toggleBodyScroll(!isActive);
-        });
-
-        // Close menu on window resize if it becomes larger than mobile
-        window.addEventListener('resize', function() {
-            const nav = document.querySelector('nav');
-            const menuToggle = document.querySelector('.menu-toggle');
-            
-            if (window.innerWidth > 900 && nav.classList.contains('active')) {
-                menuToggle.classList.remove('active');
-                nav.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        // Close menu when navigating (for single page links)
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 900) {
-                    menuToggle.classList.remove('active');
-                    nav.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
-            });
-        });
-        // ===== END NEW MOBILE FIXES =====
-    </script>
-		
+        // Initialize auth status
+        checkAuthStatus();
     </script>
 </body>
 </html>
