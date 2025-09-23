@@ -26,7 +26,7 @@
         /* Header Styles - UPDATED */
         header {
             background-color: #FFFFFF;
-            padding: 0.1rem 0;
+            padding: 0 rem 0; /* Reduced from 0.1rem 0 */
             position: fixed;
             width: 100%;
             z-index: 100;
@@ -200,10 +200,10 @@
             background-position: center;
             color: var(--text-light);
             text-align: center;
-            padding: 120px 20px;
+            padding: 400px 20px 120px;
             position: relative;
             overflow: hidden;
-            min-height: 80vh;
+            min-height: calc(100vh - 80px); /* Accounts for header */
             display: flex;
             align-items: center;
         }
@@ -214,7 +214,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('images/hopechurch.png');
+            background-image: url('images/hero banner1.jpg');
             background-size: cover;
             background-position: center;
             z-index: -1;
@@ -668,6 +668,53 @@
             60% { transform: translateY(-10px); }
         }
 
+        /* Image Carousel Styles */
+        .image-carousel {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .carousel-images {
+            display: flex;
+            width: 300%; /* 3 images = 300% width */
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .carousel-image {
+            width: 33.333%; /* Each image takes 1/3 of the container */
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: var(--primary);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .about-grid {
@@ -703,6 +750,10 @@
             
             .map-header h3 {
                 font-size: 1.5rem;
+            }
+            
+            .image-carousel {
+                height: 300px;
             }
         }
     </style>
@@ -827,7 +878,19 @@
             <h2 style="text-align: center;">Hope for Recovery</h2>
             <div class="about-grid">
                 <div>
-                    <img src="images/hfr.jpg" alt="Hope for Recovery" style="width:100%; border-radius:10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <!-- Image Carousel -->
+                    <div class="image-carousel">
+                        <div class="carousel-images">
+							<img src="images/Fruit of Freedom Certs.jpg" alt="Hope for Recovery Image 2" class="carousel-image">
+                            <img src="images/hfr4.jpg" alt="Hope for Recovery Image 1" class="carousel-image">
+                            <img src="images/hfr3.jpg" alt="Hope for Recovery Image 3" class="carousel-image">
+                        </div>
+                        <div class="carousel-dots">
+                            <span class="carousel-dot active" onclick="showCarouselImage(0)"></span>
+                            <span class="carousel-dot" onclick="showCarouselImage(1)"></span>
+                            <span class="carousel-dot" onclick="showCarouselImage(2)"></span>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <h3>Our Mission</h3>
@@ -1028,26 +1091,17 @@
             startTestimonialInterval();
         }
 
-        function nextTestimonial() {
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            showTestimonial(currentTestimonial);
-        }
-
         function startTestimonialInterval() {
-            testimonialInterval = setInterval(nextTestimonial, 5000); // Change every 5 seconds
+            testimonialInterval = setInterval(() => {
+                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(currentTestimonial);
+            }, 5000); // Change every 5 seconds
         }
 
-        // Start the automatic rotation
+        // Initialize testimonial slider
         startTestimonialInterval();
 
-        // Pause rotation when user interacts with dots
-        dots.forEach(dot => {
-            dot.addEventListener('click', function() {
-                clearInterval(testimonialInterval);
-            });
-        });
-
-        // Prayer form modal
+        // Modal functionality
         function openPrayerForm() {
             document.getElementById('prayerForm').style.display = 'block';
         }
@@ -1057,100 +1111,87 @@
         }
 
         function submitPrayer() {
-            const textarea = document.querySelector('.modal textarea');
-            if (textarea.value.trim() !== '') {
-                alert('Thank you for your prayer request. Our team will pray for you this week.');
-                textarea.value = '';
-                closeModal();
-            } else {
-                alert('Please enter your prayer request');
-            }
+            alert('Thank you for your prayer request. Our team will pray for you this week.');
+            closeModal();
         }
 
-        // Add this to your script
-        window.toggleLiveBadge = function(show) {
-            document.getElementById('liveBadge').style.display = 
-            show ? 'block' : 'none';
-        };
-
-        // Live badge functionality
-        function checkLive() {
-            const now = new Date();
-            const day = now.getDay(); // 0 = Sunday
-            const hour = now.getHours();
-            const minutes = now.getMinutes();
-            
-            // Adjust these times to match your actual stream schedule
-            const isLiveTime = (day === 0 && // Sunday
-                               ((hour === 10 && minutes >= 30) || // From 10:30am
-                                (hour === 11) ||                  // Until 12:00pm
-                                (hour === 12 && minutes < 30)));  // (adjust as needed)
-            
-            const liveBadge = document.getElementById('liveBadge');
-            if (isLiveTime) {
-                liveBadge.style.display = 'block';
-            } else {
-                liveBadge.style.display = 'none';
-            }
-        }
-        
-        function openLiveStream() {
-            window.open('https://www.facebook.com/hopecommunityclydebank/live', '_blank');
-        }
-        
-        // Check if currently live every minute
-        setInterval(checkLive, 60000);
-        checkLive(); // Initial check
-
-        // Set current year in footer
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Close modal if clicked outside
-        window.addEventListener('click', function(event) {
+        // Close modal when clicking outside
+        window.onclick = function(event) {
             const modal = document.getElementById('prayerForm');
             if (event.target === modal) {
                 closeModal();
             }
+        }
+
+        // Live badge functionality
+        function openLiveStream() {
+            alert('Sunday service is live now! Join us for worship and teaching.');
+        }
+
+        // Show live badge on Sundays between 10:30 and 12:30
+        function checkLiveStatus() {
+            const now = new Date();
+            const day = now.getDay();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            
+            // Sunday between 10:30 and 12:30
+            if (day === 0 && ((hour === 10 && minute >= 30) || (hour === 11) || (hour === 12 && minute <= 30))) {
+                document.getElementById('liveBadge').style.display = 'block';
+            } else {
+                document.getElementById('liveBadge').style.display = 'none';
+            }
+        }
+        
+        setInterval(checkLiveStatus, 60000); // Check every minute
+        checkLiveStatus(); // Initial check
+
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Image Carousel Functionality
+        let currentImageIndex = 0;
+        const carouselImages = document.querySelector('.carousel-images');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
+        let carouselInterval;
+
+        function showCarouselImage(index) {
+            // Clear the current interval
+            clearInterval(carouselInterval);
+            
+            // Update the image position
+            carouselImages.style.transform = `translateX(-${index * 33.333}%)`;
+            
+            // Update active dot
+            carouselDots.forEach(dot => dot.classList.remove('active'));
+            carouselDots[index].classList.add('active');
+            
+            currentImageIndex = index;
+            
+            // Restart the interval
+            startCarouselInterval();
+        }
+
+        function nextCarouselImage() {
+            currentImageIndex = (currentImageIndex + 1) % 3; // 3 images total
+            showCarouselImage(currentImageIndex);
+        }
+
+        function startCarouselInterval() {
+            carouselInterval = setInterval(nextCarouselImage, 5000); // Change every 5 seconds
+        }
+
+        // Initialize the carousel
+        startCarouselInterval();
+
+        // Pause carousel on hover
+        const carousel = document.querySelector('.image-carousel');
+        carousel.addEventListener('mouseenter', () => {
+            clearInterval(carouselInterval);
         });
         
-        // Show directions options modal
-        function showDirectionsOptions() {
-            document.getElementById('directionsModal').style.display = 'flex';
-        }
-        
-        function closeDirectionsModal() {
-            document.getElementById('directionsModal').style.display = 'none';
-        }
-        
-        // Open Google Maps with directions to the church
-        function openGoogleMapsDirections() {
-            const address = encodeURIComponent("30 Shelley Drive, Clydebank, G81 3EL");
-            window.open(`https://www.google.com/maps/dir/?api=1&destination=${address}`, '_blank');
-            closeDirectionsModal();
-        }
-        
-        // Open Apple Maps with directions to the church
-        function openAppleMapsDirections() {
-            const address = encodeURIComponent("30 Shelley Drive, Clydebank, G81 3EL");
-            window.open(`https://maps.apple.com/?daddr=${address}`, '_blank');
-            closeDirectionsModal();
-        }
-        
-        // Show public transport information
-        function showPublicTransportInfo() {
-            alert("Public Transport Options:\n\n" +
-                  "Bus: Routes 1, 2, and 3 stop near Shelley Drive (5 minute walk)\n" +
-                  "Train: Clydebank Station is a 10 minute walk away\n\n" +
-                  "Visit Traveline Scotland (www.travelinescotland.com) for detailed schedules.");
-            closeDirectionsModal();
-        }
-        
-        // Close modal if clicked outside
-        window.addEventListener('click', function(event) {
-            const modal = document.getElementById('directionsModal');
-            if (event.target === modal) {
-                closeDirectionsModal();
-            }
+        carousel.addEventListener('mouseleave', () => {
+            startCarouselInterval();
         });
     </script>
 </body>
