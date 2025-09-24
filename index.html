@@ -208,21 +208,21 @@
             }
         }
 
-        /* Header/Hero Section - FIXED */
+        /* Header/Hero Section - UPDATED */
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
             background-size: cover;
             background-position: center;
             color: var(--text-light);
             text-align: center;
-            padding: 140px 20px 80px; /* Reduced padding for mobile */
+            padding: 100px 20px 80px; /* Reduced top padding since margin handles spacing */
             position: relative;
             overflow: hidden;
             min-height: 100vh;
             display: flex;
             align-items: center;
             width: 100%;
-            margin-top: 0;
+            /* margin-top will be set dynamically by JavaScript */
         }
 
         .hero-image {
@@ -731,7 +731,7 @@
         /* Responsive - FIXED */
         @media (max-width: 768px) {
             .hero {
-                padding: 120px 15px 60px; /* Further reduced for small mobile */
+                padding: 80px 15px 60px; /* Further reduced for small mobile */
                 min-height: 80vh;
             }
 
@@ -792,7 +792,7 @@
 
         @media (max-width: 480px) {
             .hero {
-                padding: 100px 10px 40px;
+                padding: 60px 10px 40px;
                 min-height: 70vh;
             }
 
@@ -1067,6 +1067,17 @@
     </div>
 
     <script>
+        // Header-Hero Alignment Function - NEW
+        function adjustHeroMargin() {
+            const header = document.querySelector('header');
+            const hero = document.querySelector('.hero');
+            
+            if (header && hero) {
+                const headerHeight = header.offsetHeight;
+                hero.style.marginTop = headerHeight + 'px';
+            }
+        }
+
         // Mobile menu functionality
         const menuToggle = document.querySelector('.menu-toggle');
         const nav = document.querySelector('nav');
@@ -1081,6 +1092,9 @@
             } else {
                 document.body.style.overflow = 'auto';
             }
+            
+            // Recalculate hero margin when menu opens/closes
+            setTimeout(adjustHeroMargin, 300);
         });
 
         // Close menu when clicking on a nav link (for mobile)
@@ -1091,6 +1105,8 @@
                     menuToggle.classList.remove('active');
                     nav.classList.remove('active');
                     document.body.style.overflow = 'auto';
+                    // Recalculate hero margin
+                    setTimeout(adjustHeroMargin, 100);
                 }
             });
         });
@@ -1105,6 +1121,8 @@
                 menuToggle.classList.remove('active');
                 nav.classList.remove('active');
                 document.body.style.overflow = 'auto';
+                // Recalculate hero margin
+                setTimeout(adjustHeroMargin, 100);
             }
         });
 
@@ -1115,6 +1133,17 @@
                 nav.classList.remove('active');
                 document.body.style.overflow = 'auto';
             }
+            // Recalculate hero margin on resize
+            adjustHeroMargin();
+        });
+
+        // Initialize hero margin on load and after short delay to ensure DOM is ready
+        window.addEventListener('load', function() {
+            // Initial adjustment
+            adjustHeroMargin();
+            
+            // Secondary adjustment after a short delay to catch any dynamic content
+            setTimeout(adjustHeroMargin, 100);
         });
 
         // Testimonial gallery
