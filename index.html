@@ -174,13 +174,28 @@
             transform: translateY(-9px) rotate(-45deg);
         }
 
-        @media (max-width: 900px) {
+@media (max-width: 900px) {
             .header-container {
-                padding: 8px 15px;
+                /* NEW: Center the logo by stacking items */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-top: 15px; 
+                padding-bottom: 15px;
+                padding-left: 15px; /* Keep side padding */
+                padding-right: 15px;
+                position: relative; /* Needed for toggle absolute position */
             }
 
             .menu-toggle {
-                display: flex;
+                /* REPOSITION: Place the toggle button on the side */
+                position: absolute; 
+                right: 15px;
+                top: 50%; /* Center vertically in the new header padding */
+                transform: translateY(-50%);
+                display: flex; /* Ensure it is visible */
+                z-index: 1001; /* Keep z-index high */
             }
 
             nav {
@@ -193,10 +208,11 @@
                 flex-direction: column;
                 align-items: flex-start;
                 justify-content: flex-start;
-                padding-top: 80px; /* Space below header */
+                /* NEW: Adjust padding top for the now-taller header */
+                padding-top: 100px; 
                 padding-left: 30px;
                 box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-                z-index: 999; /* Below toggle but above content */
+                z-index: 999; 
                 transition: right 0.3s ease;
             }
 
